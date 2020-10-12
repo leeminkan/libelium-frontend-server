@@ -10,6 +10,8 @@ import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/FogetPassword";
 
 import Dashboard from "../pages/Dashboard";
+import DashboardCustom from "../pages/DashboardCustom";
+import Setting from "../pages/Setting";
 
 import Calendar from "../pages/Apps/Calendar/index";
 
@@ -178,6 +180,8 @@ const authProtectedRoutes = [
   { path: "/pages-faq", component: PagesFaq },
 
   { path: "/dashboard", component: Dashboard },
+  { path: "/dashboard-custom", component: DashboardCustom },
+  { path: "/setting", component: Setting },
 
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> }
 ];

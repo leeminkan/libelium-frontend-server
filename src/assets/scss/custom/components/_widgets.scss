@@ -23,6 +23,20 @@
     }
 }
 
+.waspmote {
+    .waspmote-img{
+        width: 100%;
+        height: 100%;
+        background: rgba($white, 0.15);
+        border-radius: 4px;
+        text-align: center;
+        img{
+            width: 90%;
+            height: 90%;
+        }
+    }
+}
+
 
 
 /* Activity */
