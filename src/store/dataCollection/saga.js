@@ -30,10 +30,10 @@ export function* watchGetDataCollections() {
     yield takeEvery(GET_DATA_COLLECTION, getDataCollectionFlow)
 }
 
-function* dashboardSaga() {
+function* dataCollectionSaga() {
     yield all([
         fork(watchGetDataCollections),
     ]);
 }
 
-export default dashboardSaga;
+export default dataCollectionSaga;

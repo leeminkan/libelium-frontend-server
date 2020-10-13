@@ -3,6 +3,11 @@ import { Row, Col, Card, CardBody, FormGroup, Button } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import "chartist/dist/scss/chartist.scss";
+// Redux
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+// actions
+import { getSetting } from "../../store/actions";
 
 class Setting extends Component {
   constructor(props) {
@@ -10,10 +15,12 @@ class Setting extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.props.getSetting(this.props.history);
+  }
+
   render() {
-    const saving_level = "5";
-    const window_size = "10";
-    const time_base = "3";
+    const {saving_level, window_size, time_base} = this.props.data;
 
     return (
       <React.Fragment>
@@ -39,7 +46,7 @@ class Setting extends Component {
                       name="window_size"
                       label="Window Size  "
                       placeholder="Enter Window Size "
-                      defaultValue={window_size}
+                      value={window_size}
                       type="number"
                       errorMessage="Please Enter Window Size"
                       validate={{
@@ -55,7 +62,7 @@ class Setting extends Component {
                       name="saving_level"
                       label="Saving Level  "
                       placeholder="Enter Saving Level "
-                      defaultValue={saving_level}
+                      value={saving_level}
                       type="number"
                       errorMessage="Please Enter Saving Level"
                       validate={{
@@ -71,7 +78,7 @@ class Setting extends Component {
                       name="time_base"
                       label="Time base  "
                       placeholder="Enter Time base "
-                      defaultValue={time_base}
+                      value={time_base}
                       type="number"
                       errorMessage="Please Enter Time base"
                       validate={{
@@ -100,4 +107,10 @@ class Setting extends Component {
   }
 }
 
-export default Setting;
+
+const mapStatetoProps = state => {
+  const { errors, loading, data } = state.Setting;
+  return { errors, loading, data };
+};
+
+export default withRouter(connect(mapStatetoProps, { getSetting })(Setting));

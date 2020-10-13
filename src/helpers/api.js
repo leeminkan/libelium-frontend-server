@@ -7,6 +7,7 @@ const host = {
 const api = {
     apiGetDevices:"/devices",
     apiDataCollections:"/data-collections",
+    apiSetting:"/settings",
 };
 
 
@@ -40,4 +41,16 @@ const apiDataCollections = (pagination) => {
     return response;
 }
 
-export { apiGetDevices, apiDataCollections };
+const apiSetting = () => {
+    const token = localStorage.getItem('token');
+    const response = axios.get(`${host.apiUrl}${api.apiSetting}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
+export { apiGetDevices, apiDataCollections, apiSetting };

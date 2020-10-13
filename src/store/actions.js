@@ -10,3 +10,6 @@ export * from './dashboard/actions';
 
 // DataCollection
 export * from './dataCollection/actions';
+
+// Setting
+export * from './setting/actions';

@@ -23,24 +23,14 @@ const SidebarContent = props => {
             <span>Data Collection</span>
           </Link>
         </li>
-
+        
         <li>
-          <Link to="/#" className="has-arrow waves-effect">
-            <i className="ti-email"></i>
-            <span>Email</span>
+          <Link to="/setting" className=" waves-effect">
+            <i className="ti-settings"></i>
+            <span>Setting</span>
           </Link>
-          <ul className="sub-menu" aria-expanded="false">
-            <li>
-              <Link to="/email-inbox">Inbox</Link>
-            </li>
-            <li>
-              <Link to="/email-read">Email Read</Link>
-            </li>
-            <li>
-              <Link to="/email-compose">Email Compose</Link>
-            </li>
-          </ul>
         </li>
+
 
         <li className="menu-title">Components</li>
         <li>
