@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGIN_SUCCESS, LOGOUT_USER, LOGOUT_USER_SUCCESS, API_ERROR } from './actionTypes';
+import { LOGIN_USER, LOGIN_SUCCESS, LOGOUT_USER, LOGOUT_USER_SUCCESS, API_ERROR , LOGIN_USER_ERROR } from './actionTypes';
 
 export const loginUser = (user, history) => {
     return {
@@ -32,5 +32,12 @@ export const apiError = (error) => {
     return {
         type: API_ERROR,
         payload: error
+    }
+}
+
+export const apiErrors = (errors) => {
+    return {
+        type: LOGIN_USER_ERROR,
+        payload: errors
     }
 }

@@ -29,14 +29,24 @@ class Login extends Component {
     this.props.loginUser(values, this.props.history);
   }
 
+  showError = (errors) => {
+    const view = [];
+    if (errors) {
+      if (Array.isArray(errors)) {
+        // the array is defined and has at least one element
+        errors.forEach(error => {
+          view.push(<Alert color="danger">{error.message}</Alert>);
+        });
+      } else {
+        view.push(<Alert color="danger">{errors.message}</Alert>);
+      }
+    }
+    return view;
+  }
+
   render() {
     return (
       <React.Fragment>
-        <div className="home-btn d-none d-sm-block">
-          <Link to="/" className="text-dark">
-            <i className="fas fa-home h2"></i>
-          </Link>
-        </div>
         <div className="account-pages my-5 pt-5">
           <div className="container">
             <Row className="justify-content-center">
@@ -51,7 +61,7 @@ class Login extends Component {
                           Welcome Back !
                         </h5>
                         <p className="text-white-50">
-                          Sign in to continue to Veltrix.
+                          Sign in to continue to Libelium Project.
                         </p>
                         <Link to="/" className="logo logo-admin">
                           <img src={logoSm} height="24" alt="logo" />
@@ -65,16 +75,14 @@ class Login extends Component {
                           className="form-horizontal mt-4"
                           onValidSubmit={this.handleValidSubmit}
                         >
-                          {this.props.error ? (
-                            <Alert color="danger">{this.props.error}</Alert>
-                          ) : null}
+                          {this.showError(this.props.errors)}
 
                           <div className="form-group">
                             <AvField
                               name="email"
                               label="Email"
                               className="form-control"
-                              value="admin@themesbrand.com"
+                              value="admin@gmail.com"
                               placeholder="Enter email"
                               type="email"
                               required
@@ -86,7 +94,7 @@ class Login extends Component {
                               label="Password"
                               type="password"
                               required
-                              value="123456"
+                              value="Bss123"
                               placeholder="Enter Password"
                             />
                           </div>
@@ -108,34 +116,10 @@ class Login extends Component {
                               </button>
                             </Col>
                           </Row>
-                          <Row className="form-group mt-2 mb-0">
-                            <div className="col-12 mt-4">
-                              <Link to="/forget-password">
-                                <i className="mdi mdi-lock"></i> Forgot your
-                                password?
-                              </Link>
-                            </div>
-                          </Row>
                         </AvForm>
                       </div>
                     </CardBody>
                   </Card>
-                </div>
-                <div className="mt-5 text-center">
-                  <p>
-                    Don't have an account ?{" "}
-                    <Link
-                      to="pages-register"
-                      className="font-weight-medium text-primary"
-                    >
-                      {" "}
-                      Signup now{" "}
-                    </Link>{" "}
-                  </p>
-                  <p className="mb-0">
-                    © {new Date().getFullYear()} Veltrix. Crafted with{" "}
-                    <i className="mdi mdi-heart text-danger"></i> by Themesbrand
-                  </p>
                 </div>
               </Col>
             </Row>
@@ -147,8 +131,8 @@ class Login extends Component {
 }
 
 const mapStatetoProps = state => {
-  const { error, loading } = state.Login;
-  return { error, loading };
+  const { error, errors, loading } = state.Login;
+  return { error, errors, loading };
 };
 
 export default withRouter(connect(mapStatetoProps, { loginUser })(Login));

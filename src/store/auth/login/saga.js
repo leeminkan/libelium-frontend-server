@@ -2,20 +2,27 @@ import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
 
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER } from './actionTypes';
-import { loginSuccess, logoutUserSuccess, apiError } from './actions';
+import { loginSuccess, logoutUserSuccess, apiError, apiErrors } from './actions';
 
 //AUTH related methods
 import { getFirebaseBackend } from '../../../helpers/authUtils';
+import { login } from '../../../helpers/auth';
 
 const fireBaseBackend = getFirebaseBackend();
 
 function* loginUser({ payload: { user, history } }) {
     try {
-        const response = yield call(fireBaseBackend.loginUser, user.email, user.password);
+        const response = yield call(login, user);
+        localStorage.setItem('token', response.data.data.access_token);
         yield put(loginSuccess(response));
-        history.push('/dashboard');
+        history.push('/dashboard-custom');
     } catch (error) {
-        yield put(apiError(error));
+        if (error.response && error.response.data.error) {
+            yield put(apiErrors(error.response.data.errors));
+        } else {
+            yield put(apiErrors("Some thing was wrong!"));
+            console.log(error);
+        }
     }
 }
 
