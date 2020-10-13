@@ -8,6 +8,7 @@ import Login from "./auth/login/reducer";
 import Account from "./auth/register/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import Dashboard from "./dashboard/reducer";
+import DataCollection from "./dataCollection/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   Login,
   Account,
   ForgetPassword,
-  Dashboard
+  Dashboard,
+  DataCollection
 });
 
 export default rootReducer;

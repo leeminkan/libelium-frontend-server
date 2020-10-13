@@ -5,7 +5,8 @@ const host = {
 };
 
 const api = {
-    apiGetDevices:"/devices"
+    apiGetDevices:"/devices",
+    apiDataCollections:"/data-collections",
 };
 
 
@@ -21,4 +22,22 @@ const apiGetDevices = () => {
     return response;
 }
 
-export { apiGetDevices };
+const apiDataCollections = (pagination) => {
+    const token = localStorage.getItem('token');
+    let apiQuery = `${host.apiUrl}${api.apiDataCollections}`;
+    if (pagination) {
+        let page = pagination.page ? pagination.page : 1;
+        apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
+    }
+
+    const response = axios.get(apiQuery, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
+export { apiGetDevices, apiDataCollections };

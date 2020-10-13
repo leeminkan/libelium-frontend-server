@@ -18,9 +18,9 @@ const SidebarContent = props => {
         </li>
 
         <li>
-          <Link to="/calendar" className=" waves-effect">
-            <i className="ti-calendar"></i>
-            <span>Calendar</span>
+          <Link to="/data-collection" className=" waves-effect">
+            <i className="ti-receipt"></i>
+            <span>Data Collection</span>
           </Link>
         </li>
 

@@ -7,3 +7,6 @@ export * from './auth/forgetpwd/actions';
 
 // Dashboard
 export * from './dashboard/actions';
+
+// DataCollection
+export * from './dataCollection/actions';
