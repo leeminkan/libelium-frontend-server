@@ -40,7 +40,7 @@ class Dashboard extends Component {
                       <span>{device.waspmote_id + ' - ' + device.name}</span>
                       <div className="float-right">
                           <i className="mdi mdi mdi-battery-90 h5"></i>
-                          <span>{device.battery}</span>
+                          <span>{device.battery + '%'}</span>
                       </div>
                     </div>
                   </CardBody>

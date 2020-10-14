@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Table } from "reactstrap";
+import { Row, Col, Table, Card, CardBody  } from "reactstrap";
 
 // Redux
 import { connect } from "react-redux";
@@ -46,32 +46,38 @@ class DataCollection extends Component {
     };
 
     return (
-      <div className="data-collection-table">
-        <Table responsive className="table-lg">
-          <colgroup>
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-            <col />
-          </colgroup>
-          <thead>
-            <tr>
-              <th><label>ID</label></th>
-              <th><label>Waspmote ID</label></th>
-              <th><label>Transaction ID</label></th>
-              <th><label>Type</label></th>
-              <th><label>Value</label></th>
-              <th><label>Time</label></th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.renderDataCollectionView()}
-          </tbody>
-        </Table>
-        <PaginationBar {...paginationBarProps}/>
-      </div>
+      <Col xl={12}>
+        <Card>
+          <CardBody>
+            <div className="data-collection-table">
+              <Table responsive className="table-lg">
+                <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><label>ID</label></th>
+                    <th><label>Waspmote ID</label></th>
+                    <th><label>Transaction ID</label></th>
+                    <th><label>Type</label></th>
+                    <th><label>Value</label></th>
+                    <th><label>Time</label></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.renderDataCollectionView()}
+                </tbody>
+              </Table>
+              <PaginationBar {...paginationBarProps}/>
+            </div>
+          </CardBody>
+        </Card>
+      </Col>
     );
 
   }
