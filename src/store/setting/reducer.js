@@ -1,4 +1,4 @@
-import { GET_SETTING, GET_SETTING_SUCCESS, GET_SETTING_ERROR} from './actionTypes';
+import { GET_SETTING, GET_SETTING_SUCCESS, GET_SETTING_ERROR, UPDATE_SETTING, UPDATE_SETTING_SUCCESS, UPDATE_SETTING_ERROR } from './actionTypes';
 
 const initialState = {
     errors: null,
@@ -13,12 +13,14 @@ const initialState = {
 const setting = (state = initialState, action) => {
     switch (action.type) {
         case GET_SETTING:
+        case UPDATE_SETTING:
             state = {
                 ...state,
                 loading: true
             }
             break;
         case GET_SETTING_SUCCESS:
+        case UPDATE_SETTING_SUCCESS:
             state = {
                 ...state,
                 loading: false,
@@ -26,6 +28,7 @@ const setting = (state = initialState, action) => {
             }
             break;
         case GET_SETTING_ERROR:
+        case UPDATE_SETTING_ERROR:
             state = { ...state, errors: action.payload, loading: false };
             break;
         default:

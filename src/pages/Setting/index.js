@@ -7,7 +7,7 @@ import "chartist/dist/scss/chartist.scss";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getSetting } from "../../store/actions";
+import { getSetting, updateSetting } from "../../store/actions";
 
 class Setting extends Component {
   constructor(props) {
@@ -17,6 +17,12 @@ class Setting extends Component {
 
   componentDidMount() {
     this.props.getSetting(this.props.history);
+  }
+
+  handleSubmit = (event, errors, values) => {
+    if (errors.length === 0) {
+      this.props.updateSetting(this.props.history, values);
+    }
   }
 
   render() {
@@ -41,7 +47,7 @@ class Setting extends Component {
             <Col lg={12}>
               <Card>
                 <CardBody>
-                  <AvForm>
+                  <AvForm onSubmit={this.handleSubmit}>
                     <AvField
                       name="window_size"
                       label="Window Size  "
@@ -113,4 +119,4 @@ const mapStatetoProps = state => {
   return { errors, loading, data };
 };
 
-export default withRouter(connect(mapStatetoProps, { getSetting })(Setting));
+export default withRouter(connect(mapStatetoProps, { getSetting, updateSetting })(Setting));

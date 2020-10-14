@@ -53,4 +53,17 @@ const apiSetting = () => {
     return response;
 }
 
-export { apiGetDevices, apiDataCollections, apiSetting };
+const apiUpdateSetting = (data) => {
+    const token = localStorage.getItem('token');
+    const response = axios.put(`${host.apiUrl}${api.apiSetting}`, JSON.stringify(data), {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
+export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting };
