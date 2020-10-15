@@ -13,3 +13,6 @@ export * from './dataCollection/actions';
 
 // Setting
 export * from './setting/actions';
+
+// Chart
+export * from './chart/actions';

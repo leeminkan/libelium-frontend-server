@@ -30,6 +30,13 @@ const SidebarContent = props => {
             <span>Setting</span>
           </Link>
         </li>
+        
+        <li>
+          <Link to="/temperature-chart" className=" waves-effect">
+            <i className="ti-bar-chart"></i>
+            <span>Temperature Chart</span>
+          </Link>
+        </li>
 
 
         <li className="menu-title">Components</li>

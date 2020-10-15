@@ -10,6 +10,7 @@ import ForgetPassword from "./auth/forgetpwd/reducer";
 import Dashboard from "./dashboard/reducer";
 import DataCollection from "./dataCollection/reducer";
 import Setting from "./setting/reducer";
+import Chart from "./chart/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   ForgetPassword,
   Dashboard,
   DataCollection,
-  Setting
+  Setting,
+  Chart
 });
 
 export default rootReducer;

@@ -66,4 +66,22 @@ const apiUpdateSetting = (data) => {
     return response;
 }
 
-export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting };
+const apiGetTemperature = (pagination) => {
+    const token = localStorage.getItem('token');
+    let apiQuery = `${host.apiUrl}${api.apiDataCollections}/get-by-waspmote-id/1?type=temperature`;
+    if (pagination) {
+        let page = pagination.page ? pagination.page : 1;
+        apiQuery += `&page=${page}&per_page=${pagination.per_page}`;
+    }
+
+    const response = axios.get(apiQuery, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
+export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting, apiGetTemperature };

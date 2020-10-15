@@ -12,6 +12,7 @@ import ForgetPwd from "../pages/Authentication/FogetPassword";
 import Dashboard from "../pages/Dashboard";
 import DataCollection from "../pages/DataCollection";
 import Setting from "../pages/Setting";
+import TemperatureChart from "../pages/TemperatureChart";
 
 import Calendar from "../pages/Apps/Calendar/index";
 
@@ -182,6 +183,7 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/data-collection", component: DataCollection },
   { path: "/setting", component: Setting },
+  { path: "/temperature-chart", component: TemperatureChart },
 
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> }
 ];
