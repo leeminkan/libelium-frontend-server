@@ -23,12 +23,17 @@ const apiGetDevices = () => {
     return response;
 }
 
-const apiDataCollections = (pagination) => {
+const apiDataCollections = (pagination, sort) => {
     const token = localStorage.getItem('token');
     let apiQuery = `${host.apiUrl}${api.apiDataCollections}`;
     if (pagination) {
         let page = pagination.page ? pagination.page : 1;
         apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
+    }
+
+    if (sort) {
+        apiQuery += apiQuery.includes("?") ? '&' : '?';
+        apiQuery += `order_by=${sort.order_by}&order=${sort.order}`;
     }
 
     const response = axios.get(apiQuery, {

@@ -6,9 +6,9 @@ import { getDataCollectionError, getDataCollectionSuccess } from './actions';
 
 import { apiDataCollections } from '../../helpers/api';
 
-function* getDataCollectionFlow({ payload: { history, pagination } }) {
+function* getDataCollectionFlow({ payload: { history, pagination, sort } }) {
     try {
-        const response = yield call(apiDataCollections, pagination);
+        const response = yield call(apiDataCollections, pagination, sort);
         yield put(getDataCollectionSuccess(response.data.data, response.data.meta));
     } catch (error) {
         if (error.response) {

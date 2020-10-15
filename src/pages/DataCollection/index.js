@@ -19,7 +19,7 @@ class DataCollection extends Component {
 
   componentDidMount() {
     let { current_page, per_page } = this.props.meta;
-    this.props.getDataCollection(this.props.history, { page: current_page, per_page });
+    this.props.getDataCollection(this.props.history, { page: current_page, per_page }, this.props.sort);
   }
 
   handleChangePage = (action, selectedPage) => {
@@ -32,8 +32,9 @@ class DataCollection extends Component {
     } else {
       current_page = selectedPage;
     }
+    
     //call action change page
-    this.props.getDataCollection(this.props.history, { page: current_page, per_page });
+    this.props.getDataCollection(this.props.history, { page: current_page, per_page }, this.props.sort);
   }
 
   renderDataCollection = () => {
@@ -58,11 +59,13 @@ class DataCollection extends Component {
                   <col />
                   <col />
                   <col />
+                  <col />
                 </colgroup>
                 <thead>
                   <tr>
                     <th><label>ID</label></th>
                     <th><label>Waspmote ID</label></th>
+                    <th><label>Device Name</label></th>
                     <th><label>Transaction ID</label></th>
                     <th><label>Type</label></th>
                     <th><label>Value</label></th>
@@ -89,8 +92,9 @@ class DataCollection extends Component {
       data.forEach((item, index) => {
         view.push(
           <tr key={item.id}>
-          <td>{item.id}</td>
+            <td>{item.id}</td>
             <td>{item.waspmote_id}</td>
+            <td>{item.name}</td>
             <td>{item.transaction_id}</td>
             <td>{item.type}</td>
             <td>{item.value}</td>
@@ -127,8 +131,8 @@ class DataCollection extends Component {
 }
 
 const mapStatetoProps = state => {
-  const { errors, loading, data, meta } = state.DataCollection;
-  return { errors, loading, data, meta };
+  const { errors, loading, data, meta, sort } = state.DataCollection;
+  return { errors, loading, data, meta, sort };
 };
 
 export default withRouter(connect(mapStatetoProps, { getDataCollection })(DataCollection));

@@ -1,4 +1,7 @@
-import { GET_DATA_COLLECTION, GET_DATA_COLLECTION_SUCCESS, GET_DATA_COLLECTION_ERROR} from './actionTypes';
+import { GET_DATA_COLLECTION, GET_DATA_COLLECTION_SUCCESS, 
+    GET_DATA_COLLECTION_ERROR,
+    UPDATE_STATE
+} from './actionTypes';
 
 const initialState = {
     errors: null,
@@ -6,6 +9,10 @@ const initialState = {
     data: [],
     meta: {
         per_page: 2
+    },
+    sort: {
+        order_by: 'created_at',
+        order: 'desc'
     }
 }
 
@@ -27,6 +34,9 @@ const dataCollection = (state = initialState, action) => {
             break;
         case GET_DATA_COLLECTION_ERROR:
             state = { ...state, errors: action.payload, loading: false };
+            break;
+        case UPDATE_STATE:
+            state = { ...state, ...action.payload };
             break;
         default:
             state = { ...state };

@@ -1,9 +1,12 @@
-import { GET_DATA_COLLECTION, GET_DATA_COLLECTION_SUCCESS, GET_DATA_COLLECTION_ERROR } from './actionTypes';
+import { GET_DATA_COLLECTION, GET_DATA_COLLECTION_SUCCESS, 
+    GET_DATA_COLLECTION_ERROR,
+    UPDATE_STATE
+ } from './actionTypes';
 
-export const getDataCollection = (history, pagination) => {
+export const getDataCollection = (history, pagination, sort) => {
     return {
         type: GET_DATA_COLLECTION,
-        payload: {history, pagination}
+        payload: {history, pagination, sort}
     }
 }
 
@@ -21,5 +24,12 @@ export const getDataCollectionError = (errors) => {
     return {
         type: GET_DATA_COLLECTION_ERROR,
         payload: errors
+    }
+}
+
+export const updateState = (state) => {
+    return {
+        type: UPDATE_STATE,
+        payload: state
     }
 }
