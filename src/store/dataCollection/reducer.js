@@ -8,7 +8,7 @@ const initialState = {
     loading: false,
     data: [],
     meta: {
-        per_page: 2
+        per_page: 5
     },
     sort: {
         order_by: 'created_at',

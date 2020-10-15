@@ -2,14 +2,17 @@ import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
 
 // Login Redux States
 import { GET_DATA_COLLECTION } from './actionTypes';
-import { getDataCollectionError, getDataCollectionSuccess } from './actions';
+import { getDataCollectionError, getDataCollectionSuccess, updateState } from './actions';
 
 import { apiDataCollections } from '../../helpers/api';
 
-function* getDataCollectionFlow({ payload: { history, pagination, sort } }) {
+function* getDataCollectionFlow({ payload: { history, meta, sort } }) {
     try {
-        const response = yield call(apiDataCollections, pagination, sort);
+        const response = yield call(apiDataCollections, meta, sort);
         yield put(getDataCollectionSuccess(response.data.data, response.data.meta));
+        if (sort) {
+            yield put(updateState({sort}));
+        }
     } catch (error) {
         if (error.response) {
             if (error.response.status === 401) {

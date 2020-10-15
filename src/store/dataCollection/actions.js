@@ -3,10 +3,10 @@ import { GET_DATA_COLLECTION, GET_DATA_COLLECTION_SUCCESS,
     UPDATE_STATE
  } from './actionTypes';
 
-export const getDataCollection = (history, pagination, sort) => {
+export const getDataCollection = (history, meta, sort) => {
     return {
         type: GET_DATA_COLLECTION,
-        payload: {history, pagination, sort}
+        payload: {history, meta, sort}
     }
 }
 

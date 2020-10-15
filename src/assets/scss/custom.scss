@@ -1,8 +1,22 @@
-.data-collection-table {
+.data-collection-container {
     width: 100%;
     display: flex;
     flex-direction: column;
     nav {
         align-self: center;
+    }
+    .data-collection-container-view {
+        display: flex;
+        flex-direction: column;
+        .data-collection-container-select{
+            width: 75px;
+        }
+    }
+    .data-collection-table {
+        margin-top: 10px;
+        .icon-sort {
+            margin-left: 5px;
+            cursor: pointer;
+        }
     }
 }
