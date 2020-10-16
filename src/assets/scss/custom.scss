@@ -5,6 +5,10 @@
     nav {
         align-self: center;
     }
+    .data-collection-top-bar {
+        display: flex;
+        flex-direction: row;
+    }
     .data-collection-container-view {
         display: flex;
         flex-direction: column;
@@ -12,6 +16,35 @@
             width: 75px;
         }
     }
+    .data-collection-container-filter {
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        .data-collection-container-filter-main {
+            margin-left: 10px;
+            display: flex;
+            flex-direction: row;
+            .icon-remove-filter {
+                cursor: pointer;
+                right: 0;
+                position: absolute;
+                display: flex;
+                height: 100%;
+                margin: 0 15px;
+                align-items: center;
+                z-index: 1;
+            }
+            .icon-toggle-filter-modal {
+                margin-left: 5px;
+                cursor: pointer;
+            }
+            .data-collection-container-filter-main-group-input{
+                padding-right: 10px;
+                width: auto;
+            }
+        }
+    }
+
     .data-collection-table {
         margin-top: 10px;
         .icon-sort {
@@ -19,4 +52,9 @@
             cursor: pointer;
         }
     }
+}
+    
+.filter_modal_add_button {
+    margin-top: 10px;
+    text-align: center;
 }

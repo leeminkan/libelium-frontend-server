@@ -6,9 +6,9 @@ import { getDataCollectionError, getDataCollectionSuccess, updateState } from '.
 
 import { apiDataCollections } from '../../helpers/api';
 
-function* getDataCollectionFlow({ payload: { history, meta, sort } }) {
+function* getDataCollectionFlow({ payload: { history, meta, sort, filter } }) {
     try {
-        const response = yield call(apiDataCollections, meta, sort);
+        const response = yield call(apiDataCollections, meta, sort, filter);
         yield put(getDataCollectionSuccess(response.data.data, response.data.meta));
         if (sort) {
             yield put(updateState({sort}));

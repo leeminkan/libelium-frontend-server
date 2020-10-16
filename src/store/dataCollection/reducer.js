@@ -13,7 +13,11 @@ const initialState = {
     sort: {
         order_by: 'created_at',
         order: 'desc'
-    }
+    },
+    filter: {
+    },
+    change: 1,
+    showAddFilterModal: false
 }
 
 const dataCollection = (state = initialState, action) => {

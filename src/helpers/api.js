@@ -23,7 +23,7 @@ const apiGetDevices = () => {
     return response;
 }
 
-const apiDataCollections = (pagination, sort) => {
+const apiDataCollections = (pagination, sort, filter) => {
     const token = localStorage.getItem('token');
     let apiQuery = `${host.apiUrl}${api.apiDataCollections}`;
     if (pagination) {
@@ -34,6 +34,22 @@ const apiDataCollections = (pagination, sort) => {
     if (sort) {
         apiQuery += apiQuery.includes("?") ? '&' : '?';
         apiQuery += `order_by=${sort.order_by}&order=${sort.order}`;
+    }
+
+    let queryFilter = {match:"and",rules:[]};
+
+    Object.keys(filter).forEach(function(key) {
+        if (filter[key].value !== "") {
+            queryFilter.rules.push({
+                field: key, 
+                operator: "like",
+                value: `%${filter[key].value}%`
+            });
+        }
+    });
+
+    if (queryFilter.rules.length > 0) {
+        apiQuery += "&filters=" + JSON.stringify(queryFilter);
     }
 
     const response = axios.get(apiQuery, {

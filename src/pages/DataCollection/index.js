@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Row, Col, Table, Card, CardBody  } from "reactstrap";
+import { Row, Col, Table, Card, CardBody, 
+  InputGroup, InputGroupAddon, InputGroupText, 
+  Input, Form, Modal, FormGroup, Label  } from "reactstrap";
 import Select from 'react-select';
 
 // Redux
@@ -51,7 +53,16 @@ class DataCollection extends Component {
 
   componentDidMount() {
     let { current_page, per_page } = this.props.meta;
-    this.props.getDataCollection(this.props.history, { page: current_page, per_page }, this.props.sort);
+    this.props.getDataCollection(this.props.history, { page: current_page, per_page }, this.props.sort, this.props.filter);
+  }
+
+  //toggleAddFilterModal
+  toggleAddFilterModal = () => {
+    let { showAddFilterModal } = this.props;
+    
+    this.props.updateState({
+      showAddFilterModal: !showAddFilterModal
+    });
   }
 
   handleChangePage = (action, selectedPage) => {
@@ -66,7 +77,7 @@ class DataCollection extends Component {
     }
     
     //call action change page
-    this.props.getDataCollection(this.props.history, { page: current_page, per_page }, this.props.sort);
+    this.props.getDataCollection(this.props.history, { page: current_page, per_page }, this.props.sort, this.props.filter);
   }
 
   handleChange = selectedOption => {
@@ -75,12 +86,12 @@ class DataCollection extends Component {
     this.props.getDataCollection(this.props.history, {
       ...meta,
       per_page: selectedOption.value
-    }, this.props.sort);
+    }, this.props.sort, this.props.filter);
   
   };
 
   handleOnclickSort = (e) => {
-    let { meta, sort } = this.props;
+    let { meta, sort, filter } = this.props;
     let order = 'asc';
     if (e.target.id === sort.order_by) {
       if (sort.order === 'asc'){
@@ -90,11 +101,61 @@ class DataCollection extends Component {
     this.props.getDataCollection(this.props.history, meta, {
       order_by: e.target.id,
       order
+    }, filter);
+  }
+
+  handleFormFilterSubmit = (e) => {
+    let { meta, sort, filter } = this.props;
+    e.preventDefault();
+    this.props.getDataCollection(this.props.history, meta, sort, filter);
+  }
+
+  handleChangeRadioAddFilter = (e) => {
+    let { filter } = this.props;
+    filter[e.target.value] = {
+      column: String(e.target.id).replace('radio_id_', ''),
+      value: ''
+    }
+
+    this.props.updateState({
+      filter,
+      showAddFilterModal: false
+    });
+  }
+
+  handleChangeFilter = (e) => {
+    let { filter, change } = this.props;
+    const findIndex = String(e.target.id).replace('input_filter_', '');
+    if (filter[findIndex]) {
+      filter[findIndex] = {
+          ...filter[findIndex],
+          value: e.target.value
+      }
+    }
+    change = change += 1;
+
+    this.props.updateState({
+      filter,
+      change: change
+    });
+  }
+
+  handleOnclickRemoveFilter = (e) => {
+    let { filter, change } = this.props;
+    const findIndex = String(e.target.id).replace('icon_filter_remove_', '');
+    if (filter[findIndex]) {
+      delete filter[findIndex];
+    }
+    change = change += 1;
+
+    this.props.updateState({
+      filter,
+      change: change
     });
   }
 
   renderDataCollection = () => {
-    let { meta, sort } = this.props;
+    let { meta, sort, filter } = this.props;
     let { columns } = this.state;
     let paginationBarProps = {
       total: meta.total,
@@ -134,20 +195,55 @@ class DataCollection extends Component {
         </th>
       );
     });
+    let filterView = [];
+    Object.keys(filter).forEach((key) => {
+      filterView.push(
+        <Form
+        onSubmit={this.handleFormFilterSubmit}>
+        <InputGroup key={key} className="data-collection-container-filter-main-group-input">
+          <InputGroupAddon addonType="append">
+            <InputGroupText>{filter[key].column}</InputGroupText>
+          </InputGroupAddon>
+          <Input 
+          name={'input_filter_' + filter[key].column} 
+          id={'input_filter_' + key}
+          value={filter[key].value}
+          onChange={this.handleChangeFilter}/>
+          <i id={'icon_filter_remove_' + key} className="mdi mdi-tag-remove icon-remove-filter" onClick={this.handleOnclickRemoveFilter}></i>
+        </InputGroup>
+                  </Form>
+      );
+    });
 
     return (
       <Col xl={12}>
         <Card>
           <CardBody>
             <div className="data-collection-container">
-              <div className="data-collection-container-view">
-                <label>View</label>
-                <Select
-                  value={{value: meta.per_page, label: meta.per_page}}
-                  onChange={this.handleChange}
-                  options={options}
-                  className="data-collection-container-select"
-                />
+              <div className="data-collection-top-bar">
+                <div className="data-collection-container-view">
+                  <label>View</label>
+                  <Select
+                    value={{value: meta.per_page, label: meta.per_page}}
+                    onChange={this.handleChange}
+                    options={options}
+                    className="data-collection-container-select"
+                  />
+                </div>
+                <div className="data-collection-container-filter">
+                  
+                  <div className="data-collection-container-filter-main" >
+                    <label>Filter</label>
+                    <i className="mdi mdi-tag-plus icon-toggle-filter-modal"
+                    onClick={this.toggleAddFilterModal}></i>
+                  </div>
+                  
+                  <div className="data-collection-container-filter-main">
+                    {
+                      filterView
+                    }
+                  </div>
+                </div>
               </div>
               <Table responsive className="table-lg data-collection-table">
                 <colgroup>
@@ -203,6 +299,24 @@ class DataCollection extends Component {
   }
 
   render() {
+    const { showAddFilterModal, filter } = this.props;
+    const { columns } = this.state;
+    let radioFilterView = [];
+    columns.forEach((column, index) => {
+      if (!filter[column.field])
+      {
+        radioFilterView.push(
+          <FormGroup key={'formgroup_'+column.field} check>
+            <Label check>
+              <Input 
+              onChange={this.handleChangeRadioAddFilter}
+              type="radio" name="radio_field" value={column.field} id={"radio_id_" + column.label} />{' '}
+              {column.label}
+            </Label>
+          </FormGroup>
+        );
+      }
+    });
     return (
       <React.Fragment>
         <div className="container-fluid">
@@ -220,6 +334,34 @@ class DataCollection extends Component {
           </Row>
           
           <Row>{this.renderDataCollection()}</Row>
+          
+          <Modal
+            isOpen={showAddFilterModal}
+            toggle={this.toggleAddFilterModal}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title mt-0">Add Filter</h5>
+              <button
+                type="button"
+                onClick={this.toggleAddFilterModal}
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <Form>
+                <FormGroup tag="fieldset" row>
+                  <Col sm={12}>
+                    <legend className="col-form-label col-sm-6">Choose field to filter:</legend>
+                    {radioFilterView}
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );
@@ -227,8 +369,7 @@ class DataCollection extends Component {
 }
 
 const mapStatetoProps = state => {
-  const { errors, loading, data, meta, sort } = state.DataCollection;
-  return { errors, loading, data, meta, sort };
+  return state.DataCollection;
 };
 
 export default withRouter(connect(mapStatetoProps, { getDataCollection, updateState })(DataCollection));
