@@ -10,7 +10,7 @@ import waspmote from "../../assets/images/libelium/waspmote.png";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDevices } from "../../store/actions";
+import { getDevices, resetDashboard } from "../../store/actions";
 
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
@@ -43,6 +43,11 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.getDevices(this.props.history);
+  }
+  
+  componentWillUnmount() {
+    console.log("xx");
+    this.props.resetDashboard();
   }
 
   renderDevices = () => {
@@ -109,4 +114,4 @@ const mapStatetoProps = state => {
   return { errors, loading, devicesData };
 };
 
-export default withRouter(connect(mapStatetoProps, { getDevices })(Dashboard));
+export default withRouter(connect(mapStatetoProps, { getDevices, resetDashboard })(Dashboard));

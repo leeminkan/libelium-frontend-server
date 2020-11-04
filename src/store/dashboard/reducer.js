@@ -1,9 +1,9 @@
-import { GET_DEVICES, GET_DEVICES_SUCCESS, GET_DEVICES_ERROR} from './actionTypes';
+import { GET_DEVICES, GET_DEVICES_SUCCESS, GET_DEVICES_ERROR, RESET_DASHBOARD} from './actionTypes';
 
 const initialState = {
     errors: null,
     loading: false,
-    devicesData: false
+    devicesData: []
 }
 
 const dashboard = (state = initialState, action) => {
@@ -23,6 +23,9 @@ const dashboard = (state = initialState, action) => {
             break;
         case GET_DEVICES_ERROR:
             state = { ...state, errors: action.payload, loading: false };
+            break;
+        case RESET_DASHBOARD:
+            state = initialState;
             break;
         default:
             state = { ...state };
