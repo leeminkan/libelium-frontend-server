@@ -1,19 +1,11 @@
 import axios from 'axios';
+import config from '../config';
 
-const host = {
-    apiUrl: "http://localhost:8000/api"
-};
-
-const api = {
-    apiGetDevices:"/devices",
-    apiDataCollections:"/data-collections",
-    apiSetting:"/settings",
-};
-
+const { serverUrl, api } = config;
 
 const apiGetDevices = () => {
     const token = localStorage.getItem('token');
-    const response = axios.get(`${host.apiUrl}${api.apiGetDevices}`, {
+    const response = axios.get(`${serverUrl}${api.apiGetDevices}`, {
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token,
@@ -25,7 +17,7 @@ const apiGetDevices = () => {
 
 const apiDataCollections = (pagination, sort, filter) => {
     const token = localStorage.getItem('token');
-    let apiQuery = `${host.apiUrl}${api.apiDataCollections}`;
+    let apiQuery = `${serverUrl}${api.apiDataCollections}`;
     if (pagination) {
         let page = pagination.page ? pagination.page : 1;
         apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
@@ -64,7 +56,7 @@ const apiDataCollections = (pagination, sort, filter) => {
 
 const apiSetting = () => {
     const token = localStorage.getItem('token');
-    const response = axios.get(`${host.apiUrl}${api.apiSetting}`, {
+    const response = axios.get(`${serverUrl}${api.apiSetting}`, {
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token,
@@ -76,7 +68,7 @@ const apiSetting = () => {
 
 const apiUpdateSetting = (data) => {
     const token = localStorage.getItem('token');
-    const response = axios.put(`${host.apiUrl}${api.apiSetting}`, JSON.stringify(data), {
+    const response = axios.put(`${serverUrl}${api.apiSetting}`, JSON.stringify(data), {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -89,7 +81,7 @@ const apiUpdateSetting = (data) => {
 
 const apiGetTemperature = (pagination) => {
     const token = localStorage.getItem('token');
-    let apiQuery = `${host.apiUrl}${api.apiDataCollections}/get-by-waspmote-id/1?type=temperature`;
+    let apiQuery = `${serverUrl}${api.apiDataCollections}/get-by-waspmote-id/1?type=temperature`;
     if (pagination) {
         let page = pagination.page ? pagination.page : 1;
         apiQuery += `&page=${page}&per_page=${pagination.per_page}`;
