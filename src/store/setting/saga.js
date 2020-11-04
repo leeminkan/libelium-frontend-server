@@ -1,4 +1,5 @@
 import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 // Login Redux States
 import { GET_SETTING, UPDATE_SETTING } from './actionTypes';
@@ -28,6 +29,7 @@ function* getSettingFlow({ payload: { history } }) {
 function* updateSettingFlow({ payload: { history, data } }) {
     try {
         const response = yield call(apiUpdateSetting, data);
+        toast("Save successfully !");
         yield put(updateSettingSuccess(response.data.data));
     } catch (error) {
         if (error.response) {

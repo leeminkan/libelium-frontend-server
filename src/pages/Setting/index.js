@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Row, Col, Card, CardBody, FormGroup, Button } from "reactstrap";
+import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import FormLoader from "../../components/FormLoader"
 
 import "chartist/dist/scss/chartist.scss";
 // Redux
@@ -47,6 +48,9 @@ class Setting extends Component {
             <Col lg={12}>
               <Card>
                 <CardBody>
+                  {
+                    this.props.loading.GET_SETTING ? 
+                  <FormLoader/> :
                   <AvForm onSubmit={this.handleSubmit}>
                     <AvField
                       name="window_size"
@@ -97,12 +101,19 @@ class Setting extends Component {
                     />
                     <FormGroup className="mb-0">
                       <div>
-                        <Button type="submit" color="primary" className="mr-1">
-                          Save
-                        </Button>
+                        {
+                          this.props.loading.UPDATE_SETTING ? 
+                          <Button type="submit" className="mr-1">
+                            <Spinner size="sm" color="primary" />
+                          </Button> :
+                          <Button type="submit" color="primary" className="mr-1">
+                            Save
+                          </Button>
+                        }
                       </div>
                     </FormGroup>
                   </AvForm>
+                  }
                 </CardBody>
               </Card>
             </Col>

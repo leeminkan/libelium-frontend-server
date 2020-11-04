@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   changeLayout,
@@ -94,6 +96,7 @@ class Layout extends Component {
 
           <RightSidebar />
         </div>
+        <ToastContainer />
       </React.Fragment>
     );
   }
