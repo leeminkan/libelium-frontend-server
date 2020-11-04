@@ -3,6 +3,7 @@ import { Row, Col, Table, Card, CardBody,
   InputGroup, InputGroupAddon, InputGroupText, 
   Input, Form, Modal, FormGroup, Label  } from "reactstrap";
 import Select from 'react-select';
+import TableLoader from "../../components/TableLoader"
 
 // Redux
 import { connect } from "react-redux";
@@ -220,32 +221,36 @@ class DataCollection extends Component {
         <Card>
           <CardBody>
             <div className="data-collection-container">
-              <div className="data-collection-top-bar">
-                <div className="data-collection-container-view">
-                  <label>View</label>
-                  <Select
-                    value={{value: meta.per_page, label: meta.per_page}}
-                    onChange={this.handleChange}
-                    options={options}
-                    className="data-collection-container-select"
-                  />
-                </div>
-                <div className="data-collection-container-filter">
-                  
-                  <div className="data-collection-container-filter-main" >
-                    <label>Filter</label>
-                    <i className="mdi mdi-tag-plus icon-toggle-filter-modal"
-                    onClick={this.toggleAddFilterModal}></i>
+              {
+              this.props.loading.GET_DATA_COLLECTION ? 
+              <TableLoader/> :
+              <React.Fragment>
+                <div className="data-collection-top-bar">
+                  <div className="data-collection-container-view">
+                    <label>View</label>
+                    <Select
+                      value={{value: meta.per_page, label: meta.per_page}}
+                      onChange={this.handleChange}
+                      options={options}
+                      className="data-collection-container-select"
+                    />
                   </div>
-                  
-                  <div className="data-collection-container-filter-main">
-                    {
-                      filterView
-                    }
+                  <div className="data-collection-container-filter">
+                    
+                    <div className="data-collection-container-filter-main" >
+                      <label>Filter</label>
+                      <i className="mdi mdi-tag-plus icon-toggle-filter-modal"
+                      onClick={this.toggleAddFilterModal}></i>
+                    </div>
+                    
+                    <div className="data-collection-container-filter-main">
+                      {
+                        filterView
+                      }
+                    </div>
                   </div>
                 </div>
-              </div>
-              <Table responsive className="table-lg data-collection-table">
+                <Table responsive className="table-lg data-collection-table">
                 <colgroup>
                 {
                   colgroupView
@@ -261,8 +266,10 @@ class DataCollection extends Component {
                 <tbody>
                   {this.renderDataCollectionView()}
                 </tbody>
-              </Table>
-              <PaginationBar {...paginationBarProps}/>
+                </Table>
+                <PaginationBar {...paginationBarProps}/>
+              </React.Fragment>
+              }
             </div>
           </CardBody>
         </Card>

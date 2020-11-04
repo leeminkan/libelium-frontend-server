@@ -5,7 +5,9 @@ import { GET_DATA_COLLECTION, GET_DATA_COLLECTION_SUCCESS,
 
 const initialState = {
     errors: null,
-    loading: false,
+    loading: {
+        GET_DATA_COLLECTION: false
+    },
     data: [],
     meta: {
         per_page: 5
@@ -25,19 +27,32 @@ const dataCollection = (state = initialState, action) => {
         case GET_DATA_COLLECTION:
             state = {
                 ...state,
-                loading: true
+                loading: {
+                    ...state.loading,
+                    GET_DATA_COLLECTION: true
+                }
             }
             break;
         case GET_DATA_COLLECTION_SUCCESS:
             state = {
                 ...state,
-                loading: false,
+                loading: {
+                    ...state.loading,
+                    GET_DATA_COLLECTION: false
+                },
                 data: action.payload.data,
                 meta: action.payload.meta,
             }
             break;
         case GET_DATA_COLLECTION_ERROR:
-            state = { ...state, errors: action.payload, loading: false };
+            state = { 
+                ...state, 
+                errors: action.payload,
+                loading: {
+                    ...state.loading,
+                    GET_DATA_COLLECTION: false
+                }
+            };
             break;
         case UPDATE_STATE:
             state = { ...state, ...action.payload };
