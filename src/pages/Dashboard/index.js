@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Card, CardBody } from "reactstrap";
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 // import images
 import waspmote from "../../assets/images/libelium/waspmote.png";
@@ -11,6 +13,27 @@ import { withRouter } from "react-router-dom";
 import { getDevices } from "../../store/actions";
 
 import "chartist/dist/scss/chartist.scss";
+import "../../assets/scss/custom.scss";
+
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
+};
 
 class Dashboard extends Component {
   constructor(props) {
@@ -30,22 +53,24 @@ class Dashboard extends Component {
         // the array is defined and has at least one element
         devicesData.forEach(device => {
           view.push(
-              <Col key={device.id} xl={3} md={6}>
-                <Card className="waspmote bg-primary text-white">
-                  <CardBody>
-                    <div className="waspmote-img">
-                      <img src={waspmote} alt="" />
-                    </div>
-                    <div className="pt-2">
-                      <span>{device.waspmote_id + ' - ' + device.name}</span>
-                      <div className="float-right">
-                          <i className="mdi mdi mdi-battery-90 h5"></i>
-                          <span>{device.battery + '%'}</span>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
+                <div key={device.id} className="waspmote-item-wrapper">
+                  <div className="waspmote-item-wrapper-child">
+                    <Card className="waspmote bg-primary text-white">
+                      <CardBody>
+                        <div className="waspmote-img">
+                          <img src={waspmote} alt="" />
+                        </div>
+                        <div className="pt-2">
+                          <span>{device.waspmote_id + ' - ' + device.name}</span>
+                          <div className="float-right">
+                              <i className="mdi mdi mdi-battery-90 h5"></i>
+                              <span>{device.battery + '%'}</span>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </div>
+                </div>
               );
         });
       }
@@ -70,8 +95,9 @@ class Dashboard extends Component {
               </div>
             </Col>
           </Row>
-          
-          <Row>{this.renderDevices()}</Row>
+          <Carousel responsive={responsive}>
+            {this.renderDevices()}
+          </Carousel>
         </div>
       </React.Fragment>
     );
