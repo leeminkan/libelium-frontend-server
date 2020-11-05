@@ -16,6 +16,13 @@ const SidebarContent = props => {
             <span>Dashboard</span>
           </Link>
         </li>
+        
+        <li>
+          <Link to="/device" className=" waves-effect">
+            <i className="ti-view-grid"></i>
+            <span>Device</span>
+          </Link>
+        </li>
 
         <li>
           <Link to="/data-collection" className=" waves-effect">

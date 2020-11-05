@@ -11,6 +11,7 @@ import Dashboard from "./dashboard/reducer";
 import DataCollection from "./dataCollection/reducer";
 import Setting from "./setting/reducer";
 import Chart from "./chart/reducer";
+import Device from "./device/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   Dashboard,
   DataCollection,
   Setting,
-  Chart
+  Chart,
+  Device
 });
 
 export default rootReducer;

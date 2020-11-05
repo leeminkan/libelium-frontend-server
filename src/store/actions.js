@@ -16,3 +16,6 @@ export * from './setting/actions';
 
 // Chart
 export * from './chart/actions';
+
+// Chart
+export * from './device/actions';
