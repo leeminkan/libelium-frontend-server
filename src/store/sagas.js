@@ -10,6 +10,7 @@ import DataCollectionSaga from './dataCollection/saga';
 import SettingSaga from './setting/saga';
 import ChartSaga from './chart/saga';
 import DeviceSaga from './device/saga';
+import DeviceInfoSaga from './deviceInfo/saga';
 
 
 export default function* rootSaga() {
@@ -23,6 +24,7 @@ export default function* rootSaga() {
         DataCollectionSaga(),
         SettingSaga(),
         ChartSaga(),
-        DeviceSaga()
+        DeviceSaga(),
+        DeviceInfoSaga()
     ])
 }

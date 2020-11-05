@@ -15,6 +15,31 @@ const apiGetDevices = () => {
     return response;
 }
 
+const apiGetDeviceInfo = (id) => {
+    const token = localStorage.getItem('token');
+    const response = axios.get(`${serverUrl}${api.apiGetDevices}/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
+const apiUpdateDeviceInfo = (id, data) => {
+    const token = localStorage.getItem('token');
+    const response = axios.put(`${serverUrl}${api.apiGetDevices}/${id}`, JSON.stringify(data), {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 const apiDevices = (pagination, sort, filter) => {
     const token = localStorage.getItem('token');
     let apiQuery = `${serverUrl}${api.apiGetDevices}`;
@@ -136,4 +161,4 @@ const apiGetTemperature = (pagination) => {
     return response;
 }
 
-export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting, apiGetTemperature, apiDevices };
+export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting, apiGetTemperature, apiDevices, apiGetDeviceInfo, apiUpdateDeviceInfo };

@@ -4,6 +4,7 @@ import { Row, Col, Table, Card, CardBody,
   Input, Form, Modal, FormGroup, Label  } from "reactstrap";
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
+import { Link } from "react-router-dom";
 
 // Redux
 import { connect } from "react-redux";
@@ -35,6 +36,10 @@ class Device extends Component {
         {
           label: "Time",
           field: "created_at"
+        },
+        {
+          label: "Action",
+          field: "action"
         },
       ]
     };
@@ -165,11 +170,12 @@ class Device extends Component {
       colgroupView.push(
         <col key={'col_' + column.field}/>
       );
+      
       theadView.push(
         <th key={'th_'+column.field}>
           <label>{column.label}</label>
           {/* ion ion-ios-arrow-dropdown-circle, ion ion-ios-arrow-dropup-circle, ion ion-md-remove-circle-outline */}
-          { 
+          { column.field === 'action' ? null :
             sort.order_by === column.field 
             ?
               sort.order === 'asc'
@@ -275,9 +281,21 @@ class Device extends Component {
         const renderView = () => {
           let view = [];
           columns.forEach((column, index) => {
-            view.push(
-              <td key={'td_'+column.field}>{item[`${column.field}`]}</td>
-            );
+            if (column.field === 'action') {
+              let to = `/device/${item.id}`;
+              view.push(
+                <td key={'td_action'}>
+                  
+                  <Link to={to} className="btn btn-primary btn-sm">
+                                Edit
+                              </Link>
+                </td>
+              );
+            } else {
+              view.push(
+                <td key={'td_'+column.field}>{item[`${column.field}`]}</td>
+              );
+            }
           });
           return view;
         }
@@ -298,6 +316,7 @@ class Device extends Component {
     const { columns } = this.state;
     let radioFilterView = [];
     columns.forEach((column, index) => {
+      if (column.field === 'action') return;
       if (!filter[column.field])
       {
         radioFilterView.push(

@@ -19,3 +19,6 @@ export * from './chart/actions';
 
 // Chart
 export * from './device/actions';
+
+// Chart
+export * from './deviceInfo/actions';
