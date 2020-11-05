@@ -1,16 +1,9 @@
 import axios from 'axios';
-
-const host = {
-    apiUrl: "http://localhost:8000/api"
-};
-
-const api = {
-    apiSignin:"/login"
-};
-
+import config from '../config';
+const { serverUrl, api } = config;
 
 const login = async credential => {
-    const response = axios.post(`${host.apiUrl}${api.apiSignin}`, JSON.stringify(credential), {
+    const response = axios.post(`${serverUrl}${api.apiSignin}`, JSON.stringify(credential), {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

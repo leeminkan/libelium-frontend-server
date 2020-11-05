@@ -3,6 +3,7 @@ var config = {
   'url': url,
   'serverUrl': `${url}/api`,
   'api': {
+    'apiSignin':"/login",
     'apiGetDevices':"/devices",
     'apiDataCollections':"/data-collections",
     'apiSetting':"/settings"
