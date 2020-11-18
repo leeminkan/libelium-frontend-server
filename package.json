@@ -45,6 +45,7 @@
     "react-draft-wysiwyg": "^1.14.3",
     "react-dropzone": "^10.2.1",
     "react-image-lightbox": "^5.1.1",
+    "react-images-upload": "^1.2.8",
     "react-input-mask": "^2.0.4",
     "react-jvectormap": "^0.0.15",
     "react-modal-video": "^1.2.3",

@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import FormLoader from "../../components/FormLoader"
+import ImageUploader from 'react-images-upload';
+import config from '../../config';
 
 import "chartist/dist/scss/chartist.scss";
+import "../../assets/scss/custom.scss";
 // Redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDeviceInfo, updateDeviceInfo } from "../../store/actions";
+import { getDeviceInfo, updateDeviceInfo, updateStateDeviceInfo } from "../../store/actions";
 
 class DeviceInfo extends Component {
   constructor(props) {
@@ -21,13 +24,25 @@ class DeviceInfo extends Component {
   }
 
   handleSubmit = (event, errors, values) => {
+    const { file } = this.props;
     if (errors.length === 0) {
+      if (file) {
+        values.image = file;
+      }
       this.props.updateDeviceInfo(this.props.history, this.props.match.params.id, values);
     }
   }
 
+  onDrop = (file) => {
+    if (file.length === 1) {
+      this.props.updateStateDeviceInfo({
+        file: file[0]
+      });
+    }
+  }
+
   render() {
-    const { name } = this.props.data;
+    const { name, image, waspmote_id } = this.props.data;
 
     return (
       <React.Fragment>
@@ -66,6 +81,48 @@ class DeviceInfo extends Component {
                         maxLength: {value: 16}
                       }}
                     />
+                    <AvField
+                      name="waspmote_id"
+                      label="Waspmote ID  "
+                      placeholder="Enter Waspmote ID "
+                      value={waspmote_id}
+                      type="text"
+                      errorMessage="Please Enter Waspmote ID"
+                      validate={{
+                        required: { value: true },
+                        pattern: {value: '^[A-Za-z0-9]+$'},
+                        minLength: {value: 2},
+                        maxLength: {value: 16}
+                      }}
+                    />
+                    <FormGroup>
+                      <label htmlFor="image"> Image </label>
+                      <Row>
+                        <Col className="image-field-col">
+                          <div className="image-wrapper">
+                            <img
+                              id="image-preview"
+                              className=""
+                              src={`${config.url}${image}`}
+                              alt="device"
+                            />
+                          </div>
+                        </Col>
+                        <Col className="image-field-col">
+                          <ImageUploader
+                              withIcon={true}
+                              buttonText='Choose images'
+                              onChange={this.onDrop}
+                              imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                              maxFileSize={2097152}
+                              singleImage={true}
+                              withPreview={true}
+                              withLabel={true}
+                              label="Max file size: 2mb, accepted: jpg|jpeg|png"
+                          />
+                        </Col>
+                      </Row>
+                    </FormGroup>
                     <FormGroup className="mb-0">
                       <div>
                         {
@@ -93,8 +150,7 @@ class DeviceInfo extends Component {
 
 
 const mapStatetoProps = state => {
-  const { errors, loading, data } = state.DeviceInfo;
-  return { errors, loading, data };
+  return state.DeviceInfo;
 };
 
-export default withRouter(connect(mapStatetoProps, { getDeviceInfo, updateDeviceInfo })(DeviceInfo));
+export default withRouter(connect(mapStatetoProps, { getDeviceInfo, updateDeviceInfo, updateStateDeviceInfo })(DeviceInfo));

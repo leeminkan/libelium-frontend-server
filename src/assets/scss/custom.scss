@@ -80,4 +80,20 @@
         }
     }
 }
-
+.image-field-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .image-wrapper{
+        padding: 10px;
+        width: 220px;
+        height: 220px;
+        background: rgba(#000000, 0.15);
+        border-radius: 4px;
+        text-align: center;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

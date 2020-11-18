@@ -1,4 +1,5 @@
-import { GET_DEVICE_INFO, GET_DEVICE_INFO_SUCCESS, GET_DEVICE_INFO_ERROR, UPDATE_DEVICE_INFO, UPDATE_DEVICE_INFO_SUCCESS, UPDATE_DEVICE_INFO_ERROR } from './actionTypes';
+import { GET_DEVICE_INFO, GET_DEVICE_INFO_SUCCESS, GET_DEVICE_INFO_ERROR, UPDATE_DEVICE_INFO, UPDATE_DEVICE_INFO_SUCCESS, UPDATE_DEVICE_INFO_ERROR,
+    UPDATE_STATE_DEVICE_INFO } from './actionTypes';
 
 const initialState = {
     errors: null,
@@ -6,9 +7,11 @@ const initialState = {
         GET_DEVICE_INFO: false,
         UPDATE_DEVICE_INFO: false
     },
+    name: "xxx",
     data: {
         "name": '...'
-    }
+    },
+    file: null
 }
 
 const deviceInfo = (state = initialState, action) => {
@@ -70,6 +73,9 @@ const deviceInfo = (state = initialState, action) => {
                     UPDATE_DEVICE_INFO: false
                 }
             };
+            break;
+        case UPDATE_STATE_DEVICE_INFO:
+            state = { ...state, ...action.payload };
             break;
         default:
             state = { ...state };

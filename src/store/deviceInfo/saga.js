@@ -28,6 +28,7 @@ function* getDeviceInfoFlow({ payload: { history, id } }) {
 
 function* updateDeviceInfoFlow({ payload: { history, id, data } }) {
     try {
+        console.log(data);
         const response = yield call(apiUpdateDeviceInfo, id, data);
         toast("Update successfully !");
         yield put(updateDeviceInfoSuccess(response.data.data));

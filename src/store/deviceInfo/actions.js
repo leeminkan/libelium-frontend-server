@@ -1,4 +1,4 @@
-import { GET_DEVICE_INFO, GET_DEVICE_INFO_SUCCESS, GET_DEVICE_INFO_ERROR, UPDATE_DEVICE_INFO, UPDATE_DEVICE_INFO_SUCCESS, UPDATE_DEVICE_INFO_ERROR } from './actionTypes';
+import { GET_DEVICE_INFO, GET_DEVICE_INFO_SUCCESS, GET_DEVICE_INFO_ERROR, UPDATE_DEVICE_INFO, UPDATE_DEVICE_INFO_SUCCESS, UPDATE_DEVICE_INFO_ERROR, UPDATE_STATE_DEVICE_INFO } from './actionTypes';
 
 export const getDeviceInfo = (history, id) => {
     return {
@@ -39,5 +39,12 @@ export const updateDeviceInfoError = (errors) => {
     return {
         type: UPDATE_DEVICE_INFO_ERROR,
         payload: errors
+    }
+}
+
+export const updateStateDeviceInfo = (state) => {
+    return {
+        type: UPDATE_STATE_DEVICE_INFO,
+        payload: state
     }
 }

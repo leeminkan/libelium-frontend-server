@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config';
+import * as util from './util';
 
 const { serverUrl, api } = config;
 
@@ -28,11 +29,12 @@ const apiGetDeviceInfo = (id) => {
 }
 
 const apiUpdateDeviceInfo = (id, data) => {
+    const formData = util.parsePayloadToFormData(data);
     const token = localStorage.getItem('token');
-    const response = axios.put(`${serverUrl}${api.apiGetDevices}/${id}`, JSON.stringify(data), {
+    const response = axios.post(`${serverUrl}${api.apiGetDevices}/${id}`, formData, {
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer ' + token,
         }
     });
