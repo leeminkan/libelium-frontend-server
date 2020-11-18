@@ -12,6 +12,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
 import { getDeviceInfo, updateDeviceInfo, updateStateDeviceInfo } from "../../store/actions";
+// import images
+import waspmote from "../../assets/images/libelium/waspmote.png";
 
 class DeviceInfo extends Component {
   constructor(props) {
@@ -103,7 +105,7 @@ class DeviceInfo extends Component {
                             <img
                               id="image-preview"
                               className=""
-                              src={util.parseUrlImage(image)}
+                              src={image ? util.parseUrlImage(image) : waspmote}
                               alt="device"
                             />
                           </div>
