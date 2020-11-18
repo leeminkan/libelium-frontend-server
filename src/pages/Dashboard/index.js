@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Card, CardBody } from "reactstrap";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import * as util from '../../helpers/util';
 
 // import images
 import waspmote from "../../assets/images/libelium/waspmote.png";
@@ -58,24 +59,20 @@ class Dashboard extends Component {
         // the array is defined and has at least one element
         devicesData.forEach(device => {
           view.push(
-                <div key={device.id} className="waspmote-item-wrapper">
-                  <div className="waspmote-item-wrapper-child">
-                    <Card className="waspmote bg-primary text-white">
-                      <CardBody>
-                        <div className="waspmote-img">
-                          <img src={waspmote} alt="" />
-                        </div>
-                        <div className="pt-2">
-                          <span>{device.waspmote_id + ' - ' + device.name}</span>
-                          <div className="float-right">
-                              <i className="mdi mdi mdi-battery-90 h5"></i>
-                              <span>{device.battery + '%'}</span>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
+            <Card className="waspmote bg-primary text-white">
+              <CardBody>
+                <div className="waspmote-img">
+                  <img src={device.image ? util.parseUrlImage(device.image) : waspmote} alt="" />
+                </div>
+                <div className="pt-2">
+                  <span>{device.waspmote_id + ' - ' + device.name}</span>
+                  <div className="float-right">
+                      <i className="mdi mdi mdi-battery-90 h5"></i>
+                      <span>{device.battery + '%'}</span>
                   </div>
                 </div>
+              </CardBody>
+            </Card>
               );
         });
       }

@@ -1,3 +1,5 @@
+import config from '../config';
+
 export const parsePayloadToFormData = (payload) => {
     var formData = new FormData();
 
@@ -6,4 +8,8 @@ export const parsePayloadToFormData = (payload) => {
     });
 
     return formData;
+}
+
+export const parseUrlImage = (image) => {
+    return `${config.url}${image}`;
 }

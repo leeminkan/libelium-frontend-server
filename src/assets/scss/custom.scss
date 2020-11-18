@@ -58,25 +58,16 @@
     margin-top: 10px;
     text-align: center;
 }
-.waspmote-item-wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .waspmote-item-wrapper-child {
-        padding: 10px;
-        max-width: 300px;
-        .waspmote{
-            .waspmote-img{
-                width: 100%;
-                height: 100%;
-                background: rgba(#ffffff, 0.15);
-                border-radius: 4px;
-                text-align: center;
-                img{
-                    width: 90%;
-                    height: 90%;
-                }
-            }
+.waspmote{
+    margin: 0px 5px;
+    .waspmote-img{
+        height: 250px;
+        background: rgba(#ffffff, 0.15);
+        border-radius: 4px;
+        text-align: center;
+        img{
+            width: 100%;
+            height: 100%;
         }
     }
 }

@@ -3,7 +3,7 @@ import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import FormLoader from "../../components/FormLoader"
 import ImageUploader from 'react-images-upload';
-import config from '../../config';
+import * as util from '../../helpers/util';
 
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
@@ -103,7 +103,7 @@ class DeviceInfo extends Component {
                             <img
                               id="image-preview"
                               className=""
-                              src={`${config.url}${image}`}
+                              src={util.parseUrlImage(image)}
                               alt="device"
                             />
                           </div>
