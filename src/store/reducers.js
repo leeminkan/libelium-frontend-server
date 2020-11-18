@@ -13,6 +13,8 @@ import Setting from "./setting/reducer";
 import Chart from "./chart/reducer";
 import Device from "./device/reducer";
 import DeviceInfo from "./deviceInfo/reducer";
+import Sensor from "./sensor/reducer";
+import SensorInfo from "./sensorInfo/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -25,7 +27,9 @@ const rootReducer = combineReducers({
   Setting,
   Chart,
   Device,
-  DeviceInfo
+  DeviceInfo,
+  Sensor,
+  SensorInfo
 });
 
 export default rootReducer;

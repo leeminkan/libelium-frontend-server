@@ -23,6 +23,13 @@ const SidebarContent = props => {
             <span>Device</span>
           </Link>
         </li>
+        
+        <li>
+          <Link to="/sensor" className=" waves-effect">
+            <i class="fas fa-microchip"></i>
+            <span>Sensor</span>
+          </Link>
+        </li>
 
         <li>
           <Link to="/data-collection" className=" waves-effect">

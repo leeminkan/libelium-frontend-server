@@ -22,3 +22,6 @@ export * from './device/actions';
 
 // Chart
 export * from './deviceInfo/actions';
+
+export * from './sensor/actions';
+export * from './sensorInfo/actions';

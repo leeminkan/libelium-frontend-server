@@ -5,6 +5,7 @@ var config = {
   'api': {
     'apiSignin':"/login",
     'apiGetDevices':"/devices",
+    'apiGetSensors':"/sensors",
     'apiDataCollections':"/data-collections",
     'apiSetting':"/settings"
   }

@@ -15,6 +15,8 @@ import Setting from "../pages/Setting";
 import TemperatureChart from "../pages/TemperatureChart";
 import DeviceInfo from "../pages/Device/device-info";
 import Device from "../pages/Device";
+import SensorInfo from "../pages/Sensor/sensor-info";
+import Sensor from "../pages/Sensor";
 
 import Calendar from "../pages/Apps/Calendar/index";
 
@@ -188,6 +190,8 @@ const authProtectedRoutes = [
   { path: "/temperature-chart", component: TemperatureChart },
   { path: "/device/:id", component: DeviceInfo },
   { path: "/device", component: Device },
+  { path: "/sensor/:id", component: SensorInfo },
+  { path: "/sensor", component: Sensor },
 
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> }
 ];
