@@ -8,6 +8,7 @@
     .data-collection-top-bar {
         display: flex;
         flex-direction: row;
+        position: relative;
     }
     .data-collection-container-view {
         display: flex;
@@ -43,6 +44,11 @@
                 width: auto;
             }
         }
+    }
+    .data-collection-container-action {
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 
     .data-collection-table {

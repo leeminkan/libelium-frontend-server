@@ -1,10 +1,28 @@
 import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 // Login Redux States
-import { GET_DEVICE } from './actionTypes';
-import { getDeviceError, getDeviceSuccess, updateStateDevice } from './actions';
+import { 
+    GET_DEVICE,
+    GET_ALL_SENSOR_FOR_DEVICE_PAGE,
+    ADD_DEVICE,
+} from './actionTypes';
+import { 
+    getDevice,
+    getDeviceError, 
+    getDeviceSuccess, 
+    updateStateDevice,
+    getAllSensorForDevicePageSuccess,
+    getAllSensorForDevicePageError,
+    addDeviceError,
+    addDeviceSuccess,
+} from './actions';
 
-import { apiDevices } from '../../helpers/api';
+import { 
+    apiDevices,
+    apiGetAllSensor,
+    apiAddDevice 
+} from '../../helpers/api';
 
 function* getDeviceFlow({ payload: { history, meta, sort, filter } }) {
     try {
@@ -28,14 +46,62 @@ function* getDeviceFlow({ payload: { history, meta, sort, filter } }) {
     }
 }
 
+function* getAllSensorForDevicePageFlow({ payload: { history } }) {
+    try {
+        const response = yield call(apiGetAllSensor);
+        yield put(getAllSensorForDevicePageSuccess(response.data.data));
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                localStorage.clear();
+                history.push('/login');
+            } else if (error.response.data.error) {
+                yield put(getAllSensorForDevicePageError(error.response.data.errors));
+            }
+        } else {
+            yield put(getAllSensorForDevicePageError("Some thing was wrong!"));
+            console.log(error);
+        }
+    }
+}
+
+function* addDeviceFlow({ payload: { history, data, additional } }) {
+    try {
+        yield call(apiAddDevice, data);
+        toast("Add successfully !");
+        yield put(addDeviceSuccess());
+        yield put(getDevice(history, additional.meta, additional.sort, additional.filter));
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                localStorage.clear();
+                history.push('/login');
+            } else if (error.response.data.error) {
+                yield put(addDeviceError(error.response.data.errors));
+            }
+        } else {
+            yield put(addDeviceError("Some thing was wrong!"));
+            console.log(error);
+        }
+    }
+}
+
 
 export function* watchGetDevices() {
     yield takeEvery(GET_DEVICE, getDeviceFlow)
+}
+export function* watchGetAllSensorForDevicePage() {
+    yield takeEvery(GET_ALL_SENSOR_FOR_DEVICE_PAGE, getAllSensorForDevicePageFlow)
+}
+export function* watchAddDevice() {
+    yield takeEvery(ADD_DEVICE, addDeviceFlow)
 }
 
 function* deviceSaga() {
     yield all([
         fork(watchGetDevices),
+        fork(watchGetAllSensorForDevicePage),
+        fork(watchAddDevice),
     ]);
 }
 

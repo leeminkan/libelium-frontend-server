@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { Row, Col, Table, Card, CardBody, 
   InputGroup, InputGroupAddon, InputGroupText, 
-  Input, Form, Modal, FormGroup, Label  } from "reactstrap";
+  Input, Form, Modal, FormGroup, Label, Button  } from "reactstrap";
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 import { Link } from "react-router-dom";
+import { AvForm, AvField } from "availity-reactstrap-validation";
+import ImageUploader from 'react-images-upload';
+// import images
+import waspmote from "../../assets/images/libelium/waspmote.png";
 
 // Redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDevice, updateStateDevice } from "../../store/actions";
+import { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 
@@ -48,6 +52,7 @@ class Device extends Component {
   componentDidMount() {
     let { current_page, per_page } = this.props.meta;
     this.props.getDevice(this.props.history, { page: current_page, per_page }, this.props.sort, this.props.filter);
+    this.props.getAllSensorForDevicePage(this.props.history);
   }
 
   //toggleAddFilterModal
@@ -56,6 +61,14 @@ class Device extends Component {
     
     this.props.updateStateDevice({
       showAddFilterModal: !showAddFilterModal
+    });
+  }
+
+  toggleAddDeviceModal = () => {
+    let { showAddDeviceModal } = this.props;
+    
+    this.props.updateStateDevice({
+      showAddDeviceModal: !showAddDeviceModal
     });
   }
 
@@ -146,6 +159,44 @@ class Device extends Component {
       filter,
       change: change
     });
+  }
+  
+  handleChangeSensor = selectedOption => {
+    let selectedSensors = [];
+    if (Array.isArray(selectedOption) && selectedOption.length > 0) {
+      selectedSensors = selectedOption.map(({ value }) => value);
+    }
+    this.props.updateStateDevice({
+      addPayload: {
+        ...this.props.addPayload,
+        selectedSensors
+      }
+    });
+  };
+
+  handleSubmitAddDeviceModal = (event, errors, values) => {
+    const { file, selectedSensors } = this.props.addPayload;
+    let { meta, sort, filter } = this.props;
+    if (errors.length === 0) {
+      if (file) {
+        values.image = file;
+      }
+      if (selectedSensors) {
+        values.sensors = JSON.stringify(selectedSensors);
+      }
+      this.props.addDevice(this.props.history, values, { meta, sort, filter });
+    }
+  }
+
+  onDrop = (file) => {
+    if (file.length === 1) {
+      this.props.updateStateDevice({
+        addPayload: {
+          ...this.props.addPayload,
+          file: file[0]
+        }
+      });
+    }
   }
 
   renderDevice = () => {
@@ -243,6 +294,12 @@ class Device extends Component {
                       }
                     </div>
                   </div>
+                  <div className="data-collection-container-action">
+                    <Button 
+                      onClick={this.toggleAddDeviceModal}>
+                        ADD
+                    </Button>
+                  </div>
                 </div>
                 <Table responsive className="table-lg data-collection-table">
                 <colgroup>
@@ -311,8 +368,32 @@ class Device extends Component {
     return view;
   }
 
+  renderChooseSensorsView = () => {
+    let options = [];
+
+    if (Array.isArray(this.props.sensors) && this.props.sensors.length > 0) {
+      options = this.props.sensors.map(obj => {
+        return {
+          value: obj.id,
+          label: obj.name
+        };
+      })
+    }
+
+    return (
+        <Select
+          options={options}
+          onChange={this.handleChangeSensor}
+          isMulti
+          name="sensors"
+          className="basic-multi-select"
+          classNamePrefix="select"
+        />
+    );
+  }
+
   render() {
-    const { showAddFilterModal, filter } = this.props;
+    const { showAddFilterModal, filter, showAddDeviceModal } = this.props;
     const { columns } = this.state;
     let radioFilterView = [];
     columns.forEach((column, index) => {
@@ -349,6 +430,7 @@ class Device extends Component {
           
           <Row>{this.renderDevice()}</Row>
           
+          {/* MODAL ADD FILTER */}
           <Modal
             isOpen={showAddFilterModal}
             toggle={this.toggleAddFilterModal}
@@ -376,6 +458,98 @@ class Device extends Component {
               </Form>
             </div>
           </Modal>
+          
+          {/* MODAL ADD DEVICE */}
+          <Modal
+            isOpen={showAddDeviceModal}
+            toggle={this.toggleAddDeviceModal}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title mt-0">Add Device</h5>
+              <button
+                type="button"
+                onClick={this.toggleAddDeviceModal}
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <AvForm onSubmit={this.handleSubmitAddDeviceModal}>
+                <AvField
+                  name="name"
+                  label="Name  "
+                  placeholder="Enter Name "
+                  type="text"
+                  errorMessage="Please Enter Name"
+                  validate={{
+                    required: { value: true },
+                    pattern: {value: '^[A-Za-z0-9]+$'},
+                    minLength: {value: 2},
+                    maxLength: {value: 16}
+                  }}
+                />
+                <AvField
+                  name="waspmote_id"
+                  label="Waspmote ID  "
+                  placeholder="Enter Waspmote ID "
+                  type="text"
+                  errorMessage="Please Enter Waspmote ID"
+                  validate={{
+                    required: { value: true },
+                    pattern: {value: '^[A-Za-z0-9]+$'},
+                    minLength: {value: 1},
+                    maxLength: {value: 16}
+                  }}
+                />
+                <FormGroup>
+                  <label htmlFor="image"> Image </label>
+                  <Row>
+                    <Col className="image-field-col">
+                      <div className="image-wrapper">
+                        <img
+                          id="image-preview"
+                          className=""
+                          src={waspmote}
+                          alt="device"
+                        />
+                      </div>
+                    </Col>
+                    <Col className="image-field-col">
+                      <ImageUploader
+                          withIcon={true}
+                          buttonText='Choose images'
+                          onChange={this.onDrop}
+                          imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                          maxFileSize={2097152}
+                          singleImage={true}
+                          withPreview={true}
+                          withLabel={true}
+                          label="Max file size: 2mb, accepted: jpg|jpeg|png"
+                      />
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <FormGroup>
+                  <label htmlFor="sensors"> Sensors </label>
+                  <Row>
+                    <Col>
+                      {this.renderChooseSensorsView()}
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <FormGroup className="mb-0">
+                  <div>
+                      <Button type="submit" color="primary" className="mr-1">
+                        Save
+                      </Button>
+                  </div>
+                </FormGroup>
+              </AvForm>
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );
@@ -386,4 +560,4 @@ const mapStatetoProps = state => {
   return state.Device;
 };
 
-export default withRouter(connect(mapStatetoProps, { getDevice, updateStateDevice })(Device));
+export default withRouter(connect(mapStatetoProps, { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice })(Device));

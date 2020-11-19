@@ -1,12 +1,21 @@
-import { GET_DEVICE, GET_DEVICE_SUCCESS, 
+import { 
+    GET_DEVICE, 
+    GET_DEVICE_SUCCESS, 
     GET_DEVICE_ERROR,
-    UPDATE_STATE_DEVICE
+    UPDATE_STATE_DEVICE,
+    GET_ALL_SENSOR_FOR_DEVICE_PAGE,
+    GET_ALL_SENSOR_FOR_DEVICE_PAGE_SUCCESS,
+    GET_ALL_SENSOR_FOR_DEVICE_PAGE_ERROR,
+    ADD_DEVICE, 
+    ADD_DEVICE_SUCCESS, 
+    ADD_DEVICE_ERROR,
 } from './actionTypes';
 
 const initialState = {
     errors: null,
     loading: {
-        GET_DEVICE: false
+        GET_DEVICE: false,
+        ADD_DEVICE: false
     },
     data: [],
     meta: {
@@ -19,7 +28,10 @@ const initialState = {
     filter: {
     },
     change: 1,
-    showAddFilterModal: false
+    showAddFilterModal: false,
+    showAddDeviceModal: false,
+    sensors: [],
+    addPayload: {}
 }
 
 const dataCollection = (state = initialState, action) => {
@@ -54,6 +66,67 @@ const dataCollection = (state = initialState, action) => {
                 }
             };
             break;
+        case GET_ALL_SENSOR_FOR_DEVICE_PAGE:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        GET_ALL_SENSOR_FOR_DEVICE_PAGE: true
+                    }
+                }
+                break;
+        case GET_ALL_SENSOR_FOR_DEVICE_PAGE_SUCCESS:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        GET_ALL_SENSOR_FOR_DEVICE_PAGE: false
+                    },
+                    sensors: action.payload,
+                }
+                break;
+        case GET_ALL_SENSOR_FOR_DEVICE_PAGE_ERROR:
+                state = { 
+                    ...state, 
+                    errors: action.payload,
+                    loading: {
+                        ...state.loading,
+                        GET_ALL_SENSOR_FOR_DEVICE_PAGE: false
+                    }
+                };
+                break;
+        case ADD_DEVICE:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        ADD_DEVICE: true
+                    }
+                }
+                break;
+        case ADD_DEVICE_SUCCESS:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        ADD_DEVICE: false
+                    },
+                    addPayload: {},
+                    showAddDeviceModal: false,
+                }
+                break;
+        case ADD_DEVICE_ERROR:
+                state = { 
+                    ...state, 
+                    errors: action.payload,
+                    loading: {
+                        ...state.loading,
+                        ADD_DEVICE: false
+                    },
+                    addPayload: {},
+                    showAddDeviceModal: false,
+                };
+                break;
         case UPDATE_STATE_DEVICE:
             state = { ...state, ...action.payload };
             break;

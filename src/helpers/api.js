@@ -28,6 +28,20 @@ const apiGetDeviceInfo = (id) => {
     return response;
 }
 
+const apiAddDevice = (data) => {
+    const formData = util.parsePayloadToFormData(data);
+    const token = localStorage.getItem('token');
+    const response = axios.post(`${serverUrl}${api.apiGetDevices}`, formData, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 const apiUpdateDeviceInfo = (id, data) => {
     const formData = util.parsePayloadToFormData(data);
     const token = localStorage.getItem('token');
@@ -239,4 +253,4 @@ const apiGetTemperature = (pagination) => {
     return response;
 }
 
-export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting, apiGetTemperature, apiDevices, apiGetDeviceInfo, apiUpdateDeviceInfo, apiSensors, apiGetSensorInfo, apiUpdateSensorInfo, apiGetAllSensor };
+export { apiGetDevices, apiDataCollections, apiSetting, apiUpdateSetting, apiGetTemperature, apiDevices, apiGetDeviceInfo, apiUpdateDeviceInfo, apiSensors, apiGetSensorInfo, apiUpdateSensorInfo, apiGetAllSensor, apiAddDevice };
