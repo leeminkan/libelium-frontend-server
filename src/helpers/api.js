@@ -109,6 +109,18 @@ const apiAddSensor = (data) => {
     return response;
 }
 
+const apiDeleteSensor = (id) => {
+    const token = localStorage.getItem('token');
+    const response = axios.delete(`${serverUrl}${api.apiGetSensors}/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 const apiGetAllSensor = () => {
     const token = localStorage.getItem('token');
     const response = axios.get(`${serverUrl}${api.apiGetSensors}?paginate=0`, {
@@ -281,5 +293,6 @@ export {
     apiUpdateSensorInfo, 
     apiGetAllSensor, 
     apiAddDevice,
-    apiAddSensor
+    apiAddSensor,
+    apiDeleteSensor
 };

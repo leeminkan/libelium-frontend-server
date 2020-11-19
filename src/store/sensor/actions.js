@@ -4,6 +4,9 @@ import { GET_SENSOR, GET_SENSOR_SUCCESS,
     ADD_SENSOR, 
     ADD_SENSOR_SUCCESS, 
     ADD_SENSOR_ERROR, 
+    DELETE_SENSOR, 
+    DELETE_SENSOR_SUCCESS, 
+    DELETE_SENSOR_ERROR, 
  } from './actionTypes';
 
 export const getSensor = (history, meta, sort, filter) => {
@@ -53,6 +56,26 @@ export const addSensorSuccess = () => {
 export const addSensorError = (errors) => {
     return {
         type: ADD_SENSOR_ERROR,
+        payload: errors
+    }
+}
+
+export const deleteSensor = (history, id, additional) => {
+    return {
+        type: DELETE_SENSOR,
+        payload: {history, id, additional}
+    }
+}
+
+export const deleteSensorSuccess = () => {
+    return {
+        type: DELETE_SENSOR_SUCCESS
+    }
+}
+
+export const deleteSensorError = (errors) => {
+    return {
+        type: DELETE_SENSOR_ERROR,
         payload: errors
     }
 }

@@ -58,6 +58,14 @@
             cursor: pointer;
         }
     }
+
+    .button-delete {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.76563rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+        margin: 0px 5px;
+    }
 }
     
 .filter_modal_add_button {

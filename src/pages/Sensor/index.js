@@ -11,7 +11,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getSensor, updateStateSensor, addSensor } from "../../store/actions";
+import { getSensor, updateStateSensor, addSensor, deleteSensor } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 
@@ -160,6 +160,11 @@ class Sensor extends Component {
     }
   }
 
+  deleteSensor = (id) => {
+    let { meta, sort, filter } = this.props;
+    this.props.deleteSensor(this.props.history, id, { meta, sort, filter });
+  }
+
   renderSensor = () => {
     let { meta, sort, filter } = this.props;
     let { columns } = this.state;
@@ -303,7 +308,15 @@ class Sensor extends Component {
               let to = `/sensor/${item.id}`;
               view.push(
                 <td key={'td_action'}>
-                  
+                  <Button
+                    color="danger"
+                    className="btn btn-danger waves-effect waves-light button-delete"
+                    onClick={() => {
+                      this.deleteSensor(item.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
                   <Link to={to} className="btn btn-primary btn-sm">
                                 Edit
                               </Link>
@@ -446,4 +459,4 @@ const mapStatetoProps = state => {
   return state.Sensor;
 };
 
-export default withRouter(connect(mapStatetoProps, { getSensor, updateStateSensor, addSensor })(Sensor));
+export default withRouter(connect(mapStatetoProps, { getSensor, updateStateSensor, addSensor, deleteSensor })(Sensor));

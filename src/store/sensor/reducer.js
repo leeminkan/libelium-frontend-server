@@ -4,13 +4,17 @@ import { GET_SENSOR, GET_SENSOR_SUCCESS,
     ADD_SENSOR, 
     ADD_SENSOR_SUCCESS, 
     ADD_SENSOR_ERROR,
+    DELETE_SENSOR, 
+    DELETE_SENSOR_SUCCESS, 
+    DELETE_SENSOR_ERROR,
 } from './actionTypes';
 
 const initialState = {
     errors: null,
     loading: {
         GET_SENSOR: false,
-        ADD_SENSOR: false
+        ADD_SENSOR: false,
+        DELETE_SENSOR: false
     },
     data: [],
     meta: {
@@ -90,6 +94,34 @@ const dataCollection = (state = initialState, action) => {
                     },
                     addPayload: {},
                     showAddSensorModal: false,
+                };
+                break;
+        case DELETE_SENSOR:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        DELETE_SENSOR: true
+                    }
+                }
+                break;
+        case DELETE_SENSOR_SUCCESS:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        DELETE_SENSOR: false
+                    },
+                }
+                break;
+        case DELETE_SENSOR_ERROR:
+                state = { 
+                    ...state, 
+                    errors: action.payload,
+                    loading: {
+                        ...state.loading,
+                        DELETE_SENSOR: false
+                    },
                 };
                 break;
         case UPDATE_STATE_SENSOR:

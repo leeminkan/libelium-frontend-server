@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { 
     GET_SENSOR,
     ADD_SENSOR,
+    DELETE_SENSOR,
  } from './actionTypes';
 import { 
     getSensorError, 
@@ -13,11 +14,14 @@ import {
     addSensorError,
     addSensorSuccess,
     getSensor,
+    deleteSensorError,
+    deleteSensorSuccess,
 } from './actions';
 
 import { 
     apiSensors,
-    apiAddSensor
+    apiAddSensor,
+    apiDeleteSensor
 } from '../../helpers/api';
 
 function* getSensorFlow({ payload: { history, meta, sort, filter } }) {
@@ -63,6 +67,27 @@ function* addSensorFlow({ payload: { history, data, additional } }) {
     }
 }
 
+function* deleteSensorFlow({ payload: { history, id, additional } }) {
+    try {
+        yield call(apiDeleteSensor, id);
+        toast("Delete successfully !");
+        yield put(deleteSensorSuccess());
+        yield put(getSensor(history, additional.meta, additional.sort, additional.filter));
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                localStorage.clear();
+                history.push('/login');
+            } else if (error.response.data.error) {
+                yield put(deleteSensorError(error.response.data.errors));
+            }
+        } else {
+            yield put(deleteSensorError("Some thing was wrong!"));
+            console.log(error);
+        }
+    }
+}
+
 
 export function* watchGetSensors() {
     yield takeEvery(GET_SENSOR, getSensorFlow)
@@ -70,11 +95,15 @@ export function* watchGetSensors() {
 export function* watchAddSensor() {
     yield takeEvery(ADD_SENSOR, addSensorFlow)
 }
+export function* watchDeleteSensor() {
+    yield takeEvery(DELETE_SENSOR, deleteSensorFlow)
+}
 
 function* sensorSaga() {
     yield all([
         fork(watchGetSensors),
         fork(watchAddSensor),
+        fork(watchDeleteSensor),
     ]);
 }
 
