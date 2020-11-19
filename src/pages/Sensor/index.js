@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import { Row, Col, Table, Card, CardBody, 
   InputGroup, InputGroupAddon, InputGroupText, 
-  Input, Form, Modal, FormGroup, Label  } from "reactstrap";
+  Input, Form, Modal, FormGroup, Label, Button  } from "reactstrap";
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 import { Link } from "react-router-dom";
+import { AvForm, AvField } from "availity-reactstrap-validation";
 
 // Redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getSensor, updateStateSensor } from "../../store/actions";
+import { getSensor, updateStateSensor, addSensor } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 
@@ -52,6 +53,14 @@ class Sensor extends Component {
     
     this.props.updateStateSensor({
       showAddFilterModal: !showAddFilterModal
+    });
+  }
+
+  toggleAddSensorModal = () => {
+    let { showAddSensorModal } = this.props;
+    
+    this.props.updateStateSensor({
+      showAddSensorModal: !showAddSensorModal
     });
   }
 
@@ -142,6 +151,13 @@ class Sensor extends Component {
       filter,
       change: change
     });
+  }
+
+  handleSubmitAddSensorModal = (event, errors, values) => {
+    let { meta, sort, filter } = this.props;
+    if (errors.length === 0) {
+      this.props.addSensor(this.props.history, values, { meta, sort, filter });
+    }
   }
 
   renderSensor = () => {
@@ -238,6 +254,12 @@ class Sensor extends Component {
                         filterView
                       }
                     </div>
+                    <div className="data-collection-container-action">
+                    <Button 
+                      onClick={this.toggleAddSensorModal}>
+                        ADD
+                    </Button>
+                  </div>
                   </div>
                 </div>
                 <Table responsive className="table-lg data-collection-table">
@@ -308,7 +330,7 @@ class Sensor extends Component {
   }
 
   render() {
-    const { showAddFilterModal, filter } = this.props;
+    const { showAddFilterModal, filter, showAddSensorModal } = this.props;
     const { columns } = this.state;
     let radioFilterView = [];
     columns.forEach((column, index) => {
@@ -372,6 +394,48 @@ class Sensor extends Component {
               </Form>
             </div>
           </Modal>
+          {/* MODAL ADD DEVICE */}
+          <Modal
+            isOpen={showAddSensorModal}
+            toggle={this.toggleAddSensorModal}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title mt-0">Add Sensor</h5>
+              <button
+                type="button"
+                onClick={this.toggleAddSensorModal}
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <AvForm onSubmit={this.handleSubmitAddSensorModal}>
+                <AvField
+                  name="name"
+                  label="Name  "
+                  placeholder="Enter Name "
+                  type="text"
+                  errorMessage="Please Enter Name"
+                  validate={{
+                    required: { value: true },
+                    pattern: {value: '^[A-Za-z0-9 ]+$'},
+                    minLength: {value: 2},
+                    maxLength: {value: 16}
+                  }}
+                />
+                <FormGroup className="mb-0">
+                  <div>
+                      <Button type="submit" color="primary" className="mr-1">
+                        Save
+                      </Button>
+                  </div>
+                </FormGroup>
+              </AvForm>
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );
@@ -382,4 +446,4 @@ const mapStatetoProps = state => {
   return state.Sensor;
 };
 
-export default withRouter(connect(mapStatetoProps, { getSensor, updateStateSensor })(Sensor));
+export default withRouter(connect(mapStatetoProps, { getSensor, updateStateSensor, addSensor })(Sensor));

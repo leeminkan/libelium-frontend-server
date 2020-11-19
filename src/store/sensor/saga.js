@@ -1,10 +1,24 @@
 import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 // Login Redux States
-import { GET_SENSOR } from './actionTypes';
-import { getSensorError, getSensorSuccess, updateStateSensor } from './actions';
+import { 
+    GET_SENSOR,
+    ADD_SENSOR,
+ } from './actionTypes';
+import { 
+    getSensorError, 
+    getSensorSuccess, 
+    updateStateSensor,
+    addSensorError,
+    addSensorSuccess,
+    getSensor,
+} from './actions';
 
-import { apiSensors } from '../../helpers/api';
+import { 
+    apiSensors,
+    apiAddSensor
+} from '../../helpers/api';
 
 function* getSensorFlow({ payload: { history, meta, sort, filter } }) {
     try {
@@ -28,14 +42,39 @@ function* getSensorFlow({ payload: { history, meta, sort, filter } }) {
     }
 }
 
+function* addSensorFlow({ payload: { history, data, additional } }) {
+    try {
+        yield call(apiAddSensor, data);
+        toast("Add successfully !");
+        yield put(addSensorSuccess());
+        yield put(getSensor(history, additional.meta, additional.sort, additional.filter));
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                localStorage.clear();
+                history.push('/login');
+            } else if (error.response.data.error) {
+                yield put(addSensorError(error.response.data.errors));
+            }
+        } else {
+            yield put(addSensorError("Some thing was wrong!"));
+            console.log(error);
+        }
+    }
+}
+
 
 export function* watchGetSensors() {
     yield takeEvery(GET_SENSOR, getSensorFlow)
+}
+export function* watchAddSensor() {
+    yield takeEvery(ADD_SENSOR, addSensorFlow)
 }
 
 function* sensorSaga() {
     yield all([
         fork(watchGetSensors),
+        fork(watchAddSensor),
     ]);
 }
 

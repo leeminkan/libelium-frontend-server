@@ -1,6 +1,9 @@
 import { GET_SENSOR, GET_SENSOR_SUCCESS, 
     GET_SENSOR_ERROR,
-    UPDATE_STATE_SENSOR
+    UPDATE_STATE_SENSOR,
+    ADD_SENSOR, 
+    ADD_SENSOR_SUCCESS, 
+    ADD_SENSOR_ERROR, 
  } from './actionTypes';
 
 export const getSensor = (history, meta, sort, filter) => {
@@ -31,5 +34,25 @@ export const updateStateSensor = (state) => {
     return {
         type: UPDATE_STATE_SENSOR,
         payload: state
+    }
+}
+
+export const addSensor = (history, data, additional) => {
+    return {
+        type: ADD_SENSOR,
+        payload: {history, data, additional}
+    }
+}
+
+export const addSensorSuccess = () => {
+    return {
+        type: ADD_SENSOR_SUCCESS
+    }
+}
+
+export const addSensorError = (errors) => {
+    return {
+        type: ADD_SENSOR_ERROR,
+        payload: errors
     }
 }

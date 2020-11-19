@@ -486,7 +486,7 @@ class Device extends Component {
                   errorMessage="Please Enter Name"
                   validate={{
                     required: { value: true },
-                    pattern: {value: '^[A-Za-z0-9]+$'},
+                    pattern: {value: '^[A-Za-z0-9 ]+$'},
                     minLength: {value: 2},
                     maxLength: {value: 16}
                   }}

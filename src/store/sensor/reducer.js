@@ -1,12 +1,16 @@
 import { GET_SENSOR, GET_SENSOR_SUCCESS, 
     GET_SENSOR_ERROR,
-    UPDATE_STATE_SENSOR
+    UPDATE_STATE_SENSOR,
+    ADD_SENSOR, 
+    ADD_SENSOR_SUCCESS, 
+    ADD_SENSOR_ERROR,
 } from './actionTypes';
 
 const initialState = {
     errors: null,
     loading: {
-        GET_SENSOR: false
+        GET_SENSOR: false,
+        ADD_SENSOR: false
     },
     data: [],
     meta: {
@@ -19,7 +23,9 @@ const initialState = {
     filter: {
     },
     change: 1,
-    showAddFilterModal: false
+    showAddFilterModal: false,
+    showAddSensorModal: false,
+    addPayload: {}
 }
 
 const dataCollection = (state = initialState, action) => {
@@ -54,6 +60,38 @@ const dataCollection = (state = initialState, action) => {
                 }
             };
             break;
+        case ADD_SENSOR:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        ADD_SENSOR: true
+                    }
+                }
+                break;
+        case ADD_SENSOR_SUCCESS:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        ADD_SENSOR: false
+                    },
+                    addPayload: {},
+                    showAddSensorModal: false,
+                }
+                break;
+        case ADD_SENSOR_ERROR:
+                state = { 
+                    ...state, 
+                    errors: action.payload,
+                    loading: {
+                        ...state.loading,
+                        ADD_SENSOR: false
+                    },
+                    addPayload: {},
+                    showAddSensorModal: false,
+                };
+                break;
         case UPDATE_STATE_SENSOR:
             state = { ...state, ...action.payload };
             break;
