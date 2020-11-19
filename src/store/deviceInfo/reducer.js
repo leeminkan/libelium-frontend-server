@@ -1,5 +1,15 @@
-import { GET_DEVICE_INFO, GET_DEVICE_INFO_SUCCESS, GET_DEVICE_INFO_ERROR, UPDATE_DEVICE_INFO, UPDATE_DEVICE_INFO_SUCCESS, UPDATE_DEVICE_INFO_ERROR,
-    UPDATE_STATE_DEVICE_INFO } from './actionTypes';
+import {
+    GET_DEVICE_INFO, 
+    GET_DEVICE_INFO_SUCCESS, 
+    GET_DEVICE_INFO_ERROR, 
+    UPDATE_DEVICE_INFO, 
+    UPDATE_DEVICE_INFO_SUCCESS, 
+    UPDATE_DEVICE_INFO_ERROR,
+    UPDATE_STATE_DEVICE_INFO,
+    GET_ALL_SENSOR,
+    GET_ALL_SENSOR_SUCCESS,
+    GET_ALL_SENSOR_ERROR
+} from './actionTypes';
 
 const initialState = {
     errors: null,
@@ -7,11 +17,12 @@ const initialState = {
         GET_DEVICE_INFO: false,
         UPDATE_DEVICE_INFO: false
     },
-    name: "xxx",
+    sensors: [],
     data: {
         "name": '...'
     },
-    file: null
+    file: null,
+    selectedSensors: []
 }
 
 const deviceInfo = (state = initialState, action) => {
@@ -34,7 +45,17 @@ const deviceInfo = (state = initialState, action) => {
                 }
             }
             break;
+        case GET_ALL_SENSOR:
+            state = {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    GET_ALL_SENSOR: true
+                }
+            }
+            break;
         case GET_DEVICE_INFO_SUCCESS:
+            let selectedSensors = action.payload.sensors.map(({ id }) => id);
             state = {
                 ...state,
                 loading: {
@@ -42,6 +63,7 @@ const deviceInfo = (state = initialState, action) => {
                     GET_DEVICE_INFO: false
                 },
                 data: action.payload,
+                selectedSensors
             }
             break;
         case UPDATE_DEVICE_INFO_SUCCESS:
@@ -52,6 +74,16 @@ const deviceInfo = (state = initialState, action) => {
                     UPDATE_DEVICE_INFO: false
                 },
                 data: action.payload,
+            }
+            break;
+        case GET_ALL_SENSOR_SUCCESS:
+            state = {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    GET_ALL_SENSOR: false
+                },
+                sensors: action.payload,
             }
             break;
         case GET_DEVICE_INFO_ERROR:
@@ -71,6 +103,16 @@ const deviceInfo = (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     UPDATE_DEVICE_INFO: false
+                }
+            };
+            break;
+        case GET_ALL_SENSOR_ERROR:
+            state = { 
+                ...state, 
+                errors: action.payload,
+                loading: {
+                    ...state.loading,
+                    GET_ALL_SENSOR: false
                 }
             };
             break;

@@ -26,7 +26,7 @@ const SidebarContent = props => {
         
         <li>
           <Link to="/sensor" className=" waves-effect">
-            <i class="fas fa-microchip"></i>
+            <i className="fas fa-microchip"></i>
             <span>Sensor</span>
           </Link>
         </li>

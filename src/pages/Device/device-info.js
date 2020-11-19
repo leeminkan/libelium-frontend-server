@@ -3,6 +3,7 @@ import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import FormLoader from "../../components/FormLoader"
 import ImageUploader from 'react-images-upload';
+import Select from 'react-select';
 import * as util from '../../helpers/util';
 
 import "chartist/dist/scss/chartist.scss";
@@ -11,7 +12,12 @@ import "../../assets/scss/custom.scss";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDeviceInfo, updateDeviceInfo, updateStateDeviceInfo } from "../../store/actions";
+import { 
+  getDeviceInfo, 
+  updateDeviceInfo, 
+  updateStateDeviceInfo,
+  getAllSensor
+ } from "../../store/actions";
 // import images
 import waspmote from "../../assets/images/libelium/waspmote.png";
 
@@ -23,14 +29,16 @@ class DeviceInfo extends Component {
 
   componentDidMount() {
     this.props.getDeviceInfo(this.props.history, this.props.match.params.id);
+    this.props.getAllSensor(this.props.history);
   }
 
   handleSubmit = (event, errors, values) => {
-    const { file } = this.props;
+    const { file, selectedSensors } = this.props;
     if (errors.length === 0) {
       if (file) {
         values.image = file;
       }
+      values.sensors = JSON.stringify(selectedSensors);
       this.props.updateDeviceInfo(this.props.history, this.props.match.params.id, values);
     }
   }
@@ -41,6 +49,51 @@ class DeviceInfo extends Component {
         file: file[0]
       });
     }
+  }
+  
+  handleChange = selectedOption => {
+    let selectedSensors = [];
+    if (Array.isArray(selectedOption) && selectedOption.length > 0) {
+      selectedSensors = selectedOption.map(({ value }) => value);
+    }
+    this.props.updateStateDeviceInfo({
+      selectedSensors
+    });
+  };
+
+  renderChooseSensorsView = () => {
+    let options = [];
+    let defaultValue = [];
+
+    if (Array.isArray(this.props.sensors) && this.props.sensors.length > 0) {
+      options = this.props.sensors.map(obj => {
+        return {
+          value: obj.id,
+          label: obj.name
+        };
+      })
+    }
+
+    if (Array.isArray(this.props.data.sensors) && this.props.data.sensors.length > 0) {
+      defaultValue = this.props.data.sensors.map(obj => {
+        return {
+          value: obj.id,
+          label: obj.name
+        };
+      })
+    }
+
+    return (
+        <Select
+          defaultValue={defaultValue}
+          options={options}
+          onChange={this.handleChange}
+          isMulti
+          name="sensors"
+          className="basic-multi-select"
+          classNamePrefix="select"
+        />
+    );
   }
 
   render() {
@@ -93,7 +146,7 @@ class DeviceInfo extends Component {
                       validate={{
                         required: { value: true },
                         pattern: {value: '^[A-Za-z0-9]+$'},
-                        minLength: {value: 2},
+                        minLength: {value: 1},
                         maxLength: {value: 16}
                       }}
                     />
@@ -122,6 +175,14 @@ class DeviceInfo extends Component {
                               withLabel={true}
                               label="Max file size: 2mb, accepted: jpg|jpeg|png"
                           />
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <label htmlFor="sensors"> Sensors </label>
+                      <Row>
+                        <Col>
+                          {this.renderChooseSensorsView()}
                         </Col>
                       </Row>
                     </FormGroup>
@@ -155,4 +216,4 @@ const mapStatetoProps = state => {
   return state.DeviceInfo;
 };
 
-export default withRouter(connect(mapStatetoProps, { getDeviceInfo, updateDeviceInfo, updateStateDeviceInfo })(DeviceInfo));
+export default withRouter(connect(mapStatetoProps, { getDeviceInfo, updateDeviceInfo, updateStateDeviceInfo, getAllSensor })(DeviceInfo));
