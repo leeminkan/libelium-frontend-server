@@ -4,11 +4,11 @@ import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
 import { GET_DEVICES } from './actionTypes';
 import { getDeviceError, getDeviceSuccess } from './actions';
 
-import { apiGetDevices } from '../../helpers/api';
+import { apiGetDisplayedDevices } from '../../helpers/api';
 
 function* getDeviceFlow({ payload: { history } }) {
     try {
-        const response = yield call(apiGetDevices);
+        const response = yield call(apiGetDisplayedDevices);
         yield put(getDeviceSuccess(response.data.data));
     } catch (error) {
         if (error.response) {

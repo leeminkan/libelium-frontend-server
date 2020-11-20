@@ -42,6 +42,10 @@ class Device extends Component {
           field: "created_at"
         },
         {
+          label: "Display",
+          field: "is_displayed"
+        },
+        {
           label: "Action",
           field: "action"
         },

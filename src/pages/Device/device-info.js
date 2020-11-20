@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { AvForm, AvField, AvRadioGroup, AvRadio } from "availity-reactstrap-validation";
 import FormLoader from "../../components/FormLoader"
 import ImageUploader from 'react-images-upload';
 import Select from 'react-select';
@@ -97,7 +97,13 @@ class DeviceInfo extends Component {
   }
 
   render() {
-    const { name, image, waspmote_id } = this.props.data;
+    const { name, image, waspmote_id, is_displayed } = this.props.data;
+    
+    const defaultValues = {
+      name,
+      waspmote_id,
+      is_displayed,
+    };
 
     return (
       <React.Fragment>
@@ -121,12 +127,11 @@ class DeviceInfo extends Component {
                   {
                     this.props.loading.GET_DEVICE_INFO ? 
                   <FormLoader/> :
-                  <AvForm onSubmit={this.handleSubmit}>
+                  <AvForm onSubmit={this.handleSubmit}  model={defaultValues}>
                     <AvField
                       name="name"
                       label="Name  "
                       placeholder="Enter Name "
-                      value={name}
                       type="text"
                       errorMessage="Please Enter Name"
                       validate={{
@@ -140,7 +145,6 @@ class DeviceInfo extends Component {
                       name="waspmote_id"
                       label="Waspmote ID  "
                       placeholder="Enter Waspmote ID "
-                      value={waspmote_id}
                       type="text"
                       errorMessage="Please Enter Waspmote ID"
                       validate={{
@@ -150,6 +154,10 @@ class DeviceInfo extends Component {
                         maxLength: {value: 16}
                       }}
                     />
+                    <AvRadioGroup className="display-radio" inline name="is_displayed" label="Display" required>
+                      <AvRadio label="Yes" value={1} />
+                      <AvRadio label="No" value={0} />
+                    </AvRadioGroup>
                     <FormGroup>
                       <label htmlFor="image"> Image </label>
                       <Row>

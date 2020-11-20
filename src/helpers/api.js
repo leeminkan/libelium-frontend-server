@@ -4,9 +4,9 @@ import * as util from './util';
 
 const { serverUrl, api } = config;
 
-const apiGetDevices = () => {
+const apiGetDisplayedDevices = () => {
     const token = localStorage.getItem('token');
-    const response = axios.get(`${serverUrl}${api.apiGetDevices}?order_by=created_at&order=desc&per_page=4`, {
+    const response = axios.get(`${serverUrl}${api.apiGetDevices}/display`, {
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + token,
@@ -292,7 +292,7 @@ const apiGetTemperature = (pagination) => {
 }
 
 export { 
-    apiGetDevices, 
+    apiGetDisplayedDevices, 
     apiDataCollections, 
     apiSetting, 
     apiUpdateSetting, 
