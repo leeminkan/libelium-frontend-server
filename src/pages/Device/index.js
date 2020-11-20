@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Table, Card, CardBody, 
   InputGroup, InputGroupAddon, InputGroupText, 
-  Input, Form, Modal, FormGroup, Label, Button  } from "reactstrap";
+  Input, Form, Modal, FormGroup, Label, Button, Spinner, ModalHeader, ModalBody, ModalFooter  } from "reactstrap";
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 import { Link } from "react-router-dom";
@@ -73,6 +73,15 @@ class Device extends Component {
     
     this.props.updateStateDevice({
       showAddDeviceModal: !showAddDeviceModal
+    });
+  }
+
+  toggleDeleteDeviceModal = (deviceIdToDelete = 0) => {
+    let { showDeleteDeviceModal } = this.props;
+    
+    this.props.updateStateDevice({
+      showDeleteDeviceModal: !showDeleteDeviceModal,
+      deviceIdToDelete: Number.isInteger(deviceIdToDelete) ? deviceIdToDelete : 0
     });
   }
 
@@ -355,7 +364,7 @@ class Device extends Component {
                     color="danger"
                     className="btn btn-danger waves-effect waves-light button-delete"
                     onClick={() => {
-                      this.deleteDevice(item.id);
+                      this.toggleDeleteDeviceModal(item.id);
                     }}
                   >
                     Delete
@@ -411,7 +420,7 @@ class Device extends Component {
   }
 
   render() {
-    const { showAddFilterModal, filter, showAddDeviceModal } = this.props;
+    const { showAddFilterModal, filter, showAddDeviceModal, showDeleteDeviceModal, deviceIdToDelete, loading } = this.props;
     const { columns } = this.state;
     let radioFilterView = [];
     columns.forEach((column, index) => {
@@ -567,6 +576,51 @@ class Device extends Component {
                 </FormGroup>
               </AvForm>
             </div>
+          </Modal>
+          
+          {/* MODAL DELETE DEVICE */}
+          <Modal
+            isOpen={showDeleteDeviceModal}
+            toggle={this.toggleDeleteDeviceModal}
+          >
+            <ModalHeader toggle={this.toggleDeleteDeviceModal}>Delete Device</ModalHeader>
+            <ModalBody>
+              <legend className="col-form-label col-sm-6">Are you sure??</legend>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="danger"
+                className="btn btn-danger waves-effect waves-light button-delete"
+                onClick={() => {
+                  this.deleteDevice(deviceIdToDelete);
+                }}
+                disabled={loading.DELETE_DEVICE ? 1 : 0}
+              >
+              {
+                loading.DELETE_DEVICE 
+                ? 
+                <Spinner size="sm" color="secondary" />
+                : 
+                'Yes'
+              }
+              </Button>
+              <Button
+                color="secondary"
+                className="btn btn-secondary waves-effect waves-light button-delete"
+                onClick={() => {
+                  this.toggleDeleteDeviceModal(0);
+                }}
+                disabled={loading.DELETE_DEVICE ? 1 : 0}
+              >
+                {
+                  loading.DELETE_DEVICE 
+                  ? 
+                  <Spinner size="sm" color="secondary" />
+                  : 
+                  'No'
+                }
+              </Button>
+            </ModalFooter>
           </Modal>
         </div>
       </React.Fragment>

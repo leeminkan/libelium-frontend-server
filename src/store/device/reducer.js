@@ -34,6 +34,8 @@ const initialState = {
     change: 1,
     showAddFilterModal: false,
     showAddDeviceModal: false,
+    showDeleteDeviceModal: false,
+    deviceIdToDelete: 0,
     sensors: [],
     addPayload: {}
 }
@@ -147,6 +149,8 @@ const dataCollection = (state = initialState, action) => {
                         ...state.loading,
                         DELETE_DEVICE: false
                     },
+                    showDeleteDeviceModal: false,
+                    deviceIdToDelete: 0
                 }
                 break;
         case DELETE_DEVICE_ERROR:
@@ -157,6 +161,8 @@ const dataCollection = (state = initialState, action) => {
                         ...state.loading,
                         DELETE_DEVICE: false
                     },
+                    showDeleteDeviceModal: false,
+                    deviceIdToDelete: 0
                 };
                 break;
         case UPDATE_STATE_DEVICE:
