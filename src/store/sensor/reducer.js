@@ -29,6 +29,8 @@ const initialState = {
     change: 1,
     showAddFilterModal: false,
     showAddSensorModal: false,
+    showDeleteSensorModal: false,
+    sensorIdToDelete: 0,
     addPayload: {}
 }
 
@@ -112,6 +114,8 @@ const dataCollection = (state = initialState, action) => {
                         ...state.loading,
                         DELETE_SENSOR: false
                     },
+                    showDeleteSensorModal: false,
+                    sensorIdToDelete: 0
                 }
                 break;
         case DELETE_SENSOR_ERROR:
@@ -122,6 +126,8 @@ const dataCollection = (state = initialState, action) => {
                         ...state.loading,
                         DELETE_SENSOR: false
                     },
+                    showDeleteSensorModal: false,
+                    sensorIdToDelete: 0
                 };
                 break;
         case UPDATE_STATE_SENSOR:

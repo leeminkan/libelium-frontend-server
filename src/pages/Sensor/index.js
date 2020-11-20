@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Table, Card, CardBody, 
   InputGroup, InputGroupAddon, InputGroupText, 
-  Input, Form, Modal, FormGroup, Label, Button  } from "reactstrap";
+  Input, Form, Modal, FormGroup, Label, Button, Spinner, ModalHeader, ModalBody, ModalFooter  } from "reactstrap";
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 import { Link } from "react-router-dom";
@@ -61,6 +61,15 @@ class Sensor extends Component {
     
     this.props.updateStateSensor({
       showAddSensorModal: !showAddSensorModal
+    });
+  }
+
+  toggleDeleteSensorModal = (sensorIdToDelete = 0) => {
+    let { showDeleteSensorModal } = this.props;
+    
+    this.props.updateStateSensor({
+      showDeleteSensorModal: !showDeleteSensorModal,
+      sensorIdToDelete: Number.isInteger(sensorIdToDelete) ? sensorIdToDelete : 0
     });
   }
 
@@ -312,7 +321,7 @@ class Sensor extends Component {
                     color="danger"
                     className="btn btn-danger waves-effect waves-light button-delete"
                     onClick={() => {
-                      this.deleteSensor(item.id);
+                      this.toggleDeleteSensorModal(item.id);
                     }}
                   >
                     Delete
@@ -343,7 +352,7 @@ class Sensor extends Component {
   }
 
   render() {
-    const { showAddFilterModal, filter, showAddSensorModal } = this.props;
+    const { showAddFilterModal, filter, showAddSensorModal, showDeleteSensorModal, sensorIdToDelete, loading } = this.props;
     const { columns } = this.state;
     let radioFilterView = [];
     columns.forEach((column, index) => {
@@ -407,7 +416,7 @@ class Sensor extends Component {
               </Form>
             </div>
           </Modal>
-          {/* MODAL ADD DEVICE */}
+          {/* MODAL ADD SENSOR */}
           <Modal
             isOpen={showAddSensorModal}
             toggle={this.toggleAddSensorModal}
@@ -448,6 +457,51 @@ class Sensor extends Component {
                 </FormGroup>
               </AvForm>
             </div>
+          </Modal>
+          
+          {/* MODAL DELETE SENSOR */}
+          <Modal
+            isOpen={showDeleteSensorModal}
+            toggle={this.toggleDeleteSensorModal}
+          >
+            <ModalHeader toggle={this.toggleDeleteSensorModal}>Delete Sensor</ModalHeader>
+            <ModalBody>
+              <legend className="col-form-label col-sm-6">Are you sure??</legend>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="danger"
+                className="btn btn-danger waves-effect waves-light button-delete"
+                onClick={() => {
+                  this.deleteSensor(sensorIdToDelete);
+                }}
+                disabled={loading.DELETE_SENSOR ? 1 : 0}
+              >
+              {
+                loading.DELETE_SENSOR 
+                ? 
+                <Spinner size="sm" color="secondary" />
+                : 
+                'Yes'
+              }
+              </Button>
+              <Button
+                color="secondary"
+                className="btn btn-secondary waves-effect waves-light button-delete"
+                onClick={() => {
+                  this.toggleDeleteSensorModal(0);
+                }}
+                disabled={loading.DELETE_SENSOR ? 1 : 0}
+              >
+                {
+                  loading.DELETE_SENSOR 
+                  ? 
+                  <Spinner size="sm" color="secondary" />
+                  : 
+                  'No'
+                }
+              </Button>
+            </ModalFooter>
           </Modal>
         </div>
       </React.Fragment>
