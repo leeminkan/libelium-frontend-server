@@ -6,6 +6,7 @@ import {
     GET_DEVICE,
     GET_ALL_SENSOR_FOR_DEVICE_PAGE,
     ADD_DEVICE,
+    DELETE_DEVICE
 } from './actionTypes';
 import { 
     getDevice,
@@ -16,12 +17,15 @@ import {
     getAllSensorForDevicePageError,
     addDeviceError,
     addDeviceSuccess,
+    deleteDeviceError,
+    deleteDeviceSuccess,
 } from './actions';
 
 import { 
     apiDevices,
     apiGetAllSensor,
-    apiAddDevice 
+    apiAddDevice,
+    apiDeleteDevice
 } from '../../helpers/api';
 
 function* getDeviceFlow({ payload: { history, meta, sort, filter } }) {
@@ -86,6 +90,27 @@ function* addDeviceFlow({ payload: { history, data, additional } }) {
     }
 }
 
+function* deleteDeviceFlow({ payload: { history, id, additional } }) {
+    try {
+        yield call(apiDeleteDevice, id);
+        toast("Delete successfully !");
+        yield put(deleteDeviceSuccess());
+        yield put(getDevice(history, additional.meta, additional.sort, additional.filter));
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                localStorage.clear();
+                history.push('/login');
+            } else if (error.response.data.error) {
+                yield put(deleteDeviceError(error.response.data.errors));
+            }
+        } else {
+            yield put(deleteDeviceError("Some thing was wrong!"));
+            console.log(error);
+        }
+    }
+}
+
 
 export function* watchGetDevices() {
     yield takeEvery(GET_DEVICE, getDeviceFlow)
@@ -96,12 +121,16 @@ export function* watchGetAllSensorForDevicePage() {
 export function* watchAddDevice() {
     yield takeEvery(ADD_DEVICE, addDeviceFlow)
 }
+export function* watchDeleteDevice() {
+    yield takeEvery(DELETE_DEVICE, deleteDeviceFlow)
+}
 
 function* deviceSaga() {
     yield all([
         fork(watchGetDevices),
         fork(watchGetAllSensorForDevicePage),
         fork(watchAddDevice),
+        fork(watchDeleteDevice),
     ]);
 }
 

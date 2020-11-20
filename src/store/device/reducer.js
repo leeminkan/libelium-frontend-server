@@ -9,13 +9,17 @@ import {
     ADD_DEVICE, 
     ADD_DEVICE_SUCCESS, 
     ADD_DEVICE_ERROR,
+    DELETE_DEVICE, 
+    DELETE_DEVICE_SUCCESS, 
+    DELETE_DEVICE_ERROR,
 } from './actionTypes';
 
 const initialState = {
     errors: null,
     loading: {
         GET_DEVICE: false,
-        ADD_DEVICE: false
+        ADD_DEVICE: false,
+        DELETE_DEVICE: false
     },
     data: [],
     meta: {
@@ -125,6 +129,34 @@ const dataCollection = (state = initialState, action) => {
                     },
                     addPayload: {},
                     showAddDeviceModal: false,
+                };
+                break;
+        case DELETE_DEVICE:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        DELETE_DEVICE: true
+                    }
+                }
+                break;
+        case DELETE_DEVICE_SUCCESS:
+                state = {
+                    ...state,
+                    loading: {
+                        ...state.loading,
+                        DELETE_DEVICE: false
+                    },
+                }
+                break;
+        case DELETE_DEVICE_ERROR:
+                state = { 
+                    ...state, 
+                    errors: action.payload,
+                    loading: {
+                        ...state.loading,
+                        DELETE_DEVICE: false
+                    },
                 };
                 break;
         case UPDATE_STATE_DEVICE:

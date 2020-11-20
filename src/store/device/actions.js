@@ -9,6 +9,9 @@ import {
     ADD_DEVICE, 
     ADD_DEVICE_SUCCESS, 
     ADD_DEVICE_ERROR, 
+    DELETE_DEVICE, 
+    DELETE_DEVICE_SUCCESS, 
+    DELETE_DEVICE_ERROR, 
  } from './actionTypes';
 
 export const getDevice = (history, meta, sort, filter) => {
@@ -79,6 +82,26 @@ export const addDeviceSuccess = () => {
 export const addDeviceError = (errors) => {
     return {
         type: ADD_DEVICE_ERROR,
+        payload: errors
+    }
+}
+
+export const deleteDevice = (history, id, additional) => {
+    return {
+        type: DELETE_DEVICE,
+        payload: {history, id, additional}
+    }
+}
+
+export const deleteDeviceSuccess = () => {
+    return {
+        type: DELETE_DEVICE_SUCCESS
+    }
+}
+
+export const deleteDeviceError = (errors) => {
+    return {
+        type: DELETE_DEVICE_ERROR,
         payload: errors
     }
 }

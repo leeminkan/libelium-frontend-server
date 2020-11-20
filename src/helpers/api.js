@@ -42,6 +42,18 @@ const apiAddDevice = (data) => {
     return response;
 }
 
+const apiDeleteDevice = (id) => {
+    const token = localStorage.getItem('token');
+    const response = axios.delete(`${serverUrl}${api.apiGetDevices}/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 const apiUpdateDeviceInfo = (id, data) => {
     const formData = util.parsePayloadToFormData(data);
     const token = localStorage.getItem('token');
@@ -294,5 +306,6 @@ export {
     apiGetAllSensor, 
     apiAddDevice,
     apiAddSensor,
-    apiDeleteSensor
+    apiDeleteSensor,
+    apiDeleteDevice
 };

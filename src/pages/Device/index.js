@@ -14,7 +14,7 @@ import waspmote from "../../assets/images/libelium/waspmote.png";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice } from "../../store/actions";
+import { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice, deleteDevice } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 
@@ -188,6 +188,11 @@ class Device extends Component {
     }
   }
 
+  deleteDevice = (id) => {
+    let { meta, sort, filter } = this.props;
+    this.props.deleteDevice(this.props.history, id, { meta, sort, filter });
+  }
+
   onDrop = (file) => {
     if (file.length === 1) {
       this.props.updateStateDevice({
@@ -342,6 +347,15 @@ class Device extends Component {
               let to = `/device/${item.id}`;
               view.push(
                 <td key={'td_action'}>
+                  <Button
+                    color="danger"
+                    className="btn btn-danger waves-effect waves-light button-delete"
+                    onClick={() => {
+                      this.deleteDevice(item.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
                   
                   <Link to={to} className="btn btn-primary btn-sm">
                                 Edit
@@ -560,4 +574,4 @@ const mapStatetoProps = state => {
   return state.Device;
 };
 
-export default withRouter(connect(mapStatetoProps, { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice })(Device));
+export default withRouter(connect(mapStatetoProps, { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice, deleteDevice })(Device));
