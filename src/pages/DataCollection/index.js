@@ -30,15 +30,11 @@ class DataCollection extends Component {
         },
         {
           label: "Device Name",
-          field: "name"
+          field: "device_name"
         },
         {
-          label: "Transaction ID",
-          field: "transaction_id"
-        },
-        {
-          label: "Type",
-          field: "type"
+          label: "Sensor Name",
+          field: "sensor_name"
         },
         {
           label: "Value",

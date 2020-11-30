@@ -31,6 +31,10 @@ class Sensor extends Component {
           field: "name"
         },
         {
+          label: "Sensor Key",
+          field: "key"
+        },
+        {
           label: "Time",
           field: "created_at"
         },
@@ -441,6 +445,19 @@ class Sensor extends Component {
                   placeholder="Enter Name "
                   type="text"
                   errorMessage="Please Enter Name"
+                  validate={{
+                    required: { value: true },
+                    pattern: {value: '^[A-Za-z0-9 ]+$'},
+                    minLength: {value: 2},
+                    maxLength: {value: 16}
+                  }}
+                />
+                <AvField
+                  name="key"
+                  label="Key  "
+                  placeholder="Enter Key "
+                  type="text"
+                  errorMessage="Please Enter Key"
                   validate={{
                     required: { value: true },
                     pattern: {value: '^[A-Za-z0-9 ]+$'},
