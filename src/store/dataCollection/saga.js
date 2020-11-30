@@ -6,6 +6,8 @@ import { getDataCollectionError, getDataCollectionSuccess, updateState } from '.
 
 import { apiDataCollections } from '../../helpers/api';
 
+import { handlerError } from '../../helpers/sagaUtils';
+
 function* getDataCollectionFlow({ payload: { history, meta, sort, filter } }) {
     try {
         const response = yield call(apiDataCollections, meta, sort, filter);
@@ -14,17 +16,8 @@ function* getDataCollectionFlow({ payload: { history, meta, sort, filter } }) {
             yield put(updateState({sort}));
         }
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/dashboard-custom');
-            } else if (error.response.data.error) {
-                yield put(getDataCollectionError(error.response.data.errors));
-            }
-        } else {
-            yield put(getDataCollectionError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getDataCollectionError(errors));
     }
 }
 

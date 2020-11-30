@@ -1,22 +1,22 @@
-import { GET_DEVICES, GET_DEVICES_SUCCESS, GET_DEVICES_ERROR, RESET_DASHBOARD } from './actionTypes';
+import { GET_DISPLAYED_DEVICES, GET_DISPLAYED_DEVICES_SUCCESS, GET_DISPLAYED_DEVICES_ERROR, RESET_DASHBOARD } from './actionTypes';
 
-export const getDevices = (history) => {
+export const getDisplayedDevices = (history) => {
     return {
-        type: GET_DEVICES,
+        type: GET_DISPLAYED_DEVICES,
         payload: {history}
     }
 }
 
-export const getDeviceSuccess = (data) => {
+export const getDisplayedDevicesSuccess = (data) => {
     return {
-        type: GET_DEVICES_SUCCESS,
+        type: GET_DISPLAYED_DEVICES_SUCCESS,
         payload: data
     }
 }
 
-export const getDeviceError = (errors) => {
+export const getDisplayedDevicesError = (errors) => {
     return {
-        type: GET_DEVICES_ERROR,
+        type: GET_DISPLAYED_DEVICES_ERROR,
         payload: errors
     }
 }

@@ -7,20 +7,18 @@ import { loginSuccess, logoutUserSuccess, apiError, apiErrors } from './actions'
 //AUTH related methods
 import { login } from '../../../helpers/auth';
 
+import { handlerError } from '../../../helpers/sagaUtils';
+
 
 function* loginUser({ payload: { user, history } }) {
     try {
         const response = yield call(login, user);
         localStorage.setItem('token', response.data.data.access_token);
         yield put(loginSuccess(response));
-        history.push('/dashboard-custom');
+        history.push('/dashboard');
     } catch (error) {
-        if (error.response && error.response.data.error) {
-            yield put(apiErrors(error.response.data.errors));
-        } else {
-            yield put(apiErrors("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(apiErrors(errors));
     }
 }
 
@@ -30,7 +28,8 @@ function* logoutUser({ payload: { history } }) {
         localStorage.clear();
         history.push('/login');
     } catch (error) {
-        yield put(apiError(error));
+        const errors = handlerError(error, history);
+        yield put(apiError(errors));
     }
 }
 

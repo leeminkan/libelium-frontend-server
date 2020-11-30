@@ -24,6 +24,8 @@ import {
     apiDeleteSensor
 } from '../../helpers/api';
 
+import { handlerError } from '../../helpers/sagaUtils';
+
 function* getSensorFlow({ payload: { history, meta, sort, filter } }) {
     try {
         const response = yield call(apiSensors, meta, sort, filter);
@@ -32,17 +34,8 @@ function* getSensorFlow({ payload: { history, meta, sort, filter } }) {
             yield put(updateStateSensor({sort}));
         }
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/dashboard-custom');
-            } else if (error.response.data.error) {
-                yield put(getSensorError(error.response.data.errors));
-            }
-        } else {
-            yield put(getSensorError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getSensorError(errors));
     }
 }
 
@@ -53,17 +46,8 @@ function* addSensorFlow({ payload: { history, data, additional } }) {
         yield put(addSensorSuccess());
         yield put(getSensor(history, additional.meta, additional.sort, additional.filter));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(addSensorError(error.response.data.errors));
-            }
-        } else {
-            yield put(addSensorError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(addSensorError(errors));
     }
 }
 
@@ -74,17 +58,8 @@ function* deleteSensorFlow({ payload: { history, id, additional } }) {
         yield put(deleteSensorSuccess());
         yield put(getSensor(history, additional.meta, additional.sort, additional.filter));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(deleteSensorError(error.response.data.errors));
-            }
-        } else {
-            yield put(deleteSensorError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(deleteSensorError(errors));
     }
 }
 

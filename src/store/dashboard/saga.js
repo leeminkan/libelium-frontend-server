@@ -1,38 +1,31 @@
 import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
 
 // Login Redux States
-import { GET_DEVICES } from './actionTypes';
-import { getDeviceError, getDeviceSuccess } from './actions';
+import { GET_DISPLAYED_DEVICES } from './actionTypes';
+import { getDisplayedDevicesError, getDisplayedDevicesSuccess } from './actions';
 
 import { apiGetDisplayedDevices } from '../../helpers/api';
 
-function* getDeviceFlow({ payload: { history } }) {
+import { handlerError } from '../../helpers/sagaUtils';
+
+function* getDisplayedDevicesFlow({ payload: { history } }) {
     try {
         const response = yield call(apiGetDisplayedDevices);
-        yield put(getDeviceSuccess(response.data.data));
+        yield put(getDisplayedDevicesSuccess(response.data.data));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/dashboard-custom');
-            } else if (error.response.data.error) {
-                yield put(getDeviceError(error.response.data.errors));
-            }
-        } else {
-            yield put(getDeviceError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getDisplayedDevicesError(errors));
     }
 }
 
 
-export function* watchGetDevices() {
-    yield takeEvery(GET_DEVICES, getDeviceFlow)
+export function* watchGetDisplayedDevices() {
+    yield takeEvery(GET_DISPLAYED_DEVICES, getDisplayedDevicesFlow)
 }
 
 function* dashboardSaga() {
     yield all([
-        fork(watchGetDevices),
+        fork(watchGetDisplayedDevices),
     ]);
 }
 

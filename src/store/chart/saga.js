@@ -6,22 +6,15 @@ import { getTemperatureError, getTemperatureSuccess } from './actions';
 
 import { apiGetTemperature } from '../../helpers/api';
 
+import { handlerError } from '../../helpers/sagaUtils';
+
 function* GetTemperatureFlow({ payload: { history } }) {
     try {
         const response = yield call(apiGetTemperature);
         yield put(getTemperatureSuccess(response.data.data, response.data.meta));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/dashboard-custom');
-            } else if (error.response.data.error) {
-                yield put(getTemperatureError(error.response.data.errors));
-            }
-        } else {
-            yield put(getTemperatureError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getTemperatureError(errors));
     }
 }
 

@@ -7,22 +7,15 @@ import { getSensorInfoError, getSensorInfoSuccess, updateSensorInfoError, update
 
 import { apiGetSensorInfo, apiUpdateSensorInfo } from '../../helpers/api';
 
+import { handlerError } from '../../helpers/sagaUtils';
+
 function* getSensorInfoFlow({ payload: { history, id } }) {
     try {
         const response = yield call(apiGetSensorInfo, id);
         yield put(getSensorInfoSuccess(response.data.data));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(getSensorInfoError(error.response.data.errors));
-            }
-        } else {
-            yield put(getSensorInfoError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getSensorInfoError(errors));
     }
 }
 
@@ -33,17 +26,8 @@ function* updateSensorInfoFlow({ payload: { history, id, data } }) {
         toast("Update successfully !");
         yield put(updateSensorInfoSuccess(response.data.data));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(updateSensorInfoError(error.response.data.errors));
-            }
-        } else {
-            yield put(updateSensorInfoError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(updateSensorInfoError(errors));
     }
 }
 
@@ -52,7 +36,6 @@ export function* watchGetSensorInfos() {
     yield takeEvery(GET_SENSOR_INFO, getSensorInfoFlow)
 }
 export function* watchUpdateSensorInfos() {
-    yield takeEvery(GET_SENSOR_INFO, getSensorInfoFlow)
     yield takeEvery(UPDATE_SENSOR_INFO, updateSensorInfoFlow)
 }
 

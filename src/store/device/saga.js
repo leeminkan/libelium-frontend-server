@@ -28,6 +28,8 @@ import {
     apiDeleteDevice
 } from '../../helpers/api';
 
+import { handlerError } from '../../helpers/sagaUtils';
+
 function* getDeviceFlow({ payload: { history, meta, sort, filter } }) {
     try {
         const response = yield call(apiDevices, meta, sort, filter);
@@ -36,17 +38,8 @@ function* getDeviceFlow({ payload: { history, meta, sort, filter } }) {
             yield put(updateStateDevice({sort}));
         }
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/dashboard-custom');
-            } else if (error.response.data.error) {
-                yield put(getDeviceError(error.response.data.errors));
-            }
-        } else {
-            yield put(getDeviceError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getDeviceError(errors));
     }
 }
 
@@ -55,17 +48,8 @@ function* getAllSensorForDevicePageFlow({ payload: { history } }) {
         const response = yield call(apiGetAllSensor);
         yield put(getAllSensorForDevicePageSuccess(response.data.data));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(getAllSensorForDevicePageError(error.response.data.errors));
-            }
-        } else {
-            yield put(getAllSensorForDevicePageError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(getAllSensorForDevicePageError(errors));
     }
 }
 
@@ -76,17 +60,8 @@ function* addDeviceFlow({ payload: { history, data, additional } }) {
         yield put(addDeviceSuccess());
         yield put(getDevice(history, additional.meta, additional.sort, additional.filter));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(addDeviceError(error.response.data.errors));
-            }
-        } else {
-            yield put(addDeviceError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(addDeviceError(errors));
     }
 }
 
@@ -97,17 +72,8 @@ function* deleteDeviceFlow({ payload: { history, id, additional } }) {
         yield put(deleteDeviceSuccess());
         yield put(getDevice(history, additional.meta, additional.sort, additional.filter));
     } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.clear();
-                history.push('/login');
-            } else if (error.response.data.error) {
-                yield put(deleteDeviceError(error.response.data.errors));
-            }
-        } else {
-            yield put(deleteDeviceError("Some thing was wrong!"));
-            console.log(error);
-        }
+        const errors = handlerError(error, history);
+        yield put(deleteDeviceError(errors));
     }
 }
 
