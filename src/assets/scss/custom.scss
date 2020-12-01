@@ -84,6 +84,34 @@
             height: 100%;
         }
     }
+    .waspmote-content {
+        margin-top: 5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 9px;
+        border: solid 1px #a8b7a8;
+        border-radius: 5px;
+        .waspmote-content-column {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 100%;
+            flex: 1;
+        }
+        .waspmote-content-left {
+            i {
+                margin-right: 5px;
+            }
+        }
+        .waspmote-content-right-row {
+            margin-left: auto;
+            span {
+                margin-right: 5px;
+            }
+        }
+    }
 }
 .image-field-col {
     display: flex;

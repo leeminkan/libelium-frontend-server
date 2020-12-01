@@ -47,7 +47,6 @@ class Dashboard extends Component {
   }
   
   componentWillUnmount() {
-    console.log("xx");
     this.props.resetDashboard();
   }
 
@@ -64,11 +63,26 @@ class Dashboard extends Component {
                 <div className="waspmote-img">
                   <img src={device.image ? util.parseUrlImage(device.image) : waspmote} alt="" />
                 </div>
-                <div className="pt-2">
-                  <span>{device.waspmote_id + ' - ' + device.name}</span>
-                  <div className="float-right">
-                      <i className="mdi mdi mdi-battery-90 h5"></i>
+                <div className="waspmote-content">
+                  <div className="waspmote-content-left waspmote-content-column">
+                    <div className="waspmote-content-left-row">
+                      <i className="mdi mdi-information h5"></i>
+                      <span>{device.name}</span>
+                    </div>
+                    <div className="waspmote-content-left-row">
+                      <i className="mdi mdi-music-accidental-sharp h5"></i>
+                      <span>{device.waspmote_id}</span>
+                    </div>
+                  </div>
+                  <div className="waspmote-content-right waspmote-content-column">
+                    <div className="waspmote-content-right-row">
                       <span>{device.battery + '%'}</span>
+                      <i className="mdi mdi mdi-battery-90 h5"></i>
+                    </div>
+                    <div className="waspmote-content-right-row">
+                      <span>{device.count_sensors}</span>
+                      <i className="fas fa-microchip h5"></i>
+                    </div>
                   </div>
                 </div>
               </CardBody>
