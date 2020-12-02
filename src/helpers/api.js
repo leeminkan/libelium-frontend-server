@@ -248,6 +248,49 @@ const apiDataCollections = (pagination, sort, filter) => {
     return response;
 }
 
+const apiExportDataCollections = (pagination, sort, filter, type) => {
+    const token = localStorage.getItem('token');
+    let apiQuery = `${serverUrl}${api.apiDataCollections}/export`;
+    if (pagination) {
+        let page = pagination.page ? pagination.page : 1;
+        apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
+    }
+
+    if (sort) {
+        apiQuery += apiQuery.includes("?") ? '&' : '?';
+        apiQuery += `order_by=${sort.order_by}&order=${sort.order}`;
+    }
+
+    let queryFilter = {match:"and",rules:[]};
+
+    Object.keys(filter).forEach(function(key) {
+        if (filter[key].value !== "") {
+            queryFilter.rules.push({
+                field: key, 
+                operator: "like",
+                value: `%${filter[key].value}%`
+            });
+        }
+    });
+
+    if (queryFilter.rules.length > 0) {
+        apiQuery += "&filters=" + JSON.stringify(queryFilter);
+    }
+
+    if (config.export.acceptType.includes(type)) {
+        apiQuery += "&type=" + type;
+    }
+
+    const response = axios.get(apiQuery, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        },
+        responseType: 'blob',
+    });
+
+    return response;
+}
+
 const apiSetting = () => {
     const token = localStorage.getItem('token');
     const response = axios.get(`${serverUrl}${api.apiSetting}`, {
@@ -293,7 +336,8 @@ const apiGetTemperature = (pagination) => {
 
 export { 
     apiGetDisplayedDevices, 
-    apiDataCollections, 
+    apiDataCollections,
+    apiExportDataCollections, 
     apiSetting, 
     apiUpdateSetting, 
     apiGetTemperature, 

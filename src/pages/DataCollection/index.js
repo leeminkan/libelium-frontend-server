@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Table, Card, CardBody, 
   InputGroup, InputGroupAddon, InputGroupText, 
-  Input, Form, Modal, FormGroup, Label  } from "reactstrap";
+  Input, Form, Modal, FormGroup, Label, Button  } from "reactstrap";
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 
@@ -9,11 +9,12 @@ import TableLoader from "../../components/TableLoader"
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDataCollection, updateState } from "../../store/actions";
+import { getDataCollection, updateState, exportDataCollection } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 
 import PaginationBar from '../../components/PaginationBar/PaginationBar';
+import config from '../../config';
 
 class DataCollection extends Component {
   constructor(props) {
@@ -44,6 +45,10 @@ class DataCollection extends Component {
           label: "Time",
           field: "created_at"
         },
+      ],
+      exportTypes: [
+        'csv',
+        'xlsx'
       ]
     };
   }
@@ -59,6 +64,14 @@ class DataCollection extends Component {
     
     this.props.updateState({
       showAddFilterModal: !showAddFilterModal
+    });
+  }
+
+  toggleExportModal = () => {
+    let { showExportModal } = this.props;
+    
+    this.props.updateState({
+      showExportModal: !showExportModal
     });
   }
 
@@ -120,6 +133,16 @@ class DataCollection extends Component {
     });
   }
 
+  handleChangeRadioExport = (e) => {
+
+    let value = String(e.target.id).replace('radio_id_', '');
+    this.handleOnclickExport(value);
+
+    this.props.updateState({
+      showExportModal: false
+    });
+  }
+
   handleChangeFilter = (e) => {
     let { filter, change } = this.props;
     const findIndex = String(e.target.id).replace('input_filter_', '');
@@ -149,6 +172,11 @@ class DataCollection extends Component {
       filter,
       change: change
     });
+  }
+
+  handleOnclickExport = (type = null) => {
+    const { history, meta, sort, filter } = this.props;
+    this.props.exportDataCollection(history, meta, sort, filter, type);
   }
 
   renderDataCollection = () => {
@@ -244,6 +272,12 @@ class DataCollection extends Component {
                         filterView
                       }
                     </div>
+                    <div className="data-collection-container-action">
+                      <Button 
+                        onClick={this.toggleExportModal}>
+                          Export
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 <Table responsive className="table-lg data-collection-table">
@@ -302,9 +336,10 @@ class DataCollection extends Component {
   }
 
   render() {
-    const { showAddFilterModal, filter } = this.props;
+    const { showAddFilterModal, showExportModal, filter } = this.props;
     const { columns } = this.state;
     let radioFilterView = [];
+    let radioExportTypeView = [];
     columns.forEach((column, index) => {
       if (!filter[column.field])
       {
@@ -319,6 +354,18 @@ class DataCollection extends Component {
           </FormGroup>
         );
       }
+    });
+    config.export.acceptType.forEach((value, index) => {
+      radioExportTypeView.push(
+        <FormGroup key={'formgroup_'+value} check>
+          <Label check>
+            <Input 
+            onChange={this.handleChangeRadioExport}
+            type="radio" name="radio_field" value={value} id={"radio_id_" + value} />{' '}
+            {value}
+          </Label>
+        </FormGroup>
+      );
     });
     return (
       <React.Fragment>
@@ -365,6 +412,34 @@ class DataCollection extends Component {
               </Form>
             </div>
           </Modal>
+          
+          <Modal
+            isOpen={showExportModal}
+            toggle={this.toggleExportModal}
+          >
+            <div className="modal-header">
+              <h5 className="modal-title mt-0">Export</h5>
+              <button
+                type="button"
+                onClick={this.toggleExportModal}
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <Form>
+                <FormGroup tag="fieldset" row>
+                  <Col sm={12}>
+                    <legend className="col-form-label col-sm-6">Choose type to export:</legend>
+                    {radioExportTypeView}
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+          </Modal>
         </div>
       </React.Fragment>
     );
@@ -375,4 +450,4 @@ const mapStatetoProps = state => {
   return state.DataCollection;
 };
 
-export default withRouter(connect(mapStatetoProps, { getDataCollection, updateState })(DataCollection));
+export default withRouter(connect(mapStatetoProps, { getDataCollection, updateState, exportDataCollection })(DataCollection));
