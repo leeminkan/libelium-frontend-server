@@ -193,6 +193,7 @@ class DataCollection extends Component {
       { value: 5, label: 5 },
       { value: 10, label: 10 },
       { value: 20, label: 20 },
+      { value: null, label: 'All' },
     ];
 
     let colgroupView = [];
