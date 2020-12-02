@@ -15,6 +15,7 @@ import { getDisplayedDevices, resetDashboard } from "../../store/actions";
 
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
+import ChartView from "./chart-view";
 
 const responsive = {
   superLargeDesktop: {
@@ -114,6 +115,7 @@ class Dashboard extends Component {
           <Carousel responsive={responsive}>
             {this.renderDevices()}
           </Carousel>
+          <ChartView></ChartView>
         </div>
       </React.Fragment>
     );

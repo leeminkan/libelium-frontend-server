@@ -25,3 +25,4 @@ export * from './deviceInfo/actions';
 
 export * from './sensor/actions';
 export * from './sensorInfo/actions';
+export * from './chartData/actions';
