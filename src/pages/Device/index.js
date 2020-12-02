@@ -594,7 +594,7 @@ class Device extends Component {
                 onClick={() => {
                   this.deleteDevice(deviceIdToDelete);
                 }}
-                disabled={loading.DELETE_DEVICE ? 1 : 0}
+                disabled={loading.DELETE_DEVICE ? true : false}
               >
               {
                 loading.DELETE_DEVICE 
@@ -610,7 +610,7 @@ class Device extends Component {
                 onClick={() => {
                   this.toggleDeleteDeviceModal(0);
                 }}
-                disabled={loading.DELETE_DEVICE ? 1 : 0}
+                disabled={loading.DELETE_DEVICE ? true : false}
               >
                 {
                   loading.DELETE_DEVICE 

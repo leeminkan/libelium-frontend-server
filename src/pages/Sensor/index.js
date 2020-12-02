@@ -492,7 +492,7 @@ class Sensor extends Component {
                 onClick={() => {
                   this.deleteSensor(sensorIdToDelete);
                 }}
-                disabled={loading.DELETE_SENSOR ? 1 : 0}
+                disabled={loading.DELETE_SENSOR ? true : false}
               >
               {
                 loading.DELETE_SENSOR 
@@ -508,7 +508,7 @@ class Sensor extends Component {
                 onClick={() => {
                   this.toggleDeleteSensorModal(0);
                 }}
-                disabled={loading.DELETE_SENSOR ? 1 : 0}
+                disabled={loading.DELETE_SENSOR ? true : false}
               >
                 {
                   loading.DELETE_SENSOR 

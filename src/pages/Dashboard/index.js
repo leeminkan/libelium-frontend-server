@@ -58,7 +58,7 @@ class Dashboard extends Component {
         // the array is defined and has at least one element
         devicesData.forEach(device => {
           view.push(
-            <Card className="waspmote bg-primary text-white">
+            <Card key={device.id} className="waspmote bg-primary text-white">
               <CardBody>
                 <div className="waspmote-img">
                   <img src={device.image ? util.parseUrlImage(device.image) : waspmote} alt="" />
