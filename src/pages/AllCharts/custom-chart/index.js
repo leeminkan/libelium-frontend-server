@@ -10,7 +10,7 @@ import { getChartData } from "../../../store/actions";
 class CustomChart extends Component {
 
     componentDidMount() {
-      this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key);
+      this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit);
     }
 
     render() {

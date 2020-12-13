@@ -44,7 +44,7 @@ class ChartView extends Component {
                     <Col key={item.waspmote_id + sensor.key} lg={6}>
                         <Card>
                             <CardBody>
-                                <CustomChart waspmote_id={item.waspmote_id} sensor_key={sensor.key}></CustomChart>
+                                <CustomChart waspmote_id={item.waspmote_id} sensor_key={sensor.key} limit={10}></CustomChart>
                             </CardBody>
                         </Card>
                     </Col>
