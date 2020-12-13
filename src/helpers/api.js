@@ -213,8 +213,12 @@ const apiDataCollections = (pagination, sort, filter) => {
     const token = localStorage.getItem('token');
     let apiQuery = `${serverUrl}${api.apiDataCollections}`;
     if (pagination) {
-        let page = pagination.page ? pagination.page : 1;
-        apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
+        if (pagination.per_page) {
+            let page = pagination.page ? pagination.page : 1;
+            apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
+        } else {
+            apiQuery += `?pagination=0`;
+        }
     }
 
     if (sort) {
