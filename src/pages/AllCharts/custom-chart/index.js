@@ -10,7 +10,7 @@ import { getChartData } from "../../../store/actions";
 class CustomChart extends Component {
 
     componentDidMount() {
-      this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit);
+      this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit, this.props.sort);
     }
 
     render() {
@@ -28,7 +28,7 @@ class CustomChart extends Component {
         }
         return (
             <React.Fragment>
-                <LineChart label={label} labels={labels} data={data}></LineChart>
+                <LineChart label={label} labels={labels} data={this.props.reverse ? data.reverse() : data}></LineChart>
             </React.Fragment>
         );
     }

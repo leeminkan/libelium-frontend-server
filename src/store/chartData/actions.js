@@ -4,10 +4,10 @@ import {
     GET_CHART_DATA_ERROR
  } from './actionTypes';
 
-export const getChartData = (history, waspmote_id, sensor_key, limit) => {
+export const getChartData = (history, waspmote_id, sensor_key, limit, sort) => {
     return {
         type: GET_CHART_DATA,
-        payload: {history, waspmote_id, sensor_key, limit}
+        payload: {history, waspmote_id, sensor_key, limit, sort}
     }
 }
 

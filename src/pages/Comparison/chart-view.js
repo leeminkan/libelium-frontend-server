@@ -43,7 +43,7 @@ class CompareChartView extends Component {
                     <Col key={waspmote_id + sensor_key} lg={6}>
                         <Card>
                             <CardBody>
-                                <CustomChart waspmote_id={waspmote_id} sensor_key={sensor_key}></CustomChart>
+                                <CustomChart waspmote_id={waspmote_id} sensor_key={sensor_key} sort={'asc'}></CustomChart>
                             </CardBody>
                         </Card>
                     </Col>

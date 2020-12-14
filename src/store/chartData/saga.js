@@ -10,13 +10,13 @@ import { apiDataCollections } from '../../helpers/api';
 
 import { handlerError } from '../../helpers/sagaUtils';
 
-function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit } }) {
+function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit, sort } }) {
     try {
         const response = yield call(apiDataCollections, limit ? {
             per_page: limit
         } : {}, {
             order_by: 'created_at',
-            order: 'asc'
+            order: sort ? sort : 'desc'
         }, {
             waspmote_id: {
                 column: 'Waspmote ID',
