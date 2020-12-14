@@ -14,17 +14,19 @@ function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit 
     try {
         const response = yield call(apiDataCollections, limit ? {
             per_page: limit
-        } : null, {
+        } : {}, {
             order_by: 'created_at',
             order: 'asc'
         }, {
             waspmote_id: {
                 column: 'Waspmote ID',
-                value: waspmote_id
+                value: waspmote_id,
+                operator: "="
             },
             sensor_key: {
                 column: 'Sensor Key',
-                value: sensor_key
+                value: sensor_key,
+                operator: "="
             }
         });
         yield put(getChartDataSuccess(waspmote_id, sensor_key, response.data.data));

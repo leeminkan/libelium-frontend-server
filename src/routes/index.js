@@ -13,6 +13,7 @@ import Dashboard from "../pages/Dashboard";
 import DataCollection from "../pages/DataCollection";
 import Setting from "../pages/Setting";
 import TemperatureChart from "../pages/TemperatureChart";
+import Comparison from "../pages/Comparison";
 import DeviceInfo from "../pages/Device/device-info";
 import Device from "../pages/Device";
 import SensorInfo from "../pages/Sensor/sensor-info";
@@ -188,6 +189,7 @@ const authProtectedRoutes = [
   { path: "/data-collection", component: DataCollection },
   { path: "/setting", component: Setting },
   { path: "/temperature-chart", component: TemperatureChart },
+  { path: "/comparision", component: Comparison },
   { path: "/device/:id", component: DeviceInfo },
   { path: "/device", component: Device },
   { path: "/sensor/:id", component: SensorInfo },

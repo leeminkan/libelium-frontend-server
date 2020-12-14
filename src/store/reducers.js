@@ -16,6 +16,7 @@ import DeviceInfo from "./deviceInfo/reducer";
 import Sensor from "./sensor/reducer";
 import SensorInfo from "./sensorInfo/reducer";
 import ChartData from "./chartData/reducer";
+import Comparision from "./comparision/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   DeviceInfo,
   Sensor,
   SensorInfo,
-  ChartData
+  ChartData,
+  Comparision
 });
 
 export default rootReducer;

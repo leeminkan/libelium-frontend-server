@@ -232,8 +232,8 @@ const apiDataCollections = (pagination, sort, filter) => {
         if (filter[key].value !== "") {
             queryFilter.rules.push({
                 field: key, 
-                operator: "like",
-                value: `%${filter[key].value}%`
+                operator: filter[key].operator ? filter[key].operator : "like",
+                value: filter[key].operator ? filter[key].value : `%${filter[key].value}%`
             });
         }
     });
@@ -307,6 +307,18 @@ const apiSetting = () => {
     return response;
 }
 
+const apiComparisionPageSetting = () => {
+    const token = localStorage.getItem('token');
+    const response = axios.get(`${serverUrl}${api.apiSetting}/comparision-page`, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 const apiUpdateSetting = (data) => {
     const token = localStorage.getItem('token');
     const response = axios.put(`${serverUrl}${api.apiSetting}`, JSON.stringify(data), {
@@ -343,6 +355,7 @@ export {
     apiDataCollections,
     apiExportDataCollections, 
     apiSetting, 
+    apiComparisionPageSetting,
     apiUpdateSetting, 
     apiGetTemperature, 
     apiDevices, 

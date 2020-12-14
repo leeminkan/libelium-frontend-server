@@ -14,6 +14,7 @@ import DeviceInfoSaga from './deviceInfo/saga';
 import SensorSaga from './sensor/saga';
 import SensorInfoSaga from './sensorInfo/saga';
 import ChartDataSaga from './chartData/saga';
+import ComparisionSaga from './comparision/saga';
 
 
 export default function* rootSaga() {
@@ -31,6 +32,7 @@ export default function* rootSaga() {
         DeviceInfoSaga(),
         SensorSaga(),
         SensorInfoSaga(),
-        ChartDataSaga()
+        ChartDataSaga(),
+        ComparisionSaga()
     ])
 }

@@ -51,6 +51,13 @@ const SidebarContent = props => {
             <span>Temperature Chart</span>
           </Link>
         </li>
+        
+        <li>
+          <Link to="/comparision" className=" waves-effect">
+            <i className="ti-bar-chart"></i>
+            <span>Comparision</span>
+          </Link>
+        </li>
 
 
         <li className="menu-title">Components</li>
