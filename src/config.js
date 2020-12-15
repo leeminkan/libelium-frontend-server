@@ -7,7 +7,8 @@ var config = {
     'apiGetDevices':"/devices",
     'apiGetSensors':"/sensors",
     'apiDataCollections':"/data-collections",
-    'apiSetting':"/settings"
+    'apiSetting':"/settings",
+    'apiAlgorithmParameter':"/algorithm-parameters"
   },
   'export': {
     'acceptType': ["csv", "xlsx", "tsv", "ods", "xls", "html", "mpdf", "dompdf", "tcpdf"]

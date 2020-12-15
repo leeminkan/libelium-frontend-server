@@ -350,6 +350,20 @@ const apiGetTemperature = (pagination) => {
     return response;
 }
 
+const apiGetAllAlgorithmParameter = () => {
+    const token = localStorage.getItem('token');
+    let apiQuery = `${serverUrl}${api.apiAlgorithmParameter}/get-all`;
+
+    const response = axios.get(apiQuery, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 export { 
     apiGetDisplayedDevices, 
     apiDataCollections,
@@ -368,5 +382,6 @@ export {
     apiAddDevice,
     apiAddSensor,
     apiDeleteSensor,
-    apiDeleteDevice
+    apiDeleteDevice,
+    apiGetAllAlgorithmParameter
 };

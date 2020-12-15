@@ -37,6 +37,13 @@ const SidebarContent = props => {
             <span>Data Collection</span>
           </Link>
         </li>
+
+        <li>
+          <Link to="/algorithm-parameter" className=" waves-effect">
+            <i className="ti-receipt"></i>
+            <span>Algorithm Parameter</span>
+          </Link>
+        </li>
         
         <li>
           <Link to="/setting" className=" waves-effect">

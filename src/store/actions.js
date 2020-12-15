@@ -27,3 +27,4 @@ export * from './sensor/actions';
 export * from './sensorInfo/actions';
 export * from './chartData/actions';
 export * from './comparision/actions';
+export * from './algorithmParameter/actions';
