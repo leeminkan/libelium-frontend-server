@@ -33,7 +33,9 @@ class AlgorithmParameter extends Component {
               </div>
             </Col>
           </Row>
-          <CardView></CardView>
+          <Row>
+            <CardView></CardView>
+          </Row>
         </div>
       </React.Fragment>
     );
