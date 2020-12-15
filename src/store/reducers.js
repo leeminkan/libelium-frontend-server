@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { reducer as form } from 'redux-form'
 
 // Front
 import Layout from "./layout/reducer";
@@ -20,6 +21,7 @@ import Comparision from "./comparision/reducer";
 import AlgorithmParameter from "./algorithmParameter/reducer";
 
 const rootReducer = combineReducers({
+  form,
   // public
   Layout,
   Login,
