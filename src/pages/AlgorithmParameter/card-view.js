@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import AlgorithmParameterForm from '../../components/Form/AlgorithmParameter';
 
+// actions
+import { addAlgorithmParameter } from "../../store/actions";
 
 class CardView extends Component {
 
@@ -37,10 +39,24 @@ class CardView extends Component {
     renderCards = () => {
         let cardView = [];
 
-        this.props.data.forEach((item) => {
+        this.props.devices.forEach((item) => {
+            let finded = this.props.data.find(e => {
+                return e.waspmote_id === item.waspmote_id;
+            })
+            
+            const initialValues = finded ? {
+                waspmote_id: item.waspmote_id,
+                window_size: finded.window_size,
+                saving_level: finded.saving_level,
+                time_base: finded.time_base,
+                is_disabled: finded.is_disabled,
+            } : {
+                waspmote_id: item.waspmote_id,
+            };
+
             cardView.push(
-                <Col sm={6}>
-                    <Card className="algorithm-parameter-card" key={item.waspmote_id}>
+                <Col key={item.waspmote_id} sm={6}>
+                    <Card className="algorithm-parameter-card">
                         <CardHeader>
                             <div onClick={() => {
                                 this.collapse(item.waspmote_id)
@@ -52,16 +68,14 @@ class CardView extends Component {
                             <Collapse isOpen={!this.state.collapse.includes(item.waspmote_id)}>
                                 <Row>
                                     <AlgorithmParameterForm 
-                                        onSubmit={(values ) => {
+                                        onSubmit={(values) => {
                                         console.log(values);
+                                        this.props.addAlgorithmParameter(this.props.history, values, item.waspmote_id)
                                     }}
+                                        waspmote_id={item.waspmote_id}
                                         form={`AlgorithmParameter_${item.waspmote_id}`}
-                                        initialValues={{
-                                            window_size: item.window_size,
-                                            saving_level: item.saving_level,
-                                            time_base: item.time_base,
-                                            is_disabled: item.is_disabled,
-                                        }}/>
+                                        initialValues={initialValues}
+                                        loading={this.props.loading[`ADD_ALGORITHM_PARAMETER_${item.waspmote_id}`]}/>
                                 </Row>
                             </Collapse>
                         </CardBody>
@@ -84,8 +98,8 @@ class CardView extends Component {
 }
 
 const mapStatetoProps = state => {
-    return state.AlgorithmParameter;
+    return {...state.AlgorithmParameter, devices: state.Device.data};
 };
   
-export default withRouter(connect(mapStatetoProps, { })(CardView));
+export default withRouter(connect(mapStatetoProps, { addAlgorithmParameter })(CardView));
 

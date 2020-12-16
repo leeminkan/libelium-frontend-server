@@ -50,9 +50,17 @@ const renderCheckbox = ({ input, label }) => (
   )
 
 const AlgorithmParameter = props => {
-  const { handleSubmit, pristine, submitting } = props
+  const { handleSubmit, loading } = props
+  
   return (
     <form onSubmit={handleSubmit}>
+      <div className="hide">
+        <Field
+          name="waspmote_id"
+          component={renderTextField}
+          label="Waspmote id"
+        />
+      </div>
       <div>
         <Field
           name="window_size"
@@ -84,7 +92,7 @@ const AlgorithmParameter = props => {
         <Field name="is_disabled" component={renderCheckbox} label="Disable" />
       </div>
       <div>
-        <button type="submit" disabled={pristine || submitting}>
+        <button type="submit" disabled={loading}>
           Submit
         </button>
       </div>

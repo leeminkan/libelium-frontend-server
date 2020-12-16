@@ -8,13 +8,14 @@ import { withRouter } from "react-router-dom";
 
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
-import { getAllAlgorithmParameter } from "../../store/actions";
+import { getAllAlgorithmParameter, getDevice } from "../../store/actions";
 import CardView from "./card-view"
 
 class AlgorithmParameter extends Component {
 
   componentDidMount() {
     this.props.getAllAlgorithmParameter();
+    this.props.getDevice(this.props.history, { }, { }, { });
   }
 
   render() {
@@ -46,4 +47,4 @@ const mapStatetoProps = state => {
   return state.AlgorithmParameter;
 };
 
-export default withRouter(connect(mapStatetoProps, { getAllAlgorithmParameter })(AlgorithmParameter));
+export default withRouter(connect(mapStatetoProps, { getAllAlgorithmParameter, getDevice })(AlgorithmParameter));
