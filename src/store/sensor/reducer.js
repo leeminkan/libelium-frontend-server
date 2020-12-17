@@ -12,7 +12,6 @@ import { GET_SENSOR, GET_SENSOR_SUCCESS,
 const initialState = {
     errors: null,
     loading: {
-        GET_SENSOR: false,
         ADD_SENSOR: false,
         DELETE_SENSOR: false
     },

@@ -3,7 +3,6 @@ import { GET_SETTING, GET_SETTING_SUCCESS, GET_SETTING_ERROR, UPDATE_SETTING, UP
 const initialState = {
     errors: null,
     loading: {
-        GET_SETTING: false,
         UPDATE_SETTING: false
     },
     data: {

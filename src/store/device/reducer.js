@@ -17,7 +17,6 @@ import {
 const initialState = {
     errors: null,
     loading: {
-        GET_DEVICE: false,
         ADD_DEVICE: false,
         DELETE_DEVICE: false
     },
