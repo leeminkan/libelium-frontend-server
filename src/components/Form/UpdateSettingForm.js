@@ -41,7 +41,7 @@ class UpdateSettingForm extends Component {
             label="Sensors"
             options={{
                 fields: {
-                    value: 'id',
+                    value: 'key',
                     label: 'name'
                 },
                 samples: sampleSensors,

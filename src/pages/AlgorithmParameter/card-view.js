@@ -8,6 +8,8 @@ import AlgorithmParameterForm from '../../components/Form/AlgorithmParameter';
 // actions
 import { addAlgorithmParameter } from "../../store/actions";
 
+import Loader from '../../components/ThreeDotsLoader'
+
 class CardView extends Component {
 
     constructor(props) {
@@ -91,14 +93,28 @@ class CardView extends Component {
 
         return (
             <React.Fragment>
-                {this.renderCards()}
+                {
+                    this.props.loading.GET_ALL_ALGORITHM_PARAMETER === false &&
+                    this.props.loading.GET_DEVICE === false ? 
+                    this.renderCards() :
+                    <div className="wrapper-item-center">
+                        <Loader/>
+                    </div>
+                }
             </React.Fragment>
         );
     }
 }
 
 const mapStatetoProps = state => {
-    return {...state.AlgorithmParameter, devices: state.Device.data};
+    return {
+        ...state.AlgorithmParameter, 
+        devices: state.Device.data,
+        loading: {
+          ...state.Device.loading,
+          ...state.AlgorithmParameter.loading,
+        }
+    };
 };
   
 export default withRouter(connect(mapStatetoProps, { addAlgorithmParameter })(CardView));
