@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import Button from '@material-ui/core/Button'
 
 const validate = values => {
   const errors = {}
@@ -59,43 +60,53 @@ const AlgorithmParameter = props => {
           name="waspmote_id"
           component={renderTextField}
           label="Waspmote id"
+          style = {{width: 250}}
         />
       </div>
-      <div>
+      <div className="form-field">
         <Field
           name="window_size"
           component={renderTextField}
           label="Window size"
           type="number"
           step="any"
+          style = {{width: 250}}
         />
       </div>
-      <div>
+      <div className="form-field">
         <Field
           name="saving_level"
           component={renderTextField}
           label="Saving level"
           type="number"
           step="any"
+          style = {{width: 250}}
         />
       </div>
-      <div>
+      <div className="form-field">
         <Field
           name="time_base"
           component={renderTextField}
           label="Time base"
           type="number"
           step="any"
+          style = {{width: 250}}
         />
       </div>
-      <div>
+      <div className="form-field">
         <Field name="is_disabled" component={renderCheckbox} label="Disable" />
       </div>
-      <div>
-        <button type="submit" disabled={loading}>
-          Submit
-        </button>
-      </div>
+      
+      <div className="wrapper-item-center">
+          <Button 
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={loading}
+          >
+            Save
+          </Button>
+        </div>
     </form>
   )
 }

@@ -34,37 +34,43 @@ class UpdateSettingForm extends Component {
     
     return (
       <form onSubmit={handleSubmit}>
-        <div className="form-field">
-          <Field
-            name="sensors"
-            component={ChooseField}
-            label="Sensors"
-            options={{
-                fields: {
-                    value: 'key',
-                    label: 'name'
-                },
-                samples: sampleSensors,
-                defaultValue: sensors,
-            }}
-            style = {{width: 500}}
-          />
+        <div className="form-session-header">
+          <div className="form-session-header-line"></div>
+          <span>Comparision Page Setting</span>
         </div>
-        <div className="form-field">
-          <Field
-            name="waspmote_ids"
-            component={ChooseField}
-            label="Devices"
-            options={{
-                fields: {
-                    value: 'waspmote_id',
-                    label: 'name'
-                },
-                samples: sampleDevices,
-                defaultValue: waspmote_ids,
-            }}
-            style = {{width: 500}}
-          />
+        <div className="form-session-body">
+          <div className="form-field">
+            <Field
+              name="sensors"
+              component={ChooseField}
+              label="Sensors"
+              options={{
+                  fields: {
+                      value: 'key',
+                      label: 'name'
+                  },
+                  samples: sampleSensors,
+                  defaultValue: sensors,
+              }}
+              style = {{width: 500}}
+            />
+          </div>
+          <div className="form-field">
+            <Field
+              name="waspmote_ids"
+              component={ChooseField}
+              label="Devices"
+              options={{
+                  fields: {
+                      value: 'waspmote_id',
+                      label: 'name'
+                  },
+                  samples: sampleDevices,
+                  defaultValue: waspmote_ids,
+              }}
+              style = {{width: 500}}
+            />
+          </div>
         </div>
         <div className="wrapper-item-center">
           <Button 
@@ -73,7 +79,7 @@ class UpdateSettingForm extends Component {
             color="primary"
             disabled={submitting}
           >
-            Submit
+            Save
           </Button>
         </div>
       </form>
