@@ -72,7 +72,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts --max_old_space_size=4096 build",
-    "build:prod": "npm run build:clean && npm run build && npm run public:clean && npm run public:export",
+    "build:prod": "npm install && npm run build:clean && npm run build && npm run public:clean && npm run public:export",
     "build:clean": "rimraf ./build",
     "public:export": "node scripts/copy-build-to-public.js",
     "public:clean": "rimraf ../public/dashboard",
