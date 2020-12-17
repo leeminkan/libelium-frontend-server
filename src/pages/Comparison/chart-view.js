@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import CustomChart from '../AllCharts/custom-chart';
 
+import Loader from '../../components/ThreeDotsLoader'
+
 class CompareChartView extends Component {
 
     constructor(props) {
@@ -80,7 +82,13 @@ class CompareChartView extends Component {
 
         return (
             <React.Fragment>
-                {this.renderCharts()}
+                {
+                    this.props.loading.GET_COMPARISION_PAGE_SETTING === false ? 
+                    this.renderCharts() :
+                    <div className="wrapper-item-center">
+                        <Loader/>
+                    </div>
+                }
             </React.Fragment>
         );
     }

@@ -11,6 +11,7 @@ import ForgetPwd from "../pages/Authentication/FogetPassword";
 
 import Dashboard from "../pages/Dashboard";
 import DataCollection from "../pages/DataCollection";
+import AlgorithmParameter from "../pages/AlgorithmParameter";
 import Setting from "../pages/Setting";
 import TemperatureChart from "../pages/TemperatureChart";
 import Comparison from "../pages/Comparison";
@@ -187,6 +188,7 @@ const authProtectedRoutes = [
 
   { path: "/dashboard", component: Dashboard },
   { path: "/data-collection", component: DataCollection },
+  { path: "/algorithm-parameter", component: AlgorithmParameter },
   { path: "/setting", component: Setting },
   { path: "/temperature-chart", component: TemperatureChart },
   { path: "/comparision", component: Comparison },

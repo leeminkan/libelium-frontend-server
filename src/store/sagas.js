@@ -15,6 +15,7 @@ import SensorSaga from './sensor/saga';
 import SensorInfoSaga from './sensorInfo/saga';
 import ChartDataSaga from './chartData/saga';
 import ComparisionSaga from './comparision/saga';
+import AlgorithmParameterSaga from './algorithmParameter/saga';
 
 
 export default function* rootSaga() {
@@ -33,6 +34,7 @@ export default function* rootSaga() {
         SensorSaga(),
         SensorInfoSaga(),
         ChartDataSaga(),
-        ComparisionSaga()
+        ComparisionSaga(),
+        AlgorithmParameterSaga()
     ])
 }

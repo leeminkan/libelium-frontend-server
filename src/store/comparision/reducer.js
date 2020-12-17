@@ -7,7 +7,6 @@ import {
 const initialState = {
     errors: null,
     loading: {
-        GET_COMPARISION_PAGE_SETTING: false,
     },
     data: {
     },

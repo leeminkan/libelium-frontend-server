@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { Row, Col, Card, CardBody } from "reactstrap";
 import FormLoader from "../../components/FormLoader"
+
+import UpdateSettingForm from '../../components/Form/UpdateSettingForm';
 
 import "chartist/dist/scss/chartist.scss";
 // Redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getSetting, updateSetting } from "../../store/actions";
+import { getSetting, updateSetting, getDevice, getSensor } from "../../store/actions";
 
 class Setting extends Component {
   constructor(props) {
@@ -16,18 +17,30 @@ class Setting extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getSetting(this.props.history);
+    this.props.getDevice(this.props.history, { }, { }, { });
+    this.props.getSensor(this.props.history, { }, { }, { });
   }
 
-  handleSubmit = (event, errors, values) => {
-    if (errors.length === 0) {
-      this.props.updateSetting(this.props.history, values);
+  handleSubmit = (values) => {
+    let data = {
+      comparition_page: {
+        waspmote_ids: values.waspmote_ids,
+        sensors: values.sensors
+      }
     }
+    this.props.updateSetting(this.props.history, data);
   }
 
   render() {
-    const {saving_level, window_size, time_base} = this.props.data;
+    const { comparition_page } = this.props.data
+    const initialValues = {
+      sensors: comparition_page ? comparition_page.sensors : [],
+      sampleSensors: this.props.sensors,
+      waspmote_ids: comparition_page ? comparition_page.waspmote_ids : [],
+      sampleDevices: this.props.devices,
+    }
 
     return (
       <React.Fragment>
@@ -44,79 +57,22 @@ class Setting extends Component {
               </div>
             </Col>
           </Row>
-          <Row>
-            <Col lg={12}>
+          <Row className="wrapper-item-center">
               <Card>
-                <CardBody>
+                <CardBody className="wrapper-item-center">
                   {
-                    this.props.loading.GET_SETTING ? 
-                  <FormLoader/> :
-                  <AvForm onSubmit={this.handleSubmit}>
-                    <AvField
-                      name="window_size"
-                      label="Window Size  "
-                      placeholder="Enter Window Size "
-                      value={window_size}
-                      type="number"
-                      errorMessage="Please Enter Window Size"
-                      validate={{
-                        required: { value: true },
-                        pattern: {
-                          value: "^[0-9]+$",
-                          errorMessage: "Window Size is invalid"
-                        }
-                      }}
-                    />
-                    
-                    <AvField
-                      name="saving_level"
-                      label="Saving Level  "
-                      placeholder="Enter Saving Level "
-                      value={saving_level}
-                      type="number"
-                      errorMessage="Please Enter Saving Level"
-                      validate={{
-                        required: { value: true },
-                        pattern: {
-                          value: "^[0-9]+$",
-                          errorMessage: "Saving Level is invalid"
-                        }
-                      }}
-                    />
-                    
-                    <AvField
-                      name="time_base"
-                      label="Time base  "
-                      placeholder="Enter Time base "
-                      value={time_base}
-                      type="number"
-                      errorMessage="Please Enter Time base"
-                      validate={{
-                        required: { value: true },
-                        pattern: {
-                          value: "^[0-9]+$",
-                          errorMessage: "Time base is invalid"
-                        }
-                      }}
-                    />
-                    <FormGroup className="mb-0">
-                      <div>
-                        {
-                          this.props.loading.UPDATE_SETTING ? 
-                          <Button type="submit" className="mr-1">
-                            <Spinner size="sm" color="primary" />
-                          </Button> :
-                          <Button type="submit" color="primary" className="mr-1">
-                            Save
-                          </Button>
-                        }
-                      </div>
-                    </FormGroup>
-                  </AvForm>
+                    this.props.loading.GET_SETTING === false &&
+                    this.props.loading.GET_DEVICE === false &&
+                    this.props.loading.GET_SENSOR === false  ? 
+                    <UpdateSettingForm 
+                        onSubmit={this.handleSubmit}
+                        initialValues={initialValues}
+                        loading={this.props.loading.UPDATE_SETTING}/>
+                    :
+                    <FormLoader/>
                   }
                 </CardBody>
               </Card>
-            </Col>
           </Row>
         </div>
       </React.Fragment>
@@ -126,8 +82,16 @@ class Setting extends Component {
 
 
 const mapStatetoProps = state => {
-  const { errors, loading, data } = state.Setting;
-  return { errors, loading, data };
+  return { 
+    ...state.Setting, 
+    devices: state.Device.data,
+    sensors: state.Sensor.data,
+    loading: {
+      ...state.Setting.loading,
+      ...state.Device.loading,
+      ...state.Sensor.loading,
+    }
+  };
 };
 
-export default withRouter(connect(mapStatetoProps, { getSetting, updateSetting })(Setting));
+export default withRouter(connect(mapStatetoProps, { getSetting, updateSetting, getDevice, getSensor })(Setting));
