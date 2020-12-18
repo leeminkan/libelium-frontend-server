@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, getFormValues } from 'redux-form'
+// Redux
+import { connect } from "react-redux";
 
 import Button from '@material-ui/core/Button'
 import ChooseField from './ChooseField'
+import ChooseOneField from './ChooseOneField'
 
 
 const validate = values => {
@@ -28,9 +31,14 @@ class UpdateSettingForm extends Component {
             sampleSensors,
             sensors,
             sampleDevices,
-            waspmote_ids
+            waspmote_ids,
+            waspmote_algorithm
         }
     } = this.props
+
+    const selectedDevices = sampleDevices.filter(option => {
+      return this.props.values.waspmote_ids.includes(option.waspmote_id)
+    });
     
     return (
       <form onSubmit={handleSubmit}>
@@ -71,6 +79,22 @@ class UpdateSettingForm extends Component {
               style = {{width: 500}}
             />
           </div>
+          <div className="form-field">
+            <Field
+              name="waspmote_algorithm"
+              component={ChooseOneField}
+              label="Device Algorithm"
+              options={{
+                  fields: {
+                      value: 'waspmote_id',
+                      label: 'name'
+                  },
+                  samples: selectedDevices,
+                  defaultValue: waspmote_algorithm,
+              }}
+              style = {{width: 500}}
+            />
+          </div>
         </div>
         <div className="wrapper-item-center">
           <Button 
@@ -86,6 +110,10 @@ class UpdateSettingForm extends Component {
     )
   }
 }
+
+UpdateSettingForm = connect(state => ({
+  values: getFormValues('UpdateSettingForm')(state),
+}))(UpdateSettingForm)
 
 export default reduxForm({
   form: 'UpdateSettingForm',

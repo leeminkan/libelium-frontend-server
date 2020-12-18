@@ -2,6 +2,7 @@ import {
     GET_COMPARISION_PAGE_SETTING, 
     GET_COMPARISION_PAGE_SETTING_SUCCESS, 
     GET_COMPARISION_PAGE_SETTING_ERROR,
+    UPDATE_STATE_COMPARISION_PAGE,
 } from './actionTypes';
 
 const initialState = {
@@ -46,6 +47,9 @@ const comparision = (state = initialState, action) => {
                     GET_COMPARISION_PAGE_SETTING: false
                 }
             };
+            break;
+        case UPDATE_STATE_COMPARISION_PAGE:
+            state = { ...state, ...action.payload };
             break;
         default:
             state = { ...state };

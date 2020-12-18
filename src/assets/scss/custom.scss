@@ -189,6 +189,33 @@
     }
 }
 
+// Comparision Page Css
+.double-chart-wrapper {
+    .double-chart-child-wrapper {
+        .double-chart-child-header {
+            padding: 10px 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+
+    .double-chart-child-wrapper:last-child {
+        margin-top: 20px;
+    }
+}
+
+.single-chart-wrapper {
+    .single-chart-child-wrapper {
+        .single-chart-child-header {
+            padding: 10px 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+}
+
 // FORM CSS
 
 .form-session-header {

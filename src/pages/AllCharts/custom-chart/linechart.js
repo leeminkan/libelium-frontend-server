@@ -10,7 +10,8 @@ class LineChart extends Component {
                 {
                     label: this.props.label,
                     fill: true,
-                    data: this.props.data
+                    data: this.props.data,
+                    ...this.props.lineOptions
                 },
             ]
         };
@@ -30,7 +31,8 @@ class LineChart extends Component {
                 xAxes: [{
                     display: false //this will remove all the x-axis grid lines
                 }]
-            }
+            },
+            ...this.props.options
         }
         return (
             <React.Fragment>
