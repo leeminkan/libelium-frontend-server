@@ -9,12 +9,18 @@ import { withRouter } from "react-router-dom";
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
 import ChartView from "./chart-view";
-import { getComparisionPageSetting } from "../../store/actions";
+import { getComparisionPageSetting, updateStateComparisionPage } from "../../store/actions";
 
 class Comparison extends Component {
 
   componentDidMount() {
     this.props.getComparisionPageSetting();
+  }
+
+  componentWillUnmount() {
+    this.props.updateStateComparisionPage({
+      loading: {}
+    });
   }
 
   render() {
@@ -44,4 +50,4 @@ const mapStatetoProps = state => {
   return state.Comparison;
 };
 
-export default withRouter(connect(mapStatetoProps, { getComparisionPageSetting })(Comparison));
+export default withRouter(connect(mapStatetoProps, { getComparisionPageSetting, updateStateComparisionPage })(Comparison));
