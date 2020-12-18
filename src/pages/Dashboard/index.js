@@ -16,6 +16,7 @@ import { getDisplayedDevices, resetDashboard } from "../../store/actions";
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
 import ChartView from "./chart-view";
+import Loader from '../../components/ThreeDotsLoader'
 
 const responsive = {
   superLargeDesktop: {
@@ -112,10 +113,20 @@ class Dashboard extends Component {
               </div>
             </Col>
           </Row>
-          <Carousel responsive={responsive}>
-            {this.renderDevices()}
-          </Carousel>
-          <ChartView></ChartView>
+          {
+            this.props.loading.GET_DISPLAYED_DEVICES === false ? 
+            (
+              <React.Fragment>
+                <Carousel responsive={responsive}>
+                  {this.renderDevices()}
+                </Carousel>
+                <ChartView></ChartView>
+              </React.Fragment>
+            ) :
+            <div className="wrapper-item-center">
+                <Loader/>
+            </div>
+          }
         </div>
       </React.Fragment>
     );
@@ -123,8 +134,7 @@ class Dashboard extends Component {
 }
 
 const mapStatetoProps = state => {
-  const { errors, loading, devicesData } = state.Dashboard;
-  return { errors, loading, devicesData };
+  return state.Dashboard;
 };
 
 export default withRouter(connect(mapStatetoProps, { getDisplayedDevices, resetDashboard })(Dashboard));

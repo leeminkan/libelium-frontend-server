@@ -2,7 +2,9 @@ import { GET_DISPLAYED_DEVICES, GET_DISPLAYED_DEVICES_SUCCESS, GET_DISPLAYED_DEV
 
 const initialState = {
     errors: null,
-    loading: false,
+    loading: {
+
+    },
     devicesData: []
 }
 
@@ -11,18 +13,31 @@ const dashboard = (state = initialState, action) => {
         case GET_DISPLAYED_DEVICES:
             state = {
                 ...state,
-                loading: true
+                loading: {
+                    ...state.loading,
+                    GET_DISPLAYED_DEVICES: true
+                }
             }
             break;
         case GET_DISPLAYED_DEVICES_SUCCESS:
             state = {
                 ...state,
-                loading: false,
+                loading: {
+                    ...state.loading,
+                    GET_DISPLAYED_DEVICES: false
+                },
                 devicesData: action.payload
             }
             break;
         case GET_DISPLAYED_DEVICES_ERROR:
-            state = { ...state, errors: action.payload, loading: false };
+            state = { 
+                ...state, errors: 
+                action.payload,
+                loading: {
+                    ...state.loading,
+                    GET_DISPLAYED_DEVICES: false
+                },
+            };
             break;
         case RESET_DASHBOARD:
             state = initialState;
