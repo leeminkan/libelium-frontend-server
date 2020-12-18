@@ -27,7 +27,8 @@ class Setting extends Component {
     let data = {
       comparition_page: {
         waspmote_ids: values.waspmote_ids,
-        sensors: values.sensors
+        sensors: values.sensors,
+        waspmote_algorithm: values.waspmote_algorithm
       }
     }
     this.props.updateSetting(this.props.history, data);
@@ -40,6 +41,7 @@ class Setting extends Component {
       sampleSensors: this.props.sensors,
       waspmote_ids: comparition_page ? comparition_page.waspmote_ids : [],
       sampleDevices: this.props.devices,
+      waspmote_algorithm: comparition_page ? comparition_page.waspmote_algorithm : "",
     }
 
     return (
