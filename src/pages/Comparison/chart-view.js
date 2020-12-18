@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col, Collapse, Card, CardHeader, CardBody  } from "reactstrap";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
-import CustomChart from '../AllCharts/custom-chart';
+import SingleChart from '../AllCharts/custom-chart/single-chart';
+import DoubleChart from '../AllCharts/custom-chart/double-chart';
 
 import Loader from '../../components/ThreeDotsLoader'
 
@@ -35,7 +36,7 @@ class CompareChartView extends Component {
     }
 
     renderCharts = () => {
-        const { sensors, waspmote_ids } = this.props.setting;
+        const { sensors, waspmote_ids, waspmote_algorithm } = this.props.setting;
         let chartView = [];
 
         const renderSensorChart = (sensor_key) => {
@@ -44,8 +45,22 @@ class CompareChartView extends Component {
                 sensorChartView.push(
                     <Col key={waspmote_id + sensor_key} lg={6}>
                         <Card>
+                            <CardHeader>
+                                {waspmote_id}
+                            </CardHeader>
                             <CardBody>
-                                <CustomChart waspmote_id={waspmote_id} sensor_key={sensor_key} sort={'asc'}></CustomChart>
+                                {
+                                    waspmote_id === waspmote_algorithm ?
+                                    <DoubleChart 
+                                    waspmote_id={waspmote_id} 
+                                    sensor_key={sensor_key}
+                                    sort={'asc'}></DoubleChart>
+                                    :
+                                    <SingleChart 
+                                    waspmote_id={waspmote_id} 
+                                    sensor_key={sensor_key}
+                                    sort={'asc'}></SingleChart>
+                                }
                             </CardBody>
                         </Card>
                     </Col>
