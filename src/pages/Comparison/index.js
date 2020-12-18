@@ -47,7 +47,7 @@ class Comparison extends Component {
 }
 
 const mapStatetoProps = state => {
-  return state.Comparison;
+  return state.Comparision;
 };
 
 export default withRouter(connect(mapStatetoProps, { getComparisionPageSetting, updateStateComparisionPage })(Comparison));
