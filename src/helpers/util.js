@@ -13,3 +13,8 @@ export const parsePayloadToFormData = (payload) => {
 export const parseUrlImage = (image) => {
     return `${config.url}${image}`;
 }
+
+export const getAnotherValueFromArray = (array, columnReturn, columnCheck, checkValue) => {
+    let finded = array.find(item => item[columnCheck] === checkValue);
+    return finded ? finded[columnReturn] : null;
+}
