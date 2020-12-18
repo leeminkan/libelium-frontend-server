@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import ImageUploader from 'react-images-upload'
+import * as util from '../../helpers/util';
+// import images
+import waspmote from "../../assets/images/libelium/waspmote.png";
 
 export default class ImageUploadField  extends Component{
 
@@ -13,7 +16,6 @@ export default class ImageUploadField  extends Component{
   }
 
   render(){
-    const { input: { value } } = this.props
     const { 
       input, 
       label, 
@@ -23,15 +25,18 @@ export default class ImageUploadField  extends Component{
     } = this.props
     return(
      <div className="field-wrapper-custom" {...custom}>
-       <fieldset aria-hidden="true" class="PrivateNotchedOutline-root-1 MuiOutlinedInput-notchedOutline"><legend class="PrivateNotchedOutline-legendLabelled-3 PrivateNotchedOutline-legendNotched-4"><span>Name</span></legend></fieldset>
-        {label && (<label className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-filled">{label}</label>)}
-        <div class="image-field-row">
+        <div className="field-border">
+
+        </div>
+        {label && (<label className="label-type-2">{label}</label>)}
+          
+        <div className="image-field-row">
           <div className="image-field-col">
             <div className="image-wrapper">
               <img
                 id="image-preview"
                 className=""
-                src={default_src}
+                src={default_src ? util.parseUrlImage(default_src) : waspmote}
                 alt="device"
               />
             </div>
