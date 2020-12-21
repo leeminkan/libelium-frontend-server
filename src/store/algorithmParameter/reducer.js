@@ -10,7 +10,6 @@ import {
 const initialState = {
     errors: null,
     loading: {
-        GET_ALL_ALGORITHM_PARAMETER: false,
     },
     data: [],
 }

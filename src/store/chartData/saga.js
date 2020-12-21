@@ -10,14 +10,9 @@ import { apiDataCollections } from '../../helpers/api';
 
 import { handlerError } from '../../helpers/sagaUtils';
 
-function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit, sort } }) {
+function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit, sort, algorithm_parameter_id } }) {
     try {
-        const response = yield call(apiDataCollections, limit ? {
-            per_page: limit
-        } : {}, {
-            order_by: 'created_at',
-            order: sort ? sort : 'desc'
-        }, {
+        const filter = {
             waspmote_id: {
                 column: 'Waspmote ID',
                 value: waspmote_id,
@@ -32,7 +27,21 @@ function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit,
                 operator: '=',
                 value: '0',
             },
-        });
+        };
+
+        if (algorithm_parameter_id) {
+            filter.algorithm_parameter_id = {
+                operator: '=',
+                value: algorithm_parameter_id,
+            }
+        }
+        
+        const response = yield call(apiDataCollections, limit ? {
+            per_page: limit
+        } : {}, {
+            order_by: 'created_at',
+            order: sort ? sort : 'desc'
+        }, filter);
         yield put(getChartDataSuccess(waspmote_id, sensor_key, response.data.data));
     } catch (error) {
         const errors = handlerError(error, history);

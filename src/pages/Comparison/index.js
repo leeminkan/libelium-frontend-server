@@ -10,7 +10,7 @@ import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
 import ChartView from "./chart-view";
 
-import { getComparisionPageSetting, updateStateComparisionPage, getDevice, getSensor } from "../../store/actions";
+import { getComparisionPageSetting, updateStateComparisionPage, getDevice, getSensor, getAllAlgorithmParameter } from "../../store/actions";
 
 class Comparison extends Component {
 
@@ -18,6 +18,7 @@ class Comparison extends Component {
     this.props.getComparisionPageSetting();
     this.props.getDevice(this.props.history, { }, { }, { });
     this.props.getSensor(this.props.history, { }, { }, { });
+    this.props.getAllAlgorithmParameter();
   }
 
   componentWillUnmount() {
@@ -53,4 +54,4 @@ const mapStatetoProps = state => {
   return state.Comparision;
 };
 
-export default withRouter(connect(mapStatetoProps, { getComparisionPageSetting, updateStateComparisionPage, getDevice, getSensor })(Comparison));
+export default withRouter(connect(mapStatetoProps, { getComparisionPageSetting, updateStateComparisionPage, getDevice, getSensor, getAllAlgorithmParameter })(Comparison));

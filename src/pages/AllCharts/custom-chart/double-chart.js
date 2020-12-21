@@ -10,7 +10,7 @@ import { getChartData } from "../../../store/actions";
 class DoubleChart extends Component {
 
     componentDidMount() {
-      this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit, this.props.sort);
+      this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit, this.props.sort, this.props.algorithm_parameter_id);
     }
 
     render() {
