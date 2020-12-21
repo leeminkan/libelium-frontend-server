@@ -44,6 +44,9 @@ class CompareChartView extends Component {
         const renderSensorChart = (sensor_key) => {
             let sensorChartView = [];
             waspmote_ids.forEach(waspmote_id => {
+                let algorithm_parameter = this.props.algorithm_parameters.find(item => {
+                    return item.waspmote_id === waspmote_id;
+                })
                 sensorChartView.push(
                     <Col key={waspmote_id + sensor_key} lg={6}>
                         <Card>
@@ -61,6 +64,7 @@ class CompareChartView extends Component {
                                     <DoubleChart 
                                     waspmote_id={waspmote_id} 
                                     sensor_key={sensor_key}
+                                    algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
                                     sort={'asc'}></DoubleChart>
                                     :
                                     <SingleChart 
@@ -112,6 +116,7 @@ class CompareChartView extends Component {
                 {
                     this.props.loading.GET_DEVICE === false &&
                     this.props.loading.GET_SENSOR === false &&
+                    this.props.loading.GET_ALL_ALGORITHM_PARAMETER === false &&
                     this.props.loading.GET_COMPARISION_PAGE_SETTING === false ? 
                     this.renderCharts() :
                     <div className="wrapper-item-center">
@@ -128,10 +133,12 @@ const mapStatetoProps = state => {
         ...state.Comparision, 
         sensors: state.Sensor.data,
         devices: state.Device.data,
+        algorithm_parameters: state.AlgorithmParameter.data,
         loading: {
             ...state.Comparision.loading,
             ...state.Sensor.loading,
             ...state.Device.loading,
+            ...state.AlgorithmParameter.loading,
         }
     };
 };
