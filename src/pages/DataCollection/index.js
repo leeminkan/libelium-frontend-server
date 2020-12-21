@@ -122,9 +122,17 @@ class DataCollection extends Component {
 
   handleChangeRadioAddFilter = (e) => {
     let { filter } = this.props;
-    filter[e.target.value] = {
-      column: String(e.target.id).replace('radio_id_', ''),
-      value: ''
+    if (e.target.value === 'id') {
+      filter[e.target.value] = {
+        column: String(e.target.id).replace('radio_id_', ''),
+        operator: '=',
+        value: ''
+      }
+    } else {
+      filter[e.target.value] = {
+        column: String(e.target.id).replace('radio_id_', ''),
+        value: ''
+      }
     }
 
     this.props.updateState({
@@ -223,6 +231,7 @@ class DataCollection extends Component {
     });
     let filterView = [];
     Object.keys(filter).forEach((key) => {
+      (!filter[key].hide) &&
       filterView.push(
         <Form
         onSubmit={this.handleFormFilterSubmit}>
