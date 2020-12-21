@@ -22,6 +22,11 @@ const initialState = {
         order: 'desc'
     },
     filter: {
+        for_algorithm: {
+            operator: '=',
+            value: '0',
+            hide: true
+        },
     },
     change: 1,
     showAddFilterModal: false,

@@ -27,7 +27,11 @@ function* getChartDataFlow({ payload: { history, waspmote_id, sensor_key, limit,
                 column: 'Sensor Key',
                 value: sensor_key,
                 operator: "="
-            }
+            },
+            for_algorithm: {
+                operator: '=',
+                value: '0',
+            },
         });
         yield put(getChartDataSuccess(waspmote_id, sensor_key, response.data.data));
     } catch (error) {
