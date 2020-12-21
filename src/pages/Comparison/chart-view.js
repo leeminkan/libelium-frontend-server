@@ -7,6 +7,8 @@ import DoubleChart from '../AllCharts/custom-chart/double-chart';
 
 import Loader from '../../components/ThreeDotsLoader'
 
+import * as util from '../../helpers/util';
+
 class CompareChartView extends Component {
 
     constructor(props) {
@@ -46,7 +48,12 @@ class CompareChartView extends Component {
                     <Col key={waspmote_id + sensor_key} lg={6}>
                         <Card>
                             <CardHeader>
-                                {waspmote_id}
+                                {util.getAnotherValueFromArray(
+                                    this.props.devices,
+                                    'name',
+                                    'waspmote_id',
+                                    waspmote_id
+                                )}
                             </CardHeader>
                             <CardBody>
                                 {
@@ -76,7 +83,12 @@ class CompareChartView extends Component {
                             <div onClick={() => {
                                 this.collapse(sensor_key)
                             }}>
-                                {sensor_key}
+                                {util.getAnotherValueFromArray(
+                                    this.props.sensors,
+                                    'name',
+                                    'key',
+                                    sensor_key
+                                )}
                             </div>
                         </CardHeader>
                         <CardBody>
@@ -94,10 +106,12 @@ class CompareChartView extends Component {
 
 
     render() {
-
+        console.log(this.props);
         return (
             <React.Fragment>
                 {
+                    this.props.loading.GET_DEVICE === false &&
+                    this.props.loading.GET_SENSOR === false &&
                     this.props.loading.GET_COMPARISION_PAGE_SETTING === false ? 
                     this.renderCharts() :
                     <div className="wrapper-item-center">
@@ -110,7 +124,16 @@ class CompareChartView extends Component {
 }
 
 const mapStatetoProps = state => {
-    return state.Comparision;
+    return {
+        ...state.Comparision, 
+        sensors: state.Sensor.data,
+        devices: state.Device.data,
+        loading: {
+            ...state.Comparision.loading,
+            ...state.Sensor.loading,
+            ...state.Device.loading,
+        }
+    };
 };
   
 export default withRouter(connect(mapStatetoProps, { })(CompareChartView));
