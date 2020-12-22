@@ -70,6 +70,7 @@ class CompareChartView extends Component {
                                     <SingleChart 
                                     waspmote_id={waspmote_id} 
                                     sensor_key={sensor_key}
+                                    algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
                                     sort={'asc'}></SingleChart>
                                 }
                             </CardBody>
