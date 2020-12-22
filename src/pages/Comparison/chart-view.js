@@ -60,7 +60,7 @@ class CompareChartView extends Component {
                             </CardHeader>
                             <CardBody>
                                 {
-                                    waspmote_id === waspmote_algorithm ?
+                                    waspmote_id === waspmote_algorithm && sensor_key !== "battery" ?
                                     <DoubleChart 
                                     waspmote_id={waspmote_id} 
                                     sensor_key={sensor_key}
