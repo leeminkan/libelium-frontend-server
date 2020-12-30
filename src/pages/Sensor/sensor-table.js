@@ -11,14 +11,14 @@ import ReactReadMoreReadLess from "react-read-more-read-less";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice, deleteDevice } from "../../store/actions";
+import { updateStateSensor, addSensor, deleteSensor } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 
 import PaginationBar from '../../components/PaginationBar/PaginationBar';
-import AddDeviceForm from '../../components/Form/AddDeviceForm';
+import AddSensorForm from '../../components/Form/AddSensorForm';
 
-class DeviceTable extends Component {
+class SensorTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,26 +28,26 @@ class DeviceTable extends Component {
           field: "id"
         },
         {
-          label: "Waspmote ID",
-          field: "waspmote_id"
-        },
-        {
-          label: "Device Name",
+          label: "Sensor Name",
           field: "name"
         },
         {
-          label: "Sensors",
-          field: "sensors",
-          style: {width: '20%'},
-          disableSort: true
+          label: "Sensor Key",
+          field: "key"
+        },
+        {
+          label: "Unit",
+          field: "unit"
+        },
+        {
+          label: "Description",
+          field: "description",
+          readMore: true,
+          style: {width: '15%'}
         },
         {
           label: "Time",
           field: "created_at"
-        },
-        {
-          label: "Display",
-          field: "is_displayed"
         },
         {
           label: "Action",
@@ -62,25 +62,25 @@ class DeviceTable extends Component {
   toggleAddFilterModal = () => {
     let { showAddFilterModal } = this.props;
     
-    this.props.updateStateDevice({
+    this.props.updateStateSensor({
       showAddFilterModal: !showAddFilterModal
     });
   }
 
-  toggleAddDeviceModal = () => {
-    let { showAddDeviceModal } = this.props;
+  toggleAddSensorModal = () => {
+    let { showAddSensorModal } = this.props;
     
-    this.props.updateStateDevice({
-      showAddDeviceModal: !showAddDeviceModal
+    this.props.updateStateSensor({
+      showAddSensorModal: !showAddSensorModal
     });
   }
 
-  toggleDeleteDeviceModal = (deviceIdToDelete = 0) => {
-    let { showDeleteDeviceModal } = this.props;
+  toggleDeleteSensorModal = (sensorIdToDelete = 0) => {
+    let { showDeleteSensorModal } = this.props;
     
-    this.props.updateStateDevice({
-      showDeleteDeviceModal: !showDeleteDeviceModal,
-      deviceIdToDelete: Number.isInteger(deviceIdToDelete) ? deviceIdToDelete : 0
+    this.props.updateStateSensor({
+      showDeleteSensorModal: !showDeleteSensorModal,
+      sensorIdToDelete: Number.isInteger(sensorIdToDelete) ? sensorIdToDelete : 0
     });
   }
 
@@ -96,13 +96,13 @@ class DeviceTable extends Component {
     }
     
     //call action change page
-    this.props.getDevice(this.props.history, { page: current_page, per_page }, this.props.sort, this.props.filter);
+    this.props.getSensor(this.props.history, { page: current_page, per_page }, this.props.sort, this.props.filter);
   }
 
   handleChange = selectedOption => {
     let { meta } = this.props;
     //call action change page
-    this.props.getDevice(this.props.history, {
+    this.props.getSensor(this.props.history, {
       ...meta,
       per_page: selectedOption.value
     }, this.props.sort, this.props.filter);
@@ -117,7 +117,7 @@ class DeviceTable extends Component {
         order = 'desc';
       }
     }
-    this.props.getDevice(this.props.history, meta, {
+    this.props.getSensor(this.props.history, meta, {
       order_by: e.target.id,
       order
     }, filter);
@@ -126,7 +126,7 @@ class DeviceTable extends Component {
   handleFormFilterSubmit = (e) => {
     let { meta, sort, filter } = this.props;
     e.preventDefault();
-    this.props.getDevice(this.props.history, meta, sort, filter);
+    this.props.getSensor(this.props.history, meta, sort, filter);
   }
 
   handleChangeRadioAddFilter = (e) => {
@@ -136,7 +136,7 @@ class DeviceTable extends Component {
       value: ''
     }
 
-    this.props.updateStateDevice({
+    this.props.updateStateSensor({
       filter,
       showAddFilterModal: false
     });
@@ -153,7 +153,7 @@ class DeviceTable extends Component {
     }
     change = change += 1;
 
-    this.props.updateStateDevice({
+    this.props.updateStateSensor({
       filter,
       change: change
     });
@@ -167,45 +167,30 @@ class DeviceTable extends Component {
     }
     change = change += 1;
 
-    this.props.updateStateDevice({
+    this.props.updateStateSensor({
       filter,
       change: change
     });
   }
-  
-  handleChangeSensor = selectedOption => {
-    let selectedSensors = [];
-    if (Array.isArray(selectedOption) && selectedOption.length > 0) {
-      selectedSensors = selectedOption.map(({ value }) => value);
-    }
-    this.props.updateStateDevice({
-      addPayload: {
-        ...this.props.addPayload,
-        selectedSensors
-      }
-    });
-  };
 
-  handleSubmitAddDeviceModal = (values) => {
+  handleSubmitAddSensorModal = (values) => {
     let { meta, sort, filter } = this.props;
     const data = {
       name: values.name,
-      waspmote_id: values.waspmote_id,
-      is_displayed: values.is_displayed,
-      sensors: JSON.stringify(values.sensors),
+      key: values.key,
+      unit: values.unit,
+      description: values.description,
     }
-    if (values.image) {
-      data.image = values.image;
-    }
-    this.props.addDevice(this.props.history, data, { meta, sort, filter });
+
+    this.props.addSensor(this.props.history, data, { meta, sort, filter });
   }
 
-  deleteDevice = (id) => {
+  deleteSensor = (id) => {
     let { meta, sort, filter } = this.props;
-    this.props.deleteDevice(this.props.history, id, { meta, sort, filter });
+    this.props.deleteSensor(this.props.history, id, { meta, sort, filter });
   }
 
-  renderDevice = () => {
+  renderSensor = () => {
     let { meta, sort, filter } = this.props;
     let { columns } = this.state;
     let paginationBarProps = {
@@ -252,18 +237,18 @@ class DeviceTable extends Component {
       filterView.push(
         <Form
         onSubmit={this.handleFormFilterSubmit}>
-        <InputGroup key={key} className="data-collection-container-filter-main-group-input">
-          <InputGroupAddon addonType="append">
-            <InputGroupText>{filter[key].column}</InputGroupText>
-          </InputGroupAddon>
-          <Input 
-          name={'input_filter_' + filter[key].column} 
-          id={'input_filter_' + key}
-          value={filter[key].value}
-          onChange={this.handleChangeFilter}/>
-          <i id={'icon_filter_remove_' + key} className="mdi mdi-tag-remove icon-remove-filter" onClick={this.handleOnclickRemoveFilter}></i>
-        </InputGroup>
-                  </Form>
+          <InputGroup key={key} className="data-collection-container-filter-main-group-input">
+            <InputGroupAddon addonType="append">
+              <InputGroupText>{filter[key].column}</InputGroupText>
+            </InputGroupAddon>
+            <Input 
+            name={'input_filter_' + filter[key].column} 
+            id={'input_filter_' + key}
+            value={filter[key].value}
+            onChange={this.handleChangeFilter}/>
+            <i id={'icon_filter_remove_' + key} className="mdi mdi-tag-remove icon-remove-filter" onClick={this.handleOnclickRemoveFilter}></i>
+          </InputGroup>
+        </Form>
       );
     });
 
@@ -273,7 +258,7 @@ class DeviceTable extends Component {
           <CardBody>
             <div className="data-collection-container">
               {
-              this.props.loading.GET_DEVICE ? 
+              this.props.loading.GET_SENSOR ? 
               <TableLoader/> :
               <React.Fragment>
                 <div className="data-collection-top-bar">
@@ -299,12 +284,12 @@ class DeviceTable extends Component {
                         filterView
                       }
                     </div>
-                  </div>
-                  <div className="data-collection-container-action">
+                    <div className="data-collection-container-action">
                     <Button 
-                      onClick={this.toggleAddDeviceModal}>
+                      onClick={this.toggleAddSensorModal}>
                         ADD
                     </Button>
+                  </div>
                   </div>
                 </div>
                 <Table responsive className="table-lg data-collection-table">
@@ -321,7 +306,7 @@ class DeviceTable extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.renderDeviceView()}
+                  {this.renderSensorView()}
                 </tbody>
                 </Table>
                 <PaginationBar {...paginationBarProps}/>
@@ -335,7 +320,7 @@ class DeviceTable extends Component {
 
   }
   
-  renderDeviceView = () => {
+  renderSensorView = () => {
     const { data } = this.props;
     const { columns } = this.state;
     let view = [];
@@ -345,19 +330,18 @@ class DeviceTable extends Component {
           let view = [];
           columns.forEach((column, index) => {
             if (column.field === 'action') {
-              let to = `/device/${item.id}`;
+              let to = `/sensor/${item.id}`;
               view.push(
                 <td key={'td_action'}>
                   <Button
                     color="danger"
                     className="btn btn-danger waves-effect waves-light button-delete"
                     onClick={() => {
-                      this.toggleDeleteDeviceModal(item.id);
+                      this.toggleDeleteSensorModal(item.id);
                     }}
                   >
                     Delete
                   </Button>
-                  
                   <Link to={to} className="btn btn-primary btn-sm">
                                 Edit
                               </Link>
@@ -378,23 +362,23 @@ class DeviceTable extends Component {
                     </td>
                 );
             } else {
-                view.push(
-                    <td key={'td_'+column.field}>
-                    {
-                    column.readMore 
-                    ? 
-                    <ReactReadMoreReadLess
-                    charLimit={30}
-                    readMoreText={" ▼"}
-                    readLessText={" ▲"}
-                    >
-                    {item[`${column.field}`] ? item[`${column.field}`] : ''}
-                    </ReactReadMoreReadLess>
-                    :
-                    item[`${column.field}`]
-                    }
-                    </td>
-                );
+              view.push(
+                <td key={'td_'+column.field}>
+                {
+                  column.readMore 
+                ? 
+                  <ReactReadMoreReadLess
+                  charLimit={30}
+                  readMoreText={" ▼"}
+                  readLessText={" ▲"}
+                  >
+                  {item[`${column.field}`] ? item[`${column.field}`] : ''}
+                  </ReactReadMoreReadLess>
+                :
+                  item[`${column.field}`]
+                }
+                </td>
+              );
             }
           });
           return view;
@@ -412,7 +396,7 @@ class DeviceTable extends Component {
   }
 
   render() {
-    const { showAddFilterModal, filter, showAddDeviceModal, showDeleteDeviceModal, deviceIdToDelete, loading } = this.props;
+    const { showAddFilterModal, filter, showAddSensorModal, showDeleteSensorModal, sensorIdToDelete, loading } = this.props;
     const { columns } = this.state;
     let radioFilterView = [];
     columns.forEach((column, index) => {
@@ -433,9 +417,8 @@ class DeviceTable extends Component {
     });
     return (
       <React.Fragment>
-          <Row>{this.renderDevice()}</Row>
+          <Row>{this.renderSensor()}</Row>
           
-          {/* MODAL ADD FILTER */}
           <Modal
             isOpen={showAddFilterModal}
             toggle={this.toggleAddFilterModal}
@@ -463,17 +446,16 @@ class DeviceTable extends Component {
               </Form>
             </div>
           </Modal>
-          
-          {/* MODAL ADD DEVICE */}
+          {/* MODAL ADD SENSOR */}
           <Modal
-            isOpen={showAddDeviceModal}
-            toggle={this.toggleAddDeviceModal}
+            isOpen={showAddSensorModal}
+            toggle={this.toggleAddSensorModal}
           >
             <div className="modal-header">
-              <h5 className="modal-title mt-0">Add Device</h5>
+              <h5 className="modal-title mt-0">Add Sensor</h5>
               <button
                 type="button"
-                onClick={this.toggleAddDeviceModal}
+                onClick={this.toggleAddSensorModal}
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
@@ -482,24 +464,24 @@ class DeviceTable extends Component {
               </button>
             </div>
             <div className="modal-body">
-              <AddDeviceForm 
-                onSubmit={this.handleSubmitAddDeviceModal}
+              <AddSensorForm 
+                onSubmit={this.handleSubmitAddSensorModal}
                 initialValues={{
                   name: '',
-                  waspmote_id: '',
-                  is_displayed: 1,
-                  sampleSensors: this.props.sensors,
+                  key: '',
+                  unit: '',
+                  description: '',
                 }}
-                loading={this.props.loading.ADD_DEVICE}/>
+                loading={this.props.loading.ADD_SENSOR}/>
             </div>
           </Modal>
           
-          {/* MODAL DELETE DEVICE */}
+          {/* MODAL DELETE SENSOR */}
           <Modal
-            isOpen={showDeleteDeviceModal}
-            toggle={this.toggleDeleteDeviceModal}
+            isOpen={showDeleteSensorModal}
+            toggle={this.toggleDeleteSensorModal}
           >
-            <ModalHeader toggle={this.toggleDeleteDeviceModal}>Delete Device</ModalHeader>
+            <ModalHeader toggle={this.toggleDeleteSensorModal}>Delete Sensor</ModalHeader>
             <ModalBody>
               <legend className="col-form-label col-sm-6">Are you sure??</legend>
             </ModalBody>
@@ -508,12 +490,12 @@ class DeviceTable extends Component {
                 color="danger"
                 className="btn btn-danger waves-effect waves-light button-delete"
                 onClick={() => {
-                  this.deleteDevice(deviceIdToDelete);
+                  this.deleteSensor(sensorIdToDelete);
                 }}
-                disabled={loading.DELETE_DEVICE ? true : false}
+                disabled={loading.DELETE_SENSOR ? true : false}
               >
               {
-                loading.DELETE_DEVICE 
+                loading.DELETE_SENSOR 
                 ? 
                 <Spinner size="sm" color="secondary" />
                 : 
@@ -524,12 +506,12 @@ class DeviceTable extends Component {
                 color="secondary"
                 className="btn btn-secondary waves-effect waves-light button-delete"
                 onClick={() => {
-                  this.toggleDeleteDeviceModal(0);
+                  this.toggleDeleteSensorModal(0);
                 }}
-                disabled={loading.DELETE_DEVICE ? true : false}
+                disabled={loading.DELETE_SENSOR ? true : false}
               >
                 {
-                  loading.DELETE_DEVICE 
+                  loading.DELETE_SENSOR 
                   ? 
                   <Spinner size="sm" color="secondary" />
                   : 
@@ -544,7 +526,7 @@ class DeviceTable extends Component {
 }
 
 const mapStatetoProps = state => {
-  return state.Device;
+  return state.Sensor;
 };
 
-export default withRouter(connect(mapStatetoProps, { getDevice, updateStateDevice, getAllSensorForDevicePage, addDevice, deleteDevice })(DeviceTable));
+export default withRouter(connect(mapStatetoProps, { updateStateSensor, addSensor, deleteSensor })(SensorTable));
