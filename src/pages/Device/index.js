@@ -18,6 +18,7 @@ import { getDevice, getAllSensorForDevicePage } from "../../store/actions";
 
 import "../../assets/scss/custom.scss";
 import DeviceTable from './device-table';
+import DeviceView from './device-view';
 
 class Device extends Component {
   constructor(props) {
@@ -80,6 +81,7 @@ class Device extends Component {
                 <DeviceTable/>
               </TabPane>
               <TabPane tabId="2">
+                <DeviceView/>
               </TabPane>
             </TabContent>
           </div>
