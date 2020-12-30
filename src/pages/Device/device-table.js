@@ -195,6 +195,7 @@ class DeviceTable extends Component {
       waspmote_id: values.waspmote_id,
       is_displayed: values.is_displayed,
       sensors: JSON.stringify(values.sensors),
+      description: values.description,
     }
     if (values.image) {
       data.image = values.image;

@@ -32,6 +32,7 @@ class DeviceInfo extends Component {
       waspmote_id: values.waspmote_id,
       is_displayed: values.is_displayed,
       sensors: JSON.stringify(values.sensors),
+      description: values.description,
     }
     if (values.image) {
       data.image = values.image;
@@ -45,7 +46,8 @@ class DeviceInfo extends Component {
       image, 
       waspmote_id, 
       is_displayed, 
-      sensors 
+      sensors, 
+      description 
     } = this.props.data;
 
     let sensorIds = sensors ? sensors.map(item => item.id) : [];
@@ -57,6 +59,7 @@ class DeviceInfo extends Component {
       sensors: sensorIds,
       image_default: image,
       sampleSensors: this.props.sensors,
+      description,
     };
     
     return (

@@ -106,6 +106,17 @@ class AddDeviceForm extends Component {
               }}
             />
           </div>
+        <div className="form-field">
+          <Field
+            name="description"
+            component={renderTextField}
+            label="Description"
+            style = {{width: 500}}
+            multiline
+            rows={2}
+            rowsMax={4}
+          />
+        </div>
         <div>
           <Button
             type="submit"
