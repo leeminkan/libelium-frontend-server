@@ -5,6 +5,7 @@ import { Row, Col, Table, Card, CardBody,
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 import { Link } from "react-router-dom";
+import ReactReadMoreReadLess from "react-read-more-read-less";
 
 // Redux
 import { connect } from "react-redux";
@@ -33,6 +34,16 @@ class Sensor extends Component {
         {
           label: "Sensor Key",
           field: "key"
+        },
+        {
+          label: "Unit",
+          field: "unit"
+        },
+        {
+          label: "Description",
+          field: "description",
+          readMore: true,
+          style: {width: '15%'}
         },
         {
           label: "Time",
@@ -207,7 +218,7 @@ class Sensor extends Component {
       );
       
       theadView.push(
-        <th key={'th_'+column.field}>
+        <th key={'th_'+column.field} style={{...column.style}}>
           <label>{column.label}</label>
           {/* ion ion-ios-arrow-dropdown-circle, ion ion-ios-arrow-dropup-circle, ion ion-md-remove-circle-outline */}
           { column.field === 'action' ? null :
@@ -230,18 +241,18 @@ class Sensor extends Component {
       filterView.push(
         <Form
         onSubmit={this.handleFormFilterSubmit}>
-        <InputGroup key={key} className="data-collection-container-filter-main-group-input">
-          <InputGroupAddon addonType="append">
-            <InputGroupText>{filter[key].column}</InputGroupText>
-          </InputGroupAddon>
-          <Input 
-          name={'input_filter_' + filter[key].column} 
-          id={'input_filter_' + key}
-          value={filter[key].value}
-          onChange={this.handleChangeFilter}/>
-          <i id={'icon_filter_remove_' + key} className="mdi mdi-tag-remove icon-remove-filter" onClick={this.handleOnclickRemoveFilter}></i>
-        </InputGroup>
-                  </Form>
+          <InputGroup key={key} className="data-collection-container-filter-main-group-input">
+            <InputGroupAddon addonType="append">
+              <InputGroupText>{filter[key].column}</InputGroupText>
+            </InputGroupAddon>
+            <Input 
+            name={'input_filter_' + filter[key].column} 
+            id={'input_filter_' + key}
+            value={filter[key].value}
+            onChange={this.handleChangeFilter}/>
+            <i id={'icon_filter_remove_' + key} className="mdi mdi-tag-remove icon-remove-filter" onClick={this.handleOnclickRemoveFilter}></i>
+          </InputGroup>
+        </Form>
       );
     });
 
@@ -342,7 +353,21 @@ class Sensor extends Component {
               );
             } else {
               view.push(
-                <td key={'td_'+column.field}>{item[`${column.field}`]}</td>
+                <td key={'td_'+column.field}>
+                {
+                  column.readMore 
+                ? 
+                  <ReactReadMoreReadLess
+                  charLimit={30}
+                  readMoreText={" ▼"}
+                  readLessText={" ▲"}
+                  >
+                  {item[`${column.field}`] ? item[`${column.field}`] : ''}
+                  </ReactReadMoreReadLess>
+                :
+                  item[`${column.field}`]
+                }
+                </td>
               );
             }
           });

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { Row, Col, Card, CardBody } from "reactstrap";
 import FormLoader from "../../components/FormLoader"
 import UpdateSensorForm from '../../components/Form/UpdateSensorForm';
 
