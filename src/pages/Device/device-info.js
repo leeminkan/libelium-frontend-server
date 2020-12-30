@@ -30,7 +30,7 @@ class DeviceInfo extends Component {
     const data = {
       name: values.name,
       waspmote_id: values.waspmote_id,
-      is_displayed: values.is_displayed,
+      is_displayed: values.is_displayed ? 1 : 0,
       sensors: JSON.stringify(values.sensors),
       description: values.description,
       algorithm_param_description: values.algorithm_param_description,

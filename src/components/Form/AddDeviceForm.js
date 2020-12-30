@@ -111,7 +111,6 @@ class AddDeviceForm extends Component {
             name="description"
             component={renderTextField}
             label="Description"
-            style = {{width: 500}}
             multiline
             rows={2}
             rowsMax={4}
@@ -122,7 +121,6 @@ class AddDeviceForm extends Component {
             name="algorithm_param_description"
             component={renderTextField}
             label="Algorithm Param Description"
-            style = {{width: 500}}
             multiline
             rows={2}
             rowsMax={4}
