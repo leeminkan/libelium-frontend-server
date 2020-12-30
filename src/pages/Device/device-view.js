@@ -10,6 +10,7 @@ import * as util from '../../helpers/util';
 // import images
 import waspmote from "../../assets/images/libelium/waspmote.png";
 import SensorTooltips from "./sensor-tooltips";
+import SensorTooltipContent from "./sensor-tooltip-content";
 
 class DeviceView extends Component {
     renderSensorView = (device) => {
@@ -22,20 +23,7 @@ class DeviceView extends Component {
                         device={device}
                         sensor={item}
                     >
-                        <div className="tooltip-content-container">
-                            <div className="tooltip-content-row">
-                                Name: {item.name}
-                            </div>
-                            <div className="tooltip-content-row">
-                                Key: {item.key}
-                            </div>
-                            <div className="tooltip-content-row">
-                                Unit: {item.unit}
-                            </div>
-                            <div className="tooltip-content-row">
-                                Description: {item.description}
-                            </div>
-                        </div>
+                        <SensorTooltipContent sensor={item}/>
                     </SensorTooltips>
                 </div>
             );

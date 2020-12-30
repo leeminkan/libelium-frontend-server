@@ -17,6 +17,8 @@ import "../../assets/scss/custom.scss";
 
 import PaginationBar from '../../components/PaginationBar/PaginationBar';
 import AddDeviceForm from '../../components/Form/AddDeviceForm';
+import SensorTooltips from "./sensor-tooltips";
+import SensorTooltipContent from "./sensor-tooltip-content";
 
 class DeviceTable extends Component {
   constructor(props) {
@@ -363,12 +365,17 @@ class DeviceTable extends Component {
                               </Link>
                 </td>
               );
-            } if (Array.isArray(item[`${column.field}`])) {
+            } else if (Array.isArray(item[`${column.field}`])) {
                 let viewSensors = [];
 
-                item[`${column.field}`].forEach(item => {
+                item[`${column.field}`].forEach(sensor => {
                     viewSensors.push(
-                        <span key={'span_' + column.field + item.key} className="sensor-item badge badge-info">{item.key}</span>
+                        <SensorTooltips key={'span_' + column.field + sensor.key}
+                          device={item}
+                          sensor={sensor}
+                        >
+                          <SensorTooltipContent sensor={sensor} />
+                        </SensorTooltips>
                     )
                 });
 
@@ -400,7 +407,7 @@ class DeviceTable extends Component {
           return view;
         }
         view.push(
-          <tr key={item.id}>
+          <tr key={`tr_${item.id}`}>
             {
               renderView()
             }
