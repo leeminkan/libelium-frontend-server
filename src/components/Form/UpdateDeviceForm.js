@@ -124,6 +124,17 @@ class UpdateDeviceForm extends Component {
             rowsMax={4}
           />
         </div>
+        <div className="form-field">
+          <Field
+            name="algorithm_param_description"
+            component={renderTextField}
+            label="Algorithm Param Description"
+            style = {{width: 500}}
+            multiline
+            rows={2}
+            rowsMax={4}
+          />
+        </div>
         <div>
           <Button
             type="submit"

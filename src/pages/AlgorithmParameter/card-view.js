@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Row, Col, Collapse, Card, CardHeader, CardBody  } from "reactstrap";
+import { Row, Col, Collapse, Card, CardHeader, CardBody, Alert } from "reactstrap";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import AlgorithmParameterForm from '../../components/Form/AlgorithmParameter';
@@ -63,11 +63,17 @@ class CardView extends Component {
                             <div onClick={() => {
                                 this.collapse(item.waspmote_id)
                             }}>
-                                {item.waspmote_id}
+                                {item.name}
                             </div>
                         </CardHeader>
                         <CardBody>
                             <Collapse isOpen={!this.state.collapse.includes(item.waspmote_id)}>
+                                { 
+                                    item.algorithm_param_description &&
+                                    <Alert color="info">
+                                        {item.algorithm_param_description}
+                                    </Alert>
+                                }
                                 <Row>
                                     <AlgorithmParameterForm 
                                         onSubmit={(values) => {

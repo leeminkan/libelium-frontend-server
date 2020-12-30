@@ -71,6 +71,12 @@ class DeviceView extends Component {
                                             </Alert>
                                     </div>
                                     <div className="device-info-row">
+                                            <Alert color="info">
+                                                <strong>Algorithm Param Description: </strong>
+                                                {item.algorithm_param_description}
+                                            </Alert>
+                                    </div>
+                                    <div className="device-info-row">
                                             <Alert color="secondary">
                                                 <strong>Sensors: </strong>
                                                 <div className="device-info-sensors">

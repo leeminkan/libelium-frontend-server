@@ -196,6 +196,7 @@ class DeviceTable extends Component {
       is_displayed: values.is_displayed,
       sensors: JSON.stringify(values.sensors),
       description: values.description,
+      algorithm_param_description: values.algorithm_param_description,
     }
     if (values.image) {
       data.image = values.image;
