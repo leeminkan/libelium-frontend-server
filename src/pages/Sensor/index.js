@@ -5,7 +5,6 @@ import { Row, Col, Table, Card, CardBody,
 import Select from 'react-select';
 import TableLoader from "../../components/TableLoader"
 import { Link } from "react-router-dom";
-import { AvForm, AvField } from "availity-reactstrap-validation";
 
 // Redux
 import { connect } from "react-redux";
@@ -16,6 +15,7 @@ import { getSensor, updateStateSensor, addSensor, deleteSensor } from "../../sto
 import "../../assets/scss/custom.scss";
 
 import PaginationBar from '../../components/PaginationBar/PaginationBar';
+import AddSensorForm from '../../components/Form/AddSensorForm';
 
 class Sensor extends Component {
   constructor(props) {
@@ -166,11 +166,16 @@ class Sensor extends Component {
     });
   }
 
-  handleSubmitAddSensorModal = (event, errors, values) => {
+  handleSubmitAddSensorModal = (values) => {
     let { meta, sort, filter } = this.props;
-    if (errors.length === 0) {
-      this.props.addSensor(this.props.history, values, { meta, sort, filter });
+    const data = {
+      name: values.name,
+      key: values.key,
+      unit: values.unit,
+      description: values.description,
     }
+
+    this.props.addSensor(this.props.history, data, { meta, sort, filter });
   }
 
   deleteSensor = (id) => {
@@ -438,41 +443,15 @@ class Sensor extends Component {
               </button>
             </div>
             <div className="modal-body">
-              <AvForm onSubmit={this.handleSubmitAddSensorModal}>
-                <AvField
-                  name="name"
-                  label="Name  "
-                  placeholder="Enter Name "
-                  type="text"
-                  errorMessage="Please Enter Name"
-                  validate={{
-                    required: { value: true },
-                    pattern: {value: '^[A-Za-z0-9 ]+$'},
-                    minLength: {value: 2},
-                    maxLength: {value: 16}
-                  }}
-                />
-                <AvField
-                  name="key"
-                  label="Key  "
-                  placeholder="Enter Key "
-                  type="text"
-                  errorMessage="Please Enter Key"
-                  validate={{
-                    required: { value: true },
-                    pattern: {value: '^[A-Za-z0-9 ]+$'},
-                    minLength: {value: 2},
-                    maxLength: {value: 16}
-                  }}
-                />
-                <FormGroup className="mb-0">
-                  <div>
-                      <Button type="submit" color="primary" className="mr-1">
-                        Save
-                      </Button>
-                  </div>
-                </FormGroup>
-              </AvForm>
+              <AddSensorForm 
+                onSubmit={this.handleSubmitAddSensorModal}
+                initialValues={{
+                  name: '',
+                  key: '',
+                  unit: '',
+                  description: '',
+                }}
+                loading={this.props.loading.ADD_SENSOR}/>
             </div>
           </Modal>
           
