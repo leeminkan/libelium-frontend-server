@@ -69,10 +69,17 @@ class ApexChart extends Component {
     componentDidMount() {
         this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit, this.props.sort);
 
-        window.setInterval(() => {
+        let intervalId = window.setInterval(() => {
             this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit, this.props.sort);
         }, 5000);
+
+        this.setState({intervalId: intervalId});
     }
+
+    componentWillUnmount() {
+        clearInterval(this.state.intervalId);
+    }
+
 
     render() {
         if (typeof this.props.data[this.props.waspmote_id] !== 'undefined' 
