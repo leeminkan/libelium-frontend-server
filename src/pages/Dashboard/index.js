@@ -79,6 +79,10 @@ class Dashboard extends Component {
                       <i className="mdi mdi-music-accidental-sharp h5"></i>
                       <span>{device.waspmote_id}</span>
                     </div>
+                    <div className="waspmote-content-left-row">
+                      <i className={`fas fa-circle ${device.active ? "icon-active" : "icon-deactive"}`}></i>
+                      <span>{device.active ? "Active" : "Deactive"}</span>
+                    </div>
                   </div>
                   <div className="waspmote-content-right waspmote-content-column">
                     <div className="waspmote-content-right-row">
