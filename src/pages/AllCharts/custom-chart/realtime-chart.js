@@ -53,6 +53,11 @@ class ApexChart extends Component {
                     // range: XAXISRANGE,
                 },
                 yaxis: {
+                    labels: {
+                      formatter: function (value) {
+                        return parseFloat(value).toFixed(2);
+                      }
+                    },
                 },
                 legend: {
                     show: false
