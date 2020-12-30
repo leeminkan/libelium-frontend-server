@@ -232,6 +232,15 @@
         font-size: 0.875rem!important;
     }
 }
+// Chart
+.chart-container {
+    .chart-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+    }
+}
 // Device Page
 .device-view {
     margin-top: 20px;
