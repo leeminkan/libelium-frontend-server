@@ -2,14 +2,20 @@ import React, { Component } from "react";
 import { Row, Col, Card, CardBody, FormGroup, Button, Spinner } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import FormLoader from "../../components/FormLoader"
+import UpdateSensorForm from '../../components/Form/UpdateSensorForm';
 
 import "chartist/dist/scss/chartist.scss";
 import "../../assets/scss/custom.scss";
 // Redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
 // actions
-import { getSensorInfo, updateSensorInfo, updateStateSensorInfo } from "../../store/actions";
+import { 
+  getSensorInfo, 
+  updateSensorInfo, 
+  updateStateSensorInfo
+ } from "../../store/actions";
 
 class SensorInfo extends Component {
   constructor(props) {
@@ -21,14 +27,25 @@ class SensorInfo extends Component {
     this.props.getSensorInfo(this.props.history, this.props.match.params.id);
   }
 
-  handleSubmit = (event, errors, values) => {
-    if (errors.length === 0) {
-      this.props.updateSensorInfo(this.props.history, this.props.match.params.id, values);
+  handleSubmit = (values) => {
+    const data = {
+      name: values.name,
+      key: values.key,
+      unit: values.unit,
+      description: values.description,
     }
+    this.props.updateSensorInfo(this.props.history, this.props.match.params.id, data);
   }
 
   render() {
-    const { name } = this.props.data;
+    const { name, key, unit, description } = this.props.data;
+
+    const initialValues = {
+      name,
+      key,
+      unit,
+      description,
+    };
 
     return (
       <React.Fragment>
@@ -45,46 +62,20 @@ class SensorInfo extends Component {
               </div>
             </Col>
           </Row>
-          <Row>
-            <Col lg={12}>
+          <Row className="wrapper-item-center">
               <Card>
-                <CardBody>
+                <CardBody className="wrapper-item-center">
                   {
-                    this.props.loading.GET_SENSOR_INFO ? 
-                  <FormLoader/> :
-                  <AvForm onSubmit={this.handleSubmit}>
-                    <AvField
-                      name="name"
-                      label="Name  "
-                      placeholder="Enter Name "
-                      value={name}
-                      type="text"
-                      errorMessage="Please Enter Name"
-                      validate={{
-                        required: { value: true },
-                        pattern: {value: '^[A-Za-z0-9 ]+$'},
-                        minLength: {value: 2},
-                        maxLength: {value: 16}
-                      }}
-                    />
-                    <FormGroup className="mb-0">
-                      <div>
-                        {
-                          this.props.loading.UPDATE_SENSOR_INFO ? 
-                          <Button type="submit" className="mr-1">
-                            <Spinner size="sm" color="primary" />
-                          </Button> :
-                          <Button type="submit" color="primary" className="mr-1">
-                            Save
-                          </Button>
-                        }
-                      </div>
-                    </FormGroup>
-                  </AvForm>
+                    this.props.loading.GET_SENSOR_INFO === false ? 
+                    <UpdateSensorForm 
+                        onSubmit={this.handleSubmit}
+                        initialValues={initialValues}
+                        loading={this.props.loading.UPDATE_SENSOR_INFO}/>
+                    :
+                    <FormLoader/>
                   }
                 </CardBody>
               </Card>
-            </Col>
           </Row>
         </div>
       </React.Fragment>
