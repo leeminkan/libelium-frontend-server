@@ -18,3 +18,11 @@ export const getAnotherValueFromArray = (array, columnReturn, columnCheck, check
     let finded = array.find(item => item[columnCheck] === checkValue);
     return finded ? finded[columnReturn] : null;
 }
+
+export const getOrFail = (callback, defaultValue = undefined) => {
+    try {
+        return callback();
+    } catch (e) {
+      return defaultValue;
+    }
+}

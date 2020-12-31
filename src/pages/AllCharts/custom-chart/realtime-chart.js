@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
 import { getChartData, updateStateChartData } from "../../../store/actions";
+import * as util from '../../../helpers/util';
 
 class ApexChart extends Component {
     constructor(props) {
@@ -43,8 +44,14 @@ class ApexChart extends Component {
                     curve: 'smooth'
                 },
                 title: {
-                    text: props.sensor.unit,
-                    align: 'left'
+                    text: props.sensor.name,
+                    align: 'center',
+                    style: {
+                      fontSize:  '14px',
+                      fontWeight:  'bold',
+                      fontFamily:  undefined,
+                      color:  '#263238'
+                    },
                 },
                 markers: {
                     size: 0
@@ -54,15 +61,31 @@ class ApexChart extends Component {
                     // range: XAXISRANGE,
                 },
                 yaxis: {
+                    min: util.getOrFail(() => (props.sensor.chart_options.general.yaxis.min)),
+                    max: util.getOrFail(() => (props.sensor.chart_options.general.yaxis.max)),
                     labels: {
                       formatter: function (value) {
                         return parseFloat(value).toFixed(2);
                       }
                     },
+                    title: {
+                      text: `${props.sensor.name} (${props.sensor.unit})`,
+                      rotate: 90,
+                      offsetX: 0,
+                      offsetY: 0,
+                      style: {
+                          color: undefined,
+                          fontSize: '12px',
+                          fontFamily: 'Helvetica, Arial, sans-serif',
+                          fontWeight: 600,
+                          cssClass: 'apexcharts-yaxis-title',
+                      },
+                    },
                 },
                 legend: {
                     show: false
                 },
+                ...util.getOrFail(() => (props.sensor.chart_options.general.options)),
             },
         };
     }
@@ -119,9 +142,6 @@ class ApexChart extends Component {
         return (
             <React.Fragment>
                 <div className="chart-container">
-                    <div className="chart-header">
-                        {this.props.sensor_key}
-                    </div>
                     <div id="chart">
                         <ReactApexChart options={this.state.options} series={this.state.series} type="line" height={350} />
                     </div>
