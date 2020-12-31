@@ -31,7 +31,7 @@ class SensorInfo extends Component {
       name: values.name,
       key: values.key,
       unit: values.unit,
-      description: values.description,
+      description: values.description || "",
       chart_options: values['chart_options'] && JSON.parse(values['chart_options'])
     }
     this.props.updateSensorInfo(this.props.history, this.props.match.params.id, data);

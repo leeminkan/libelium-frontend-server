@@ -32,8 +32,8 @@ class DeviceInfo extends Component {
       waspmote_id: values.waspmote_id,
       is_displayed: values.is_displayed ? 1 : 0,
       sensors: JSON.stringify(values.sensors),
-      description: values.description,
-      algorithm_param_description: values.algorithm_param_description,
+      description: values.description || "",
+      algorithm_param_description: values.algorithm_param_description || "",
     }
     if (values.image) {
       data.image = values.image;

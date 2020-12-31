@@ -179,7 +179,7 @@ class SensorTable extends Component {
       name: values.name,
       key: values.key,
       unit: values.unit,
-      description: values.description,
+      description: values.description || "",
     }
 
     this.props.addSensor(this.props.history, data, { meta, sort, filter });
