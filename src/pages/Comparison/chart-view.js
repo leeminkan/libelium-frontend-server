@@ -9,7 +9,7 @@ import DoubleRealtimeChart from '../AllCharts/custom-chart/double-realtime-chart
 
 import Loader from '../../components/ThreeDotsLoader'
 
-import * as util from '../../helpers/util';
+// import * as util from '../../helpers/util';
 
 class CompareChartView extends Component {
 
@@ -49,16 +49,14 @@ class CompareChartView extends Component {
                 let algorithm_parameter = this.props.algorithm_parameters.find(item => {
                     return item.waspmote_id === waspmote_id;
                 })
+                let device = this.props.devices.find(item => {
+                    return item.waspmote_id === waspmote_id;
+                })
                 sensorChartView.push(
                     <Col key={waspmote_id + sensor.key} lg={6}>
                         <Card>
                             <CardHeader>
-                                {util.getAnotherValueFromArray(
-                                    this.props.devices,
-                                    'name',
-                                    'waspmote_id',
-                                    waspmote_id
-                                )}
+                                {device.name}
                             </CardHeader>
                             <CardBody>
                                 {
