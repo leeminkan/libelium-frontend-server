@@ -37,7 +37,8 @@ class DeviceView extends Component {
             view.push(
               <Col 
               sm={6} 
-              key={item.waspmote_id} >
+              key={item.waspmote_id}
+              className="col-device-view" >
                   <Card
                     className="device-view">
                       <CardBody>

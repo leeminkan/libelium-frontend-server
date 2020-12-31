@@ -242,10 +242,14 @@
     }
 }
 // Device Page
+.col-device-view {
+    padding: 20px 12px!important;
+}
 .device-view {
-    margin-top: 20px;
+    height: 100%;
     .device-container {
         overflow-x: scroll;
+        height: 100%;
         .device-row {
             display: flex;
             padding: 15px 0px;
