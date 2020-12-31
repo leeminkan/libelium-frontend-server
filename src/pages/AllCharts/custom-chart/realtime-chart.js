@@ -6,13 +6,14 @@ import ApexCharts from "apexcharts";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 // actions
-import { getChartData } from "../../../store/actions";
+import { getChartData, updateStateChartData } from "../../../store/actions";
 
 class ApexChart extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            isMounted: false,
             series: [{
                 data: []
             }],
@@ -73,11 +74,28 @@ class ApexChart extends Component {
             this.props.getChartData(this.props.history, this.props.waspmote_id, this.props.sensor_key, this.props.limit, this.props.sort);
         }, 5000);
 
-        this.setState({intervalId: intervalId});
+        this.setState({ 
+            intervalId: intervalId,
+            isMounted: true 
+        });
     }
 
     componentWillUnmount() {
         clearInterval(this.state.intervalId);
+        
+        const cloneData = Object.assign({}, this.props.data);
+
+        if (typeof cloneData[this.props.waspmote_id] !== 'undefined' 
+        && 
+        typeof cloneData[this.props.waspmote_id][this.props.sensor_key] !== 'undefined') {
+            cloneData[this.props.waspmote_id][this.props.sensor_key] = [];
+        }
+
+        this.props.updateStateChartData({
+          data: {
+              ...cloneData
+          }
+        });
     }
 
 
@@ -91,9 +109,11 @@ class ApexChart extends Component {
                 x: element.created_at
             }));
 
-            ApexCharts.exec(`realtime-${this.props.waspmote_id}-${this.props.sensor_key}`, 'updateSeries', [{
-                data: newData
-            }]);
+            if (this.state.isMounted) {
+                ApexCharts.exec(`realtime-${this.props.waspmote_id}-${this.props.sensor_key}`, 'updateSeries', [{
+                    data: newData
+                }]);
+            }
         }
         
         return (
@@ -114,4 +134,4 @@ const mapStatetoProps = state => {
     return state.ChartData;
 };
   
-export default withRouter(connect(mapStatetoProps, { getChartData })(ApexChart));
+export default withRouter(connect(mapStatetoProps, { getChartData, updateStateChartData })(ApexChart));
