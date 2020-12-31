@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Button from '@material-ui/core/Button'
 import ChooseField from './ChooseField'
 import ChooseOneField from './ChooseOneField'
+import ChooseModeField from './ChooseModeField'
 
 
 const validate = values => {
@@ -32,7 +33,8 @@ class UpdateSettingForm extends Component {
             sensors,
             sampleDevices,
             waspmote_ids,
-            waspmote_algorithm
+            waspmote_algorithm,
+            mode
         }
     } = this.props
 
@@ -91,6 +93,21 @@ class UpdateSettingForm extends Component {
                   },
                   samples: selectedDevices,
                   defaultValue: waspmote_algorithm,
+              }}
+              style = {{width: 500}}
+            />
+          </div>
+          <div className="form-field">
+            <Field
+              name="mode"
+              component={ChooseModeField}
+              label="Mode"
+              options={{
+                  samples: [
+                    { value: 'apex-realtime', label: 'Apex Realtime' },
+                    { value: 'chartjs', label: 'Chartjs' },
+                  ],
+                  defaultValue: mode || { value: 'chartjs', label: 'Chartjs' },
               }}
               style = {{width: 500}}
             />
