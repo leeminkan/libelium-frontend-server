@@ -1,7 +1,8 @@
 import { 
     GET_CHART_DATA, 
     GET_CHART_DATA_SUCCESS, 
-    GET_CHART_DATA_ERROR
+    GET_CHART_DATA_ERROR,
+    UPDATE_STATE_CHART_DATA
 } from './actionTypes';
 
 const initialState = {
@@ -57,6 +58,9 @@ const dataCollection = (state = initialState, action) => {
                     }
                 }
             };
+            break;
+        case UPDATE_STATE_CHART_DATA:
+            state = { ...state, ...action.payload };
             break;
         default:
             state = { ...state };

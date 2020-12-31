@@ -25,8 +25,12 @@ const responsive = {
     items: 5
   },
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+    breakpoint: { max: 3000, min: 2048 },
     items: 4
+  },
+  custom: {
+    breakpoint: { max: 2048, min: 1024 },
+    items: 3
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -74,6 +78,10 @@ class Dashboard extends Component {
                     <div className="waspmote-content-left-row">
                       <i className="mdi mdi-music-accidental-sharp h5"></i>
                       <span>{device.waspmote_id}</span>
+                    </div>
+                    <div className="waspmote-content-left-row">
+                      <i className={`fas fa-circle ${device.active ? "icon-active" : "icon-deactive"}`}></i>
+                      <span>{device.active ? "Active" : "Deactive"}</span>
                     </div>
                   </div>
                   <div className="waspmote-content-right waspmote-content-column">

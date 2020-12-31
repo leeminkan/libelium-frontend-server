@@ -2,24 +2,26 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 
-import ImageUploadField from './ImageUploadField'
-import ChooseField from './ChooseField'
 
 const validate = values => {
   const errors = {}
   const requiredFields = [
     'name',
-    'waspmote_id'
   ]
   requiredFields.forEach(field => {
     if (!values[field]) {
       errors[field] = 'Required'
     }
   })
+  if (values['chart_options']) {
+    try {
+      JSON.parse(values['chart_options']);
+    } catch (e) {
+      errors['chart_options'] = 'Invalid format! JSON required.'
+    }
+  }
   return errors
 }
 
@@ -41,30 +43,11 @@ const renderTextField = ({
   />
 )
 
-const renderCheckbox = ({ input, label }) => (
-    <div>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={input.value ? true : false}
-            onChange={input.onChange}
-          />
-        }
-        label={label}
-      />
-    </div>
-  )
-
-class UpdateDeviceForm extends Component {
+class UpdateSensorForm extends Component {
   render() {
     const { 
       handleSubmit, 
       loading,
-      initialValues: {
-        sensors,
-        image_default,
-        sampleSensors
-      }
     } = this.props
     
     return (
@@ -79,60 +62,38 @@ class UpdateDeviceForm extends Component {
         </div>
         <div className="form-field">
           <Field
-            name="waspmote_id"
+            name="key"
             component={renderTextField}
-            label="Waspmote ID"
-            disabled={true}
+            label="Key"
             style = {{width: 500}}
+            disabled
           />
         </div>
         <div className="form-field">
-          <Field name="is_displayed" component={renderCheckbox} label="Display" />
+          <Field
+            name="unit"
+            component={renderTextField}
+            label="Unit"
+            style = {{width: 500}}
+          />
         </div>
-        <div className="form-field">
-          <Field 
-            name="image" 
-            component={ImageUploadField} 
-            label="Image" 
-            default_src={image_default}
-            style = {{width: 500}}/>
-        </div>
-        <div className="form-field">
-            <Field
-              name="sensors"
-              component={ChooseField}
-              label="Sensors"
-              options={{
-                  fields: {
-                      value: 'id',
-                      label: 'name'
-                  },
-                  samples: sampleSensors,
-                  defaultValue: sensors,
-              }}
-              style = {{width: 500}}
-            />
-          </div>
         <div className="form-field">
           <Field
             name="description"
             component={renderTextField}
             label="Description"
             style = {{width: 500}}
-            multiline
-            rows={2}
-            rowsMax={4}
           />
         </div>
         <div className="form-field">
           <Field
-            name="algorithm_param_description"
+            name="chart_options"
             component={renderTextField}
-            label="Algorithm Param Description"
+            label="Chart Options"
             style = {{width: 500}}
             multiline
             rows={2}
-            rowsMax={4}
+            rowsMax={10}
           />
         </div>
         <div>
@@ -151,6 +112,6 @@ class UpdateDeviceForm extends Component {
 }
 
 export default reduxForm({
-  form: 'UpdateDeviceForm',
+  form: 'UpdateSensorForm',
   validate // a unique identifier for this form
-})(UpdateDeviceForm)
+})(UpdateSensorForm)

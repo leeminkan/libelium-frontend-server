@@ -55,14 +55,12 @@ const renderCheckbox = ({ input, label }) => (
     </div>
   )
 
-class UpdateDeviceForm extends Component {
+class AddDeviceForm extends Component {
   render() {
     const { 
       handleSubmit, 
       loading,
       initialValues: {
-        sensors,
-        image_default,
         sampleSensors
       }
     } = this.props
@@ -74,7 +72,6 @@ class UpdateDeviceForm extends Component {
             name="name"
             component={renderTextField}
             label="Name"
-            style = {{width: 500}}
           />
         </div>
         <div className="form-field">
@@ -82,8 +79,6 @@ class UpdateDeviceForm extends Component {
             name="waspmote_id"
             component={renderTextField}
             label="Waspmote ID"
-            disabled={true}
-            style = {{width: 500}}
           />
         </div>
         <div className="form-field">
@@ -94,8 +89,7 @@ class UpdateDeviceForm extends Component {
             name="image" 
             component={ImageUploadField} 
             label="Image" 
-            default_src={image_default}
-            style = {{width: 500}}/>
+          />
         </div>
         <div className="form-field">
             <Field
@@ -108,9 +102,8 @@ class UpdateDeviceForm extends Component {
                       label: 'name'
                   },
                   samples: sampleSensors,
-                  defaultValue: sensors,
+                  defaultValue: [],
               }}
-              style = {{width: 500}}
             />
           </div>
         <div className="form-field">
@@ -118,7 +111,6 @@ class UpdateDeviceForm extends Component {
             name="description"
             component={renderTextField}
             label="Description"
-            style = {{width: 500}}
             multiline
             rows={2}
             rowsMax={4}
@@ -129,7 +121,6 @@ class UpdateDeviceForm extends Component {
             name="algorithm_param_description"
             component={renderTextField}
             label="Algorithm Param Description"
-            style = {{width: 500}}
             multiline
             rows={2}
             rowsMax={4}
@@ -151,6 +142,6 @@ class UpdateDeviceForm extends Component {
 }
 
 export default reduxForm({
-  form: 'UpdateDeviceForm',
+  form: 'AddDeviceForm',
   validate // a unique identifier for this form
-})(UpdateDeviceForm)
+})(AddDeviceForm)

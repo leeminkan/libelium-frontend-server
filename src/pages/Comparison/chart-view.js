@@ -3,11 +3,13 @@ import { Row, Col, Collapse, Card, CardHeader, CardBody  } from "reactstrap";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import SingleChart from '../AllCharts/custom-chart/single-chart';
+import SingleRealtimeChart from '../AllCharts/custom-chart/single-realtime-chart';
 import DoubleChart from '../AllCharts/custom-chart/double-chart';
+import DoubleRealtimeChart from '../AllCharts/custom-chart/double-realtime-chart';
 
 import Loader from '../../components/ThreeDotsLoader'
 
-import * as util from '../../helpers/util';
+// import * as util from '../../helpers/util';
 
 class CompareChartView extends Component {
 
@@ -38,40 +40,56 @@ class CompareChartView extends Component {
     }
 
     renderCharts = () => {
-        const { sensors, waspmote_ids, waspmote_algorithm } = this.props.setting;
+        const { sensors, waspmote_ids, waspmote_algorithm, mode } = this.props.setting;
         let chartView = [];
 
-        const renderSensorChart = (sensor_key) => {
+        const renderSensorChart = (sensor) => {
             let sensorChartView = [];
             waspmote_ids.forEach(waspmote_id => {
                 let algorithm_parameter = this.props.algorithm_parameters.find(item => {
                     return item.waspmote_id === waspmote_id;
                 })
+                let device = this.props.devices.find(item => {
+                    return item.waspmote_id === waspmote_id;
+                })
                 sensorChartView.push(
-                    <Col key={waspmote_id + sensor_key} lg={6}>
+                    <Col key={waspmote_id + sensor.key} lg={6}>
                         <Card>
                             <CardHeader>
-                                {util.getAnotherValueFromArray(
-                                    this.props.devices,
-                                    'name',
-                                    'waspmote_id',
-                                    waspmote_id
-                                )}
+                                {device.name}
                             </CardHeader>
                             <CardBody>
                                 {
-                                    waspmote_id === waspmote_algorithm && sensor_key !== "battery" ?
-                                    <DoubleChart 
-                                    waspmote_id={waspmote_id} 
-                                    sensor_key={sensor_key}
-                                    algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
-                                    sort={'asc'}></DoubleChart>
-                                    :
-                                    <SingleChart 
-                                    waspmote_id={waspmote_id} 
-                                    sensor_key={sensor_key}
-                                    algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
-                                    sort={'asc'}></SingleChart>
+                                    mode.value === 'apex-realtime' ? (
+                                        waspmote_id === waspmote_algorithm && sensor.key !== "battery" ?
+                                        <DoubleRealtimeChart 
+                                        waspmote_id={waspmote_id} 
+                                        sensor_key={sensor.key}
+                                        sensor={sensor}
+                                        algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
+                                        sort={'asc'}></DoubleRealtimeChart>
+                                        :
+                                        <SingleRealtimeChart 
+                                        waspmote_id={waspmote_id} 
+                                        sensor_key={sensor.key}
+                                        sensor={sensor}
+                                        algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
+                                        sort={'asc'}></SingleRealtimeChart>
+                                    ) : (
+                                        waspmote_id === waspmote_algorithm && sensor.key !== "battery" ?
+                                        <DoubleChart 
+                                        waspmote_id={waspmote_id} 
+                                        sensor_key={sensor.key}
+                                        algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
+                                        sort={'asc'}></DoubleChart>
+                                        :
+                                        <SingleChart 
+                                        waspmote_id={waspmote_id} 
+                                        sensor_key={sensor.key}
+                                        sensor={sensor}
+                                        algorithm_parameter_id={algorithm_parameter ? algorithm_parameter.id : null}
+                                        sort={'asc'}></SingleChart>
+                                    )
                                 }
                             </CardBody>
                         </Card>
@@ -82,24 +100,20 @@ class CompareChartView extends Component {
         }
 
         sensors.forEach((sensor_key) => {
+            let sensor = this.props.sensors.find(item => item['key'] === sensor_key);
             chartView.push(
                     <Card key={sensor_key}>
                         <CardHeader>
                             <div onClick={() => {
                                 this.collapse(sensor_key)
                             }}>
-                                {util.getAnotherValueFromArray(
-                                    this.props.sensors,
-                                    'name',
-                                    'key',
-                                    sensor_key
-                                )}
+                                {sensor.name}
                             </div>
                         </CardHeader>
                         <CardBody>
                             <Collapse isOpen={!this.state.collapse.includes(sensor_key)}>
                                 <Row>
-                                    {renderSensorChart(sensor_key)}
+                                    {renderSensorChart(sensor)}
                                 </Row>
                             </Collapse>
                         </CardBody>
@@ -111,7 +125,6 @@ class CompareChartView extends Component {
 
 
     render() {
-        console.log(this.props);
         return (
             <React.Fragment>
                 {
