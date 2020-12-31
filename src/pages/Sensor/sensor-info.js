@@ -45,7 +45,7 @@ class SensorInfo extends Component {
       key,
       unit,
       description,
-      chart_options: JSON.stringify(chart_options, null, "\t"),
+      chart_options: chart_options && JSON.stringify(chart_options, null, "\t"),
     };
 
     return (
