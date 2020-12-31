@@ -15,6 +15,13 @@ const validate = values => {
       errors[field] = 'Required'
     }
   })
+  if (values['chart_options']) {
+    try {
+      JSON.parse(values['chart_options']);
+    } catch (e) {
+      errors['chart_options'] = 'Invalid format! JSON required.'
+    }
+  }
   return errors
 }
 
@@ -76,6 +83,17 @@ class UpdateSensorForm extends Component {
             component={renderTextField}
             label="Description"
             style = {{width: 500}}
+          />
+        </div>
+        <div className="form-field">
+          <Field
+            name="chart_options"
+            component={renderTextField}
+            label="Chart Options"
+            style = {{width: 500}}
+            multiline
+            rows={2}
+            rowsMax={10}
           />
         </div>
         <div>

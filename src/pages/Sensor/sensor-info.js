@@ -32,18 +32,20 @@ class SensorInfo extends Component {
       key: values.key,
       unit: values.unit,
       description: values.description,
+      chart_options: JSON.parse(values['chart_options'])
     }
     this.props.updateSensorInfo(this.props.history, this.props.match.params.id, data);
   }
 
   render() {
-    const { name, key, unit, description } = this.props.data;
+    const { name, key, unit, description, chart_options } = this.props.data;
 
     const initialValues = {
       name,
       key,
       unit,
       description,
+      chart_options: JSON.stringify(chart_options, null, "\t"),
     };
 
     return (
