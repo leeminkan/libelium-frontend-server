@@ -30,13 +30,16 @@ class Setting extends Component {
         sensors: values.sensors,
         waspmote_algorithm: values.waspmote_algorithm,
         mode: values.mode
+      },
+      algorithm_param_page: {
+        waspmote_ids: values.algorithm_waspmote_ids,
       }
     }
     this.props.updateSetting(this.props.history, data);
   }
 
   render() {
-    const { comparition_page } = this.props.data
+    const { comparition_page, algorithm_param_page } = this.props.data
     const initialValues = {
       sensors: comparition_page ? comparition_page.sensors : [],
       sampleSensors: this.props.sensors,
@@ -44,6 +47,7 @@ class Setting extends Component {
       sampleDevices: this.props.devices,
       waspmote_algorithm: comparition_page ? comparition_page.waspmote_algorithm : "",
       mode: comparition_page ? comparition_page.mode : "",
+      algorithm_waspmote_ids: algorithm_param_page ? algorithm_param_page.waspmote_ids : [],
     }
 
     return (

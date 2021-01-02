@@ -8,7 +8,8 @@ var config = {
     'apiGetSensors':"/sensors",
     'apiDataCollections':"/data-collections",
     'apiSetting':"/settings",
-    'apiAlgorithmParameter':"/algorithm-parameters"
+    'apiAlgorithmParameter':"/algorithm-parameters",
+    'apiErrorRates':"/error-rates"
   },
   'export': {
     'acceptType': ["csv", "xlsx", "tsv", "ods", "xls", "html", "mpdf", "dompdf", "tcpdf"]

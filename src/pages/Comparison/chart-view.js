@@ -101,13 +101,27 @@ class CompareChartView extends Component {
 
         sensors.forEach((sensor_key) => {
             let sensor = this.props.sensors.find(item => item['key'] === sensor_key);
+            let error_rate = this.props.error_rates.find(item => item.sensor_key === sensor_key);
             chartView.push(
                     <Card key={sensor_key}>
                         <CardHeader>
                             <div onClick={() => {
                                 this.collapse(sensor_key)
                             }}>
-                                {sensor.name}
+                                <div className="compararision-page-card-header">
+                                    <div className="sensor-name">
+                                        {sensor.name}
+                                    </div>
+                                    <div className="error-rate">
+                                        {
+                                            error_rate
+                                            && 
+                                            <span className="badge badge-info">
+                                                {`Error rate: ${error_rate.value}%`}
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </CardHeader>
                         <CardBody>
