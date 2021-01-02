@@ -379,6 +379,50 @@ const apiGetAllAlgorithmParameter = () => {
     return response;
 }
 
+
+const apiErrorRates = (pagination, sort, filter) => {
+    const token = localStorage.getItem('token');
+    let apiQuery = `${serverUrl}${api.apiErrorRates}`;
+    if (pagination) {
+        if (pagination.per_page) {
+            let page = pagination.page ? pagination.page : 1;
+            apiQuery += `?page=${page}&per_page=${pagination.per_page}`;
+        } else {
+            apiQuery += `?pagination=0`;
+        }
+    }
+
+    if (sort) {
+        apiQuery += apiQuery.includes("?") ? '&' : '?';
+        apiQuery += `order_by=${sort.order_by}&order=${sort.order}`;
+    }
+
+    let queryFilter = {match:"and",rules:[]};
+
+    Object.keys(filter).forEach(function(key) {
+        if (filter[key].value !== "") {
+            queryFilter.rules.push({
+                field: key, 
+                operator: filter[key].operator ? filter[key].operator : "like",
+                value: filter[key].operator ? filter[key].value : `%${filter[key].value}%`
+            });
+        }
+    });
+
+    if (queryFilter.rules.length > 0) {
+        apiQuery += "&filters=" + JSON.stringify(queryFilter);
+    }
+
+    const response = axios.get(apiQuery, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 export { 
     apiGetDisplayedDevices, 
     apiDataCollections,
@@ -399,5 +443,6 @@ export {
     apiDeleteSensor,
     apiDeleteDevice,
     apiGetAllAlgorithmParameter,
-    apiAddAlgorithmParameter
+    apiAddAlgorithmParameter,
+    apiErrorRates
 };

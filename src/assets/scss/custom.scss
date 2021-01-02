@@ -284,6 +284,14 @@
     flex-direction: column;
 }
 // Comparision Page Css
+.compararision-page-card-header {
+    display: flex;
+    flex-direction: row;
+    .error-rate {
+        align-items: center;
+        margin-left: 10px;
+    }
+}
 .double-chart-wrapper {
     .double-chart-child-wrapper {
         .double-chart-child-header {
