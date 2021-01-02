@@ -34,7 +34,8 @@ class UpdateSettingForm extends Component {
             sampleDevices,
             waspmote_ids,
             waspmote_algorithm,
-            mode
+            mode,
+            algorithm_waspmote_ids
         }
     } = this.props
 
@@ -112,6 +113,28 @@ class UpdateSettingForm extends Component {
               style = {{width: 500}}
             />
           </div>
+        </div>
+        <div className="form-session-header">
+          <div className="form-session-header-line"></div>
+          <span>Algorithm Page Setting</span>
+        </div>
+        <div className="form-session-body">
+          <div className="form-field">
+              <Field
+                name="algorithm_waspmote_ids"
+                component={ChooseField}
+                label="Devices"
+                options={{
+                    fields: {
+                        value: 'waspmote_id',
+                        label: 'name'
+                    },
+                    samples: sampleDevices,
+                    defaultValue: algorithm_waspmote_ids,
+                }}
+                style = {{width: 500}}
+              />
+            </div>
         </div>
         <div className="wrapper-item-center">
           <Button 
