@@ -5,6 +5,9 @@ import {
     ADD_ALGORITHM_PARAMETER, 
     ADD_ALGORITHM_PARAMETER_SUCCESS, 
     ADD_ALGORITHM_PARAMETER_ERROR,
+    GET_ALGORITHM_PARAM_PAGE_SETTING, 
+    GET_ALGORITHM_PARAM_PAGE_SETTING_SUCCESS, 
+    GET_ALGORITHM_PARAM_PAGE_SETTING_ERROR,
 } from './actionTypes';
 
 const initialState = {
@@ -74,6 +77,35 @@ const algorithmParameter = (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     [`ADD_ALGORITHM_PARAMETER_${action.payload.waspmote_id}`]: false
+                }
+            };
+            break;
+        case GET_ALGORITHM_PARAM_PAGE_SETTING:
+            state = {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    GET_ALGORITHM_PARAM_PAGE_SETTING: true
+                }
+            }
+            break;
+        case GET_ALGORITHM_PARAM_PAGE_SETTING_SUCCESS:
+            state = {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    GET_ALGORITHM_PARAM_PAGE_SETTING: false
+                },
+                setting: action.payload,
+            }
+            break;
+        case GET_ALGORITHM_PARAM_PAGE_SETTING_ERROR:
+            state = { 
+                ...state, 
+                errors: action.payload,
+                loading: {
+                    ...state.loading,
+                    GET_ALGORITHM_PARAM_PAGE_SETTING: false
                 }
             };
             break;

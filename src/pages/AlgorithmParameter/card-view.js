@@ -39,9 +39,12 @@ class CardView extends Component {
     }
 
     renderCards = () => {
+        const { waspmote_ids } = this.props.setting;
         let cardView = [];
 
         this.props.devices.forEach((item) => {
+            if (!waspmote_ids.includes(item.waspmote_id)) return
+            
             let finded = this.props.data.find(e => {
                 return e.waspmote_id === item.waspmote_id;
             })
@@ -101,6 +104,7 @@ class CardView extends Component {
             <React.Fragment>
                 {
                     this.props.loading.GET_ALL_ALGORITHM_PARAMETER === false &&
+                    this.props.loading.GET_ALGORITHM_PARAM_PAGE_SETTING === false &&
                     this.props.loading.GET_DEVICE === false ? 
                     this.renderCards() :
                     <div className="wrapper-item-center">

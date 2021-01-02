@@ -319,6 +319,18 @@ const apiComparisionPageSetting = () => {
     return response;
 }
 
+const apiAlgorithmParamPageSetting = () => {
+    const token = localStorage.getItem('token');
+    const response = axios.get(`${serverUrl}${api.apiSetting}/algorithm-param-page`, {
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+
+    return response;
+}
+
 const apiUpdateSetting = (data) => {
     const token = localStorage.getItem('token');
     const response = axios.put(`${serverUrl}${api.apiSetting}`, JSON.stringify(data), {
@@ -429,6 +441,7 @@ export {
     apiExportDataCollections, 
     apiSetting, 
     apiComparisionPageSetting,
+    apiAlgorithmParamPageSetting,
     apiUpdateSetting, 
     apiGetTemperature, 
     apiDevices, 

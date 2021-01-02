@@ -52,35 +52,35 @@ const comparision = (state = initialState, action) => {
                 }
             };
             break;
-            case GET_ERROR_RATES:
-                state = {
-                    ...state,
-                    loading: {
-                        ...state.loading,
-                        GET_ERROR_RATES: true
-                    }
+        case GET_ERROR_RATES:
+            state = {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    GET_ERROR_RATES: true
                 }
-                break;
-            case GET_ERROR_RATES_SUCCESS:
-                state = {
-                    ...state,
-                    loading: {
-                        ...state.loading,
-                        GET_ERROR_RATES: false
-                    },
-                    error_rates: action.payload,
+            }
+            break;
+        case GET_ERROR_RATES_SUCCESS:
+            state = {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    GET_ERROR_RATES: false
+                },
+                error_rates: action.payload,
+            }
+            break;
+        case GET_ERROR_RATES_ERROR:
+            state = { 
+                ...state, 
+                errors: action.payload,
+                loading: {
+                    ...state.loading,
+                    GET_ERROR_RATES: false
                 }
-                break;
-            case GET_ERROR_RATES_ERROR:
-                state = { 
-                    ...state, 
-                    errors: action.payload,
-                    loading: {
-                        ...state.loading,
-                        GET_ERROR_RATES: false
-                    }
-                };
-                break;
+            };
+            break;
         case UPDATE_STATE_COMPARISION_PAGE:
             state = { ...state, ...action.payload };
             break;
