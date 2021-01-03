@@ -117,7 +117,7 @@ class CompareChartView extends Component {
                                             error_rate
                                             && 
                                             <span className="badge badge-info">
-                                                {`Error rate: ${error_rate.value}%`}
+                                                {`Error rate: ${error_rate.value}`}
                                             </span>
                                         }
                                     </div>
